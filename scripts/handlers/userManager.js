@@ -1,0 +1,49 @@
+handlers.displayRegister = function (ctx) {
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    ctx.username = sessionStorage.getItem('username');
+
+    ctx.loadPartials({
+        header: "./templates/common/header.hbs",
+        registerForm: "./templates/register/registerForm.hbs",
+        footer: "./templates/common/footer.hbs",
+
+    }).then(function () {
+        this.partial('./templates/register/registerPage.hbs');
+    });
+};
+
+handlers.registerUser = function (ctx) {
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+
+    let userReg = new RegExp("^([a-zA-Z]){3,}$");
+    let passReg = new RegExp("^([a-zA-Z0-9]){6,}$");
+
+    let username = ctx.params.username;
+    let firstName = ctx.params.firstName;
+    let lastName = ctx.params.lastName;
+    let email = ctx.params.email;
+    let password = ctx.params.password;
+    let repeatPassword = ctx.params.repeatPassword;
+
+    if (password !== repeatPassword) {
+        notifications.showError("The Passwords and Repeat Password do not match")
+    } else if (!userReg.test(username)) {
+        notifications.showError("invalid username")
+    } else if (!passReg.test(password)) {
+        notifications.showError("invalid password")
+    } else {
+        auth.register(username, password, email, firstName, lastName).then(function (userInfo) {
+            auth.saveSession(userInfo);
+            notifications.showInfo("User registration successful.");
+            ctx.redirect("#/home");
+        }).catch(notifications.handleError);
+    }
+};
+
+handlers.logoutUser = function (ctx) {
+    auth.logout().then(function () {
+        sessionStorage.clear();
+        notifications.showInfo("Logout successful.");
+        ctx.redirect("#/home");
+    }).catch(notifications.handleError);
+};

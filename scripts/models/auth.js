@@ -19,10 +19,13 @@ let auth = (() => {
     }
 
     // user/register
-    function register(username, password) {
+    function register(username, password, email, firstName, lastName) {
         let userData = {
             username,
-            password
+            password,
+            email,
+            firstName,
+            lastName
         };
 
         return requester.post('user', '', 'basic', userData);
