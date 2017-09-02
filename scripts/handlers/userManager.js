@@ -12,6 +12,20 @@ handlers.displayRegister = function (ctx) {
     });
 };
 
+handlers.displayLogin = function (ctx) {
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    ctx.username = sessionStorage.getItem('username');
+
+    ctx.loadPartials({
+        header: "./templates/common/header.hbs",
+        loginForm: "./templates/login/loginForm.hbs",
+        footer: "./templates/common/footer.hbs",
+
+    }).then(function () {
+        this.partial('./templates/login/loginPage.hbs');
+    });
+};
+
 handlers.registerUser = function (ctx) {
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
 
@@ -38,6 +52,19 @@ handlers.registerUser = function (ctx) {
             ctx.redirect("#/home");
         }).catch(notifications.handleError);
     }
+};
+
+handlers.loginUser = function (ctx) {
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+
+    let username = ctx.params.username;
+    let password = ctx.params.password;
+
+    auth.login(username, password).then(function (userInfo) {
+        auth.saveSession(userInfo);
+        notifications.showInfo("Login successful.");
+        ctx.redirect("#/home");
+    }).catch(notifications.handleError);
 };
 
 handlers.logoutUser = function (ctx) {

@@ -6,10 +6,12 @@ $(() => {
         this.get('index.html', displayHome);
         this.get('#/home', displayHome);
         this.get('#/register', handlers.displayRegister);
+        this.get('#/login', handlers.displayLogin);
         this.get('#/logout', handlers.logoutUser);
 
 
         this.post('#/register', handlers.registerUser);
+        this.post('#/login', handlers.loginUser);
 
         function displayHome(ctx) {
             ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
