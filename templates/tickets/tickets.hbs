@@ -1,0 +1,15 @@
+{{> header}}
+<div class="container-fluid">
+    <h1 class="my-4">Page Heading
+        <small>Secondary Text</small>
+    </h1>
+
+    <div class="row">
+        {{#each tickets}}
+            {{> ticket}}
+        {{else}}
+            <p>No tickets in database</p>
+        {{/each}}
+    </div>
+</div>
+{{> footer}}
