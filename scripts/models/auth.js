@@ -1,4 +1,14 @@
 let auth = (() => {
+    //Check if current user is in Admin Role
+    function isAdmin() {
+        return sessionStorage.getItem('userRole') === 'admin';
+    }
+
+    //check if user is logged in
+    function isAuthorized() {
+        return sessionStorage.getItem('authtoken') !== null;
+    }
+
     function saveSession(userInfo) {
         let userAuth = userInfo._kmd.authtoken;
         sessionStorage.setItem('authtoken', userAuth);
@@ -47,6 +57,8 @@ let auth = (() => {
         login,
         register,
         logout,
-        saveSession
+        saveSession,
+        isAuthorized,
+        isAdmin
     }
 })()

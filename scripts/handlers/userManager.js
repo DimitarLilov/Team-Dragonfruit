@@ -1,5 +1,5 @@
 handlers.displayRegister = function (ctx) {
-    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    ctx.loggedIn = auth.isAuthorized();
     ctx.username = sessionStorage.getItem('username');
 
     ctx.loadPartials({
@@ -13,7 +13,7 @@ handlers.displayRegister = function (ctx) {
 };
 
 handlers.displayLogin = function (ctx) {
-    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    ctx.loggedIn = auth.isAuthorized();
     ctx.username = sessionStorage.getItem('username');
 
     ctx.loadPartials({
@@ -27,7 +27,7 @@ handlers.displayLogin = function (ctx) {
 };
 
 handlers.registerUser = function (ctx) {
-    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    ctx.loggedIn = auth.isAuthorized();
 
     let userReg = new RegExp("^([a-zA-Z]){3,}$");
     let passReg = new RegExp("^([a-zA-Z0-9]){6,}$");
@@ -58,7 +58,7 @@ handlers.registerUser = function (ctx) {
 };
 
 handlers.loginUser = function (ctx) {
-    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    ctx.loggedIn = auth.isAuthorized();
 
     let username = ctx.params.username;
     let password = ctx.params.password;
