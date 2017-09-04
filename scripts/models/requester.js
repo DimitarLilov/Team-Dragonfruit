@@ -5,9 +5,14 @@ let requester = (() => {
 
     // Creates the authentication header
     function makeAuth(type) {
-        return type === 'basic'
-            ?  'Basic ' + btoa(kinveyAppKey + ':' + kinveyAppSecret)
-            :  'Kinvey ' + sessionStorage.getItem('authtoken');
+
+        if (type === 'master') {
+            return 'Basic ' + btoa('master' + ':' + '123456');
+        } else {
+            return type === 'basic'
+                ?  'Basic ' + btoa(kinveyAppKey + ':' + kinveyAppSecret)
+                :  'Kinvey ' + sessionStorage.getItem('authtoken');
+        }
     }
 
     // Creates request object to kinvey
