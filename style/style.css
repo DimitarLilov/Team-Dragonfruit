@@ -146,16 +146,6 @@ body {
     background-size: cover;
 }
 
-footer {
-    padding: 15px 10px;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin-bottom: 0;
-}
-
 /* ADMIN HEADER STYLING */
 
 #admin > ul:nth-child(2) > li > a, #content > header > nav > div > div > a.adminNav {
@@ -182,4 +172,24 @@ footer {
 #admin {
     background-color: #cccccc;
     border-color: #cccccc;
+}
+
+/* ADMIN USERS TABLE STILING */
+
+#searchBtn{
+    display: inline;
+}
+
+#showform {
+    display: inline;
+    width: 30%;
+}
+
+table.table-striped.table-hover {
+    margin-top: 10px;
+}
+
+.adminUsersAction {
+    display: inline;
+    padding-left: 15px;
 }

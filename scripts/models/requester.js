@@ -29,14 +29,16 @@ let requester = (() => {
     // Function to return POST promise
     function post (module, endpoint, auth, data) {
         let req = makeRequest('POST', module, endpoint, auth);
-        req.data = data;
+        req.contentType = 'application/json';
+        req.data = JSON.stringify(data);
         return $.ajax(req);
     }
 
     // Function to return PUT promise
     function update (module, endpoint, auth, data) {
         let req = makeRequest('PUT', module, endpoint, auth);
-        req.data = data;
+        req.contentType = 'application/json';
+        req.data = JSON.stringify(data);
         return $.ajax(req);
     }
 
@@ -51,4 +53,4 @@ let requester = (() => {
         update,
         remove
     }
-})()
+})();

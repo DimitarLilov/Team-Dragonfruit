@@ -3,49 +3,23 @@ $(() => {
     const app = Sammy('#content', function () {
         this.use("Handlebars", 'hbs');
 
-        this.get('index.html', displayHome);
-        this.get('#/home', displayHome);
+        this.get('index.html', handlers.displayHome);
+        this.get('#/home', handlers.displayHome);
         this.get('#/register', handlers.displayRegister);
-        this.get('#/tickets', displayTickets);
+        this.get('#/tickets', handlers.displayTickets);
         this.get('#/login', handlers.displayLogin);
         this.get('#/logout', handlers.logoutUser);
-
+        this.get('#/users', handlers.displayAllUsers);
+        this.get('#/users/#admin', handlers.displayAdminUsers);
+        this.get('#/users/#user', handlers.displayBasicUsers);
+        this.get('#/editUser/:id', handlers.getEditUser);
 
         this.post('#/register', handlers.registerUser);
         this.post('#/login', handlers.loginUser);
-
-        function displayHome(ctx) {
-            ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
-            ctx.username = sessionStorage.getItem('username');
-            ctx.admin = sessionStorage.getItem('userRole') === 'admin';
-
-            ctx.loadPartials({
-                header: "./templates/common/header.hbs",
-                footer: "./templates/common/footer.hbs",
-
-            }).then(function () {
-                this.partial('./templates/home/home.hbs');
-            });
-        }
-
-        function displayTickets(ctx) {
-            ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
-            ctx.username = sessionStorage.getItem('username');
-
-            ticketsService.getAllTickets().then(function (tickets) {
-                ctx.tickets = tickets;
-
-                ctx.loadPartials({
-                    header: "./templates/common/header.hbs",
-                    footer: "./templates/common/footer.hbs",
-                    ticket: "./templates/tickets/ticket.hbs",
-
-                }).then(function () {
-                    this.partial('./templates/tickets/tickets.hbs');
-                });
-
-            }).catch(notifications.handleError);
-        }
+        this.post('#/users', handlers.getSearchedUser);
+        this.post('#/users/:id', handlers.getEditUser);
+        this.post('#/delete/:id', handlers.deleteUser);
+        this.post('#/editUser/:id', handlers.editUser);
     });
 
     app.run();

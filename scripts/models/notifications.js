@@ -33,6 +33,7 @@ let notifications = (() => {
         errorBox.append(spanmsg);
         errorBox.show();
         errorBox.click((event) => $(event.target).hide());
+        setTimeout(() => errorBox.fadeOut(), 3000);
     }
 
     return {
@@ -40,4 +41,4 @@ let notifications = (() => {
         showError,
         handleError
     }
-})()
+})();

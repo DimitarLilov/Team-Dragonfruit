@@ -1,0 +1,13 @@
+<tr class="warning">
+    <td>{{username}}</td>
+    <td>{{firstName}}</td>
+    <td>{{lastName}}</td>
+    <td>{{email}}</td>
+    <td>{{role}}</td>
+    <td>
+        <a class="btn btn-default" href="#/editUser/:{{_id}}">Edit</a>
+        <form class="adminUsersAction" action="#/delete/:{{_id}}" method="post">
+            <button class="btn btn-default">Delete</button>
+        </form>
+    </td>
+</tr>
