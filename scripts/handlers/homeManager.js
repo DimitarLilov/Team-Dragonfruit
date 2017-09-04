@@ -1,7 +1,7 @@
-handlers.displayHome = function(ctx) {
-    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+handlers.displayHome = function (ctx) {
+    ctx.loggedIn = auth.isAuthorized();
     ctx.username = sessionStorage.getItem('username');
-    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    ctx.admin = auth.isAdmin();
 
     ctx.loadPartials({
         header: "./templates/common/header.hbs",

@@ -1,5 +1,5 @@
 handlers.displayTickets = function (ctx) {
-    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    ctx.loggedIn = auth.isAuthorized();
     ctx.username = sessionStorage.getItem('username');
 
     ticketsService.getAllTickets().then(function (tickets) {

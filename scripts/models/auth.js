@@ -8,7 +8,7 @@ let auth = (() => {
     function isAuthorized() {
         return sessionStorage.getItem('authtoken') !== null;
     }
-    
+
     function saveSession(userInfo) {
         let userAuth = userInfo._kmd.authtoken;
         sessionStorage.setItem('authtoken', userAuth);
@@ -61,4 +61,4 @@ let auth = (() => {
         isAuthorized,
         isAdmin
     }
-})()
+})();
