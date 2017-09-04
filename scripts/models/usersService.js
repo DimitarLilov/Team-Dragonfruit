@@ -20,8 +20,8 @@ let usersService = (() => {
         return requester.get('user', `${userId}`);
     }
 
-    function editUserInfo(userId, userObj) {
-        return requester.update('user', `${userId}`, userObj);
+    function editUserInfo(userId, userObject) {
+        return requester.update('user', `${userId}`, userObject);
     }
 
     function deleteUser(userId) {

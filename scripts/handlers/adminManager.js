@@ -133,7 +133,7 @@ handlers.editUser = function (ctx) {
             role: "user"
         };
 
-        console.log(userObj);
+        // console.log(userObj);
         console.log('THIS FUNCTIONALITY MAY NOT WORK: BY THE KINVEY DOCS !!!');
         // usersService.editUserInfo(id, userObj)
         //     .then(function () {
