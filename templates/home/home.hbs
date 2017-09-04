@@ -1,66 +1,70 @@
 {{> header}}
 <div class="container">
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    {{#if admin}}
+    {{else}}
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
 
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
 
-            <div class="item active">
-                <img src="https://webnews.bg/uploads/images/36/7236/307236/768x432.jpg">
-                <div class="carousel-caption">
-                    <h3>Дрийм тийм Барселона vs Отбор Стоичков</h3>
-                    <p>Стадион "Берое"/ Stadium "Beroe"
-                        Стара Загора</p>
-                </div>
-            </div><!-- End Item -->
+                <div class="item active">
+                    <img src="https://webnews.bg/uploads/images/36/7236/307236/768x432.jpg">
+                    <div class="carousel-caption">
+                        <h3>Дрийм тийм Барселона vs Отбор Стоичков</h3>
+                        <p>Стадион "Берое"/ Stadium "Beroe"
+                            Стара Загора</p>
+                    </div>
+                </div><!-- End Item -->
 
-            <div class="item">
-                <img src="https://cdn-az.allevents.in/banners/1fba1125dfe236d6440513dd2a75a766">
-                <div class="carousel-caption">
-                    <h3>LA LA LAND in concert</h3>
-                    <p>National Palace of Culture, Hall 1
-                        Sofia</p>
-                </div>
-            </div><!-- End Item -->
+                <div class="item">
+                    <img src="https://cdn-az.allevents.in/banners/1fba1125dfe236d6440513dd2a75a766">
+                    <div class="carousel-caption">
+                        <h3>LA LA LAND in concert</h3>
+                        <p>National Palace of Culture, Hall 1
+                            Sofia</p>
+                    </div>
+                </div><!-- End Item -->
 
-            <div class="item">
-                <img src="https://i.ytimg.com/vi/0NZWB1FzkPI/maxresdefault.jpg">
-                <div class="carousel-caption">
-                    <h3>The Voice of Godsmack SULLY ERNA</h3>
-                    <p>Sports hall "Arena Armeec"
-                        Sofia <a
-                                href="http://sevenx.de/demo/bootstrap-carousel/" target="_blank"
-                                class="label label-danger">Ticket</a></p>
-                </div>
-            </div><!-- End Item -->
+                <div class="item">
+                    <img src="https://i.ytimg.com/vi/0NZWB1FzkPI/maxresdefault.jpg">
+                    <div class="carousel-caption">
+                        <h3>The Voice of Godsmack SULLY ERNA</h3>
+                        <p>Sports hall "Arena Armeec"
+                            Sofia <a
+                                    href="http://sevenx.de/demo/bootstrap-carousel/" target="_blank"
+                                    class="label label-danger">Ticket</a></p>
+                    </div>
+                </div><!-- End Item -->
 
-            <div class="item">
-                <img src="http://www.radiotangra.com/thumbnail.php?pic=2017/06/05/bf63662a150faaca6053c4f87c37929c.jpg&size_h=359&size_w=632&q=100">
-                <div class="carousel-caption">
-                    <h3>50 години ЩУРЦИТЕ</h3>
-                    <p>Ancient Theatre Plovdiv
-                        Пловдив <a
-                                href="http://sevenx.de/demo/bootstrap-carousel/" target="_blank"
-                                class="label label-danger">Ticket</a></p>
-                </div>
-            </div><!-- End Item -->
+                <div class="item">
+                    <img src="http://www.radiotangra.com/thumbnail.php?pic=2017/06/05/bf63662a150faaca6053c4f87c37929c.jpg&size_h=359&size_w=632&q=100">
+                    <div class="carousel-caption">
+                        <h3>50 години ЩУРЦИТЕ</h3>
+                        <p>Ancient Theatre Plovdiv
+                            Пловдив <a
+                                    href="http://sevenx.de/demo/bootstrap-carousel/" target="_blank"
+                                    class="label label-danger">Ticket</a></p>
+                    </div>
+                </div><!-- End Item -->
 
-        </div><!-- End Carousel Inner -->
-
-
-        <ul class="nav nav-pills nav-justified">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"><a href="#">Дрийм тийм Барселона vs Отбор Стоичков
-            </a></li>
-            <li data-target="#myCarousel" data-slide-to="1"><a href="#">LA LA LAND in concert
-            </a></li>
-            <li data-target="#myCarousel" data-slide-to="2"><a href="#">The Voice of Godsmack SULLY ERNA
-            </a></li>
-            <li data-target="#myCarousel" data-slide-to="3"><a href="#">50 години ЩУРЦИТЕ
-            </a></li>
-        </ul>
+            </div><!-- End Carousel Inner -->
 
 
-    </div><!-- End Carousel -->
+            <ul class="nav nav-pills nav-justified">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"><a href="#">Дрийм тийм Барселона vs Отбор
+                    Стоичков
+                </a></li>
+                <li data-target="#myCarousel" data-slide-to="1"><a href="#">LA LA LAND in concert
+                </a></li>
+                <li data-target="#myCarousel" data-slide-to="2"><a href="#">The Voice of Godsmack SULLY ERNA
+                </a></li>
+                <li data-target="#myCarousel" data-slide-to="3"><a href="#">50 години ЩУРЦИТЕ
+                </a></li>
+            </ul>
+
+
+        </div><!-- End Carousel -->
+    {{/if}}
 </div>
 
 {{> footer}}

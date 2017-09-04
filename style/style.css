@@ -5,7 +5,7 @@
     background:#eee;
 }
 #myCarousel .nav a {
-    border-radius:0px;
+    border-radius: 0;
 }
 #myCarousel img {
     width: 1200px;
@@ -94,7 +94,6 @@ body {
     left: 1px;
     height: 90%;
     margin: 5px 0;
-    display: block;
     color: rgba(204, 204, 204, 0.5);
 }
 .event-body {
@@ -142,7 +141,45 @@ body {
 .image {
     display: block;
     height: 100%;
-    widht: 100%;
+    width: 100%;
     background: no-repeat center;
     background-size: cover;
+}
+
+footer {
+    padding: 15px 10px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 0;
+}
+
+/* ADMIN HEADER STYLING */
+
+#admin > ul:nth-child(2) > li > a, #content > header > nav > div > div > a.adminNav {
+    color: black;
+}
+
+#linkLogout {
+    color: black;
+}
+
+#linkLogout:hover {
+    color: red;
+}
+
+#admin > ul:nth-child(2) > li > a:hover {
+    color: red;
+}
+
+#admin > ul.nav.navbar-nav.navbar-right > li:nth-child(2) > a {
+    color: black;
+    font-weight: bold;
+}
+
+#admin {
+    background-color: #cccccc;
+    border-color: #cccccc;
 }

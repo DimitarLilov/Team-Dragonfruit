@@ -17,6 +17,7 @@ $(() => {
         function displayHome(ctx) {
             ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
             ctx.username = sessionStorage.getItem('username');
+            ctx.admin = sessionStorage.getItem('userRole') === 'admin';
 
             ctx.loadPartials({
                 header: "./templates/common/header.hbs",

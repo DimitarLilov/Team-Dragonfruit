@@ -39,6 +39,9 @@ handlers.registerUser = function (ctx) {
     let password = ctx.params.password;
     let repeatPassword = ctx.params.repeatPassword;
 
+    // admin || user - roles
+    let role = "user";
+
     if (password !== repeatPassword) {
         notifications.showError("The Passwords and Repeat Password do not match")
     } else if (!userReg.test(username)) {
@@ -46,7 +49,7 @@ handlers.registerUser = function (ctx) {
     } else if (!passReg.test(password)) {
         notifications.showError("invalid password")
     } else {
-        auth.register(username, password, email, firstName, lastName).then(function (userInfo) {
+        auth.register(username, password, email, firstName, lastName, role).then(function (userInfo) {
             auth.saveSession(userInfo);
             notifications.showInfo("User registration successful.");
             ctx.redirect("#/home");

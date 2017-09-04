@@ -6,6 +6,8 @@ let auth = (() => {
         sessionStorage.setItem('userId', userId);
         let username = userInfo.username;
         sessionStorage.setItem('username', username);
+        let userRole = userInfo.role;
+        sessionStorage.setItem('userRole', userRole);
     }
 
     // user/login
@@ -19,13 +21,14 @@ let auth = (() => {
     }
 
     // user/register
-    function register(username, password, email, firstName, lastName) {
+    function register(username, password, email, firstName, lastName, role) {
         let userData = {
             username,
             password,
             email,
             firstName,
-            lastName
+            lastName,
+            role
         };
 
         return requester.post('user', '', 'basic', userData);
