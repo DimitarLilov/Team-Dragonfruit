@@ -30,6 +30,7 @@ $(() => {
         this.post('#/users', handlers.getSearchedUser);
         this.post('#/users/:id', handlers.getEditUser);
         this.post('#/delete/:id', handlers.deleteUser);
+        this.post('#/deleteTicket/:id', handlers.deleteTicket);
         this.post('#/editUser/:id', handlers.editUser);
         this.post('#/editTicket/:id', handlers.editTicket);
     });

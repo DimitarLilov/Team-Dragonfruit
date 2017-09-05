@@ -13,11 +13,16 @@ let ticketsService = (() => {
     }
 
     function editTicket(data) {
-        return requester.post('rpc', 'custom/editTicket', 'kinvey',data);
+        return requester.post('rpc', 'custom/editTicket', 'kinvey', data);
     }
 
     function getCategories() {
         return requester.get('appdata', `categories`, 'kinvey');
+    }
+
+
+    function removeTicket(data) {
+        return requester.post('rpc', `custom/deleteTicket`, 'kinvey', data);
     }
 
     return {
@@ -25,6 +30,7 @@ let ticketsService = (() => {
         getAllTicketsNotLogged,
         getEditTicketInfo,
         getCategories,
-        editTicket
+        editTicket,
+        removeTicket
     }
 })();

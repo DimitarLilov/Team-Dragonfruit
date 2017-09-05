@@ -52,6 +52,28 @@ handlers.getAllTicketsAdmin = function (ctx) {
     }
 };
 
+handlers.deleteTicket = function (ctx) {
+    ctx.username = sessionStorage.getItem('username');
+    ctx.admin = auth.isAdmin();
+
+    let ticketId = ctx.params.id.substr(1);
+
+    if (ctx.admin) {
+        let data = {
+            "id": ticketId
+        };
+
+        ticketsService.removeTicket(data)
+            .then(function () {
+                notifications.showInfo(`Ticket deleted.`);
+                ctx.redirect("#/listTickets");
+            }).catch(notifications.showError);
+    }
+    else {
+        ctx.redirect('index.html');
+    }
+};
+
 handlers.getEditTicket = function (ctx) {
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
