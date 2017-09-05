@@ -9,9 +9,9 @@
             <br/>
             <form action="#/editTicket/:{{_id}}" id="ticketEditForm" method="post">
 
-                <div class="form-group row">
+                <div class="form-group row required">
                     <label class="form-control-label" for="title">Title</label>
-                    <input type="text" id="title" class="form-control" value="{{title}}" disabled="disabled"/>
+                    <input type="text" id="title" name="title" class="form-control" value="{{title}}" required="required"/>
                 </div>
                 <div class="form-group row required">
                     <label class="form-control-label" for="image">Poster</label>

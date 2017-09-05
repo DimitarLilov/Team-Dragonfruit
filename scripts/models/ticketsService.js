@@ -12,8 +12,8 @@ let ticketsService = (() => {
         return requester.get('appdata', `tickets/${ticketId}`, 'kinvey');
     }
 
-    function editTicket(ticketId,data) {
-        return requester.update('appdata', `tickets/${ticketId}`, 'kinvey',data);
+    function editTicket(data) {
+        return requester.post('rpc', 'custom/editTicket', 'kinvey',data);
     }
 
     function getCategories() {

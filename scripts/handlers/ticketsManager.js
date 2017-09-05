@@ -93,7 +93,6 @@ handlers.editTicket = function (ctx) {
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
 
     let ticketId = ctx.params.id.substr(1);
-    console.log(ticketId);
 
     let title = ctx.params.title;
     let image = ctx.params.image;
@@ -102,6 +101,9 @@ handlers.editTicket = function (ctx) {
     let eventTime = ctx.params.eventTime;
     let eventDate = ctx.params.eventDate;
     let categoryId = ctx.params.categoryId;
+    let id = ticketId;
+
+    console.log(title);
 
     let ticket = {
         "image": image,
@@ -111,8 +113,9 @@ handlers.editTicket = function (ctx) {
         "eventTime": eventTime,
         "eventDate": eventDate,
         "categoryId": categoryId,
+        "_id": id,
     };
-    ticketsService.editTicket(ticketId,ticket).then(function () {
+    ticketsService.editTicket(ticket).then(function () {
         notifications.showInfo(`Ticket ${ticket.title} updated.`);
         ctx.redirect("#/listTickets");
     }).catch(notifications.handleError);
