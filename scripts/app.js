@@ -1,4 +1,11 @@
 const handlers = {};
+
+Handlebars.registerHelper('select', function( value, options ){
+    let $el = $('<select />').html( options.fn(this) );
+    $el.find('[value="' + value + '"]').attr({'selected':'selected'});
+    return $el.html();
+});
+
 $(() => {
     const app = Sammy('#content', function () {
         this.use("Handlebars", 'hbs');
@@ -15,6 +22,8 @@ $(() => {
         this.get('#/users/#user', handlers.displayBasicUsers);
         this.get('#/editUser/:id', handlers.getEditUser);
         this.get('#/listTickets', handlers.getAllTicketsAdmin);
+        this.get('#/editTicket/:id', handlers.getEditTicket);
+
 
         this.post('#/register', handlers.registerUser);
         this.post('#/login', handlers.loginUser);
@@ -22,6 +31,7 @@ $(() => {
         this.post('#/users/:id', handlers.getEditUser);
         this.post('#/delete/:id', handlers.deleteUser);
         this.post('#/editUser/:id', handlers.editUser);
+        this.post('#/editTicket/:id', handlers.editTicket);
     });
 
     app.run();

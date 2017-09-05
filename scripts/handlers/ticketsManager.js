@@ -52,6 +52,73 @@ handlers.getAllTicketsAdmin = function (ctx) {
     }
 };
 
+handlers.getEditTicket = function (ctx) {
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+
+    let id = ctx.params.id.substring(1);
+
+    if (ctx.admin) {
+        ticketsService.getEditTicketInfo(id)
+            .then(function (ticketData) {
+                ticketsService.getCategories().then(function (categories) {
+
+                    ctx.title = ticketData.title;
+                    ctx._id = ticketData._id;
+                    ctx.image = ticketData.image;
+                    ctx.location = ticketData.location;
+                    ctx.details = ticketData.details;
+                    ctx.eventTime = ticketData.eventTime;
+                    ctx.eventDate = ticketData.eventDate;
+                    ctx.selected = ticketData.categoryId;
+                    ctx.categories = categories;
+
+                    ctx.loadPartials({
+                        header: "./templates/admin/common/header.hbs",
+                        footer: "./templates/common/footer.hbs",
+                        category: "./templates/admin/tickets/category.hbs"
+                    }).then(function () {
+                        this.partial('./templates/admin/tickets/ticketEdit.hbs');
+                    });
+                });
+            }).catch(notifications.handleError);
+    }
+    else {
+        ctx.redirect('index.html');
+    }
+};
+
+handlers.editTicket = function (ctx) {
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+
+    let ticketId = ctx.params.id.substr(1);
+    console.log(ticketId);
+
+    let title = ctx.params.title;
+    let image = ctx.params.image;
+    let location = ctx.params.location;
+    let details = ctx.params.details;
+    let eventTime = ctx.params.eventTime;
+    let eventDate = ctx.params.eventDate;
+    let categoryId = ctx.params.categoryId;
+
+    let ticket = {
+        "image": image,
+        "title": title,
+        "location": location,
+        "details": details,
+        "eventTime": eventTime,
+        "eventDate": eventDate,
+        "categoryId": categoryId,
+    };
+    ticketsService.editTicket(ticketId,ticket).then(function () {
+        notifications.showInfo(`Ticket ${ticket.title} updated.`);
+        ctx.redirect("#/listTickets");
+    }).catch(notifications.handleError);
+
+};
+
 function renderTicketsTemplates(ctx, tickets) {
 
     ctx.tickets = tickets;
