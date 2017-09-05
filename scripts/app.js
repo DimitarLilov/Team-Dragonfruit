@@ -13,6 +13,7 @@ $(() => {
         this.get('#/users/#admin', handlers.displayAdminUsers);
         this.get('#/users/#user', handlers.displayBasicUsers);
         this.get('#/editUser/:id', handlers.getEditUser);
+        this.get('#/listTickets', handlers.getAllTicketsAdmin);
 
         this.post('#/register', handlers.registerUser);
         this.post('#/login', handlers.loginUser);

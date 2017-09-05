@@ -193,3 +193,9 @@ table.table-striped.table-hover {
     display: inline;
     padding-left: 14px;
 }
+
+#adminWelcome {
+    text-align: center;
+    font-size: 150px;
+    color: #e2e2e2;
+}
