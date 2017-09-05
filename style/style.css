@@ -146,6 +146,10 @@ body {
     background-size: cover;
 }
 
+#modif-jumbotron {
+    background-color: #0f0f0f;
+}
+
 /* USER HEADER STYLING */
 
 #content > header > nav > div > ul > li > a {
@@ -204,4 +208,24 @@ table.table-striped.table-hover {
     text-align: center;
     font-size: 150px;
     color: #e2e2e2;
+}
+
+/* LOGIN FORM STYLE */
+
+.form h2, label {
+    color: white;
+}
+
+.form button {
+    font-weight: bold;
+    font-variant-caps: small-caps;
+}
+
+#regSpan {
+    margin-top: 10px;
+    margin-right: 2px;
+}
+
+#regSpanText {
+    color: white;
 }
