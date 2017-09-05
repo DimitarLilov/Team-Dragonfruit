@@ -7,15 +7,7 @@ handlers.displayAllUsers = function (ctx) {
         usersService.getUsers()
             .then(function (usersData) {
 
-                ctx.users = usersData;
-
-                ctx.loadPartials({
-                    header: "./templates/admin/common/header.hbs",
-                    user: "./templates/admin/users/user.hbs",
-                    footer: "./templates/common/footer.hbs"
-                }).then(function () {
-                    this.partial('./templates/admin/users/usersList.hbs');
-                });
+                renderCommonTemplates(ctx, usersData);
 
             }).catch(notifications.handleError);
     }
@@ -54,15 +46,7 @@ handlers.displayAdminUsers = function (ctx) {
         usersService.getAdminUsers()
             .then(function (usersData) {
 
-                ctx.users = usersData;
-
-                ctx.loadPartials({
-                    header: "./templates/admin/common/header.hbs",
-                    user: "./templates/admin/users/user.hbs",
-                    footer: "./templates/common/footer.hbs"
-                }).then(function () {
-                    this.partial('./templates/admin/users/usersList.hbs');
-                });
+                renderCommonTemplates(ctx, usersData);
 
             }).catch(notifications.handleError);
     }
@@ -81,15 +65,7 @@ handlers.displayBasicUsers = function (ctx) {
     usersService.getBasicUsers()
         .then(function (usersData) {
 
-            ctx.users = usersData;
-
-            ctx.loadPartials({
-                header: "./templates/admin/common/header.hbs",
-                user: "./templates/admin/users/user.hbs",
-                footer: "./templates/common/footer.hbs"
-            }).then(function () {
-                this.partial('./templates/admin/users/usersList.hbs');
-            });
+            renderCommonTemplates(ctx, usersData);
 
         }).catch(notifications.handleError);
     }
@@ -106,15 +82,7 @@ handlers.getSearchedUser = function (ctx) {
     usersService.getSearchedUser(username)
         .then(function (usersData) {
 
-            ctx.users = usersData;
-
-            ctx.loadPartials({
-                header: "./templates/admin/common/header.hbs",
-                user: "./templates/admin/users/user.hbs",
-                footer: "./templates/common/footer.hbs"
-            }).then(function () {
-                this.partial('./templates/admin/users/usersList.hbs');
-            });
+            renderCommonTemplates(ctx, usersData);
 
         }).catch(notifications.handleError);
     }
@@ -200,3 +168,16 @@ handlers.deleteUser = function (ctx) {
             setTimeout(() => notifications.showInfo(`User deleted.`), 500);
         }).catch(notifications.showError);
 };
+
+function renderCommonTemplates(ctx, usersData) {
+
+    ctx.users = usersData;
+
+    ctx.loadPartials({
+        header: "./templates/admin/common/header.hbs",
+        user: "./templates/admin/users/user.hbs",
+        footer: "./templates/common/footer.hbs"
+    }).then(function () {
+        this.partial('./templates/admin/users/usersList.hbs');
+    });
+}
