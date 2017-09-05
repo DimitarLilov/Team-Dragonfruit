@@ -27,13 +27,14 @@
                     <a class="navbar-brand" href="index.html">WebSiteName</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="index.html">Home</a></li>
-                    <li><a href="#/tickets">Tickets</a></li>
-                    <li><a href="#">Page 2</a></li>
+                    <li class="userMenuItem active" onclick="highlightActive()"><a href="index.html">Home</a></li>
+                    <li class="userMenuItem" onclick="highlightActive()"><a href="#/tickets">Tickets</a></li>
+                    <li class="userMenuItem" onclick="highlightActive()"><a href="#">Page 2</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {{#if loggedIn}}
-                        <li id="profile"><span>{{username}}</span>|<a href="#/logout">logout</a></li>
+                        <li><a href="#/logout" class="menu-item">Logout</a></li>
+                        <li><a href="#">Welcome, {{username}}!</a></li>
                     {{else}}
                         <li><a href="#/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                         <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -42,4 +43,5 @@
             </div>
         </nav>
     {{/if}}
+
 </header>

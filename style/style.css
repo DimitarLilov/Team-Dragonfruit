@@ -146,6 +146,12 @@ body {
     background-size: cover;
 }
 
+/* USER HEADER STYLING */
+
+#content > header > nav > div > ul > li > a {
+    font-weight: bold;
+}
+
 /* ADMIN HEADER STYLING */
 
 #admin > ul:nth-child(2) > li > a, #content > header > nav > div > div > a.adminNav {
