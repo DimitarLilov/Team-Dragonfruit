@@ -2,6 +2,7 @@ handlers.displayTickets = function (ctx) {
     let loggedIn = auth.isAuthorized();
     ctx.loggedIn = loggedIn;
     ctx.username = sessionStorage.getItem('username');
+    ctx.admin = auth.isAdmin();
 
     if (loggedIn) {
 
@@ -10,7 +11,7 @@ handlers.displayTickets = function (ctx) {
 
                 renderTicketsTemplates(ctx, tickets);
 
-        }).catch(notifications.handleError);
+            }).catch(notifications.handleError);
     } else {
 
         ticketsService.getAllTicketsNotLogged()
@@ -18,32 +19,36 @@ handlers.displayTickets = function (ctx) {
 
                 renderTicketsTemplates(ctx, tickets);
 
-        }).catch(notifications.handleError);
+            }).catch(notifications.handleError);
     }
 };
 
-handlers.getAllTicketsAdmin = function(ctx) {
+handlers.getAllTicketsAdmin = function (ctx) {
     let loggedIn = auth.isAuthorized();
     ctx.loggedIn = loggedIn;
 
     if (loggedIn) {
         ctx.username = sessionStorage.getItem('username');
         ctx.admin = auth.isAdmin();
+        if (ctx.admin) {
+            ticketsService.getAllTickets()
+                .then(function (ticketsData) {
 
-        ticketsService.getAllTickets()
-            .then(function (ticketsData) {
+                    ctx.tickets = ticketsData;
 
-                ctx.tickets = ticketsData;
+                    ctx.loadPartials({
+                        header: "./templates/admin/common/header.hbs",
+                        ticket: "./templates/admin/tickets/ticket.hbs",
+                        footer: "./templates/common/footer.hbs"
+                    }).then(function () {
+                        this.partial('./templates/admin/tickets/ticketsList.hbs');
+                    });
 
-                ctx.loadPartials({
-                    header: "./templates/common/header.hbs",
-                    ticket: "./templates/admin/tickets/ticket.hbs",
-                    footer: "./templates/common/footer.hbs"
-                }).then(function () {
-                    this.partial('./templates/admin/tickets/ticketsList.hbs');
-                });
-
-            }).catch(notifications.handleError);
+                }).catch(notifications.handleError);
+        }
+        else {
+            ctx.redirect('index.html');
+        }
     }
 };
 

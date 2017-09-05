@@ -9,6 +9,7 @@ $(() => {
         this.get('#/tickets', handlers.displayTickets);
         this.get('#/login', handlers.displayLogin);
         this.get('#/logout', handlers.logoutUser);
+        this.get('#/admin', handlers.displayAdminPanel);
         this.get('#/users', handlers.displayAllUsers);
         this.get('#/users/#admin', handlers.displayAdminUsers);
         this.get('#/users/#user', handlers.displayBasicUsers);

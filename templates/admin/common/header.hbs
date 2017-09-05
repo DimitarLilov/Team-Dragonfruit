@@ -1,0 +1,20 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid" id="admin">
+        <div class="navbar-header">
+            <a class="navbar-brand adminNav" href="#">WebSiteName</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a class="adminNav" href="#/users">User Management</a></li>
+            <li><a class="adminNav" href="#/listTickets">Ticket Management</a></li>
+            <li><a class="adminNav" href="#">Other ... ?</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            {{#if loggedIn}}
+                <li><a href="#/logout" id="linkLogout" class="menu-item">Logout</a></li>
+                <li><a class="adminNav" href="#">Welcome, {{username}}!</a></li>
+            {{else}}
+                <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            {{/if}}
+        </ul>
+    </div>
+</nav>

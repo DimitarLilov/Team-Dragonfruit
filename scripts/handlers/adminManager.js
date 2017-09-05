@@ -3,20 +3,45 @@ handlers.displayAllUsers = function (ctx) {
     ctx.username = sessionStorage.getItem('username');
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
 
-    usersService.getUsers()
-        .then(function (usersData) {
+    if (ctx.admin) {
+        usersService.getUsers()
+            .then(function (usersData) {
 
-            ctx.users = usersData;
+                ctx.users = usersData;
 
-            ctx.loadPartials({
-                header: "./templates/common/header.hbs",
-                user: "./templates/admin/users/user.hbs",
-                footer: "./templates/common/footer.hbs"
-            }).then(function () {
-                this.partial('./templates/admin/users/usersList.hbs');
-            });
+                ctx.loadPartials({
+                    header: "./templates/admin/common/header.hbs",
+                    user: "./templates/admin/users/user.hbs",
+                    footer: "./templates/common/footer.hbs"
+                }).then(function () {
+                    this.partial('./templates/admin/users/usersList.hbs');
+                });
 
-        }).catch(notifications.handleError);
+            }).catch(notifications.handleError);
+    }
+    else {
+        ctx.redirect('index.html');
+    }
+
+
+};
+
+handlers.displayAdminPanel = function (ctx) {
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    ctx.username = sessionStorage.getItem('username');
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+
+    if (ctx.admin) {
+        ctx.loadPartials({
+            header: "./templates/admin/common/header.hbs",
+            footer: "./templates/common/footer.hbs"
+        }).then(function () {
+            this.partial('./templates/admin/home/home.hbs');
+        });
+    }
+    else {
+        ctx.redirect('index.html');
+    }
 };
 
 handlers.displayAdminUsers = function (ctx) {
@@ -25,20 +50,25 @@ handlers.displayAdminUsers = function (ctx) {
     ctx.username = sessionStorage.getItem('username');
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
 
-    usersService.getAdminUsers()
-        .then(function (usersData) {
+    if (ctx.admin) {
+        usersService.getAdminUsers()
+            .then(function (usersData) {
 
-            ctx.users = usersData;
+                ctx.users = usersData;
 
-            ctx.loadPartials({
-                header: "./templates/common/header.hbs",
-                user: "./templates/admin/users/user.hbs",
-                footer: "./templates/common/footer.hbs"
-            }).then(function () {
-                this.partial('./templates/admin/users/usersList.hbs');
-            });
+                ctx.loadPartials({
+                    header: "./templates/admin/common/header.hbs",
+                    user: "./templates/admin/users/user.hbs",
+                    footer: "./templates/common/footer.hbs"
+                }).then(function () {
+                    this.partial('./templates/admin/users/usersList.hbs');
+                });
 
-        }).catch(notifications.handleError);
+            }).catch(notifications.handleError);
+    }
+    else {
+        ctx.redirect('index.html');
+    }
 };
 
 handlers.displayBasicUsers = function (ctx) {
@@ -47,13 +77,14 @@ handlers.displayBasicUsers = function (ctx) {
     ctx.username = sessionStorage.getItem('username');
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
 
+    if (ctx.admin) {
     usersService.getBasicUsers()
         .then(function (usersData) {
 
             ctx.users = usersData;
 
             ctx.loadPartials({
-                header: "./templates/common/header.hbs",
+                header: "./templates/admin/common/header.hbs",
                 user: "./templates/admin/users/user.hbs",
                 footer: "./templates/common/footer.hbs"
             }).then(function () {
@@ -61,19 +92,24 @@ handlers.displayBasicUsers = function (ctx) {
             });
 
         }).catch(notifications.handleError);
+    }
+    else {
+        ctx.redirect('index.html');
+    }
 };
 
 handlers.getSearchedUser = function (ctx) {
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     let username = ctx.params.username;
 
+    if (ctx.admin) {
     usersService.getSearchedUser(username)
         .then(function (usersData) {
 
             ctx.users = usersData;
 
             ctx.loadPartials({
-                header: "./templates/common/header.hbs",
+                header: "./templates/admin/common/header.hbs",
                 user: "./templates/admin/users/user.hbs",
                 footer: "./templates/common/footer.hbs"
             }).then(function () {
@@ -81,6 +117,10 @@ handlers.getSearchedUser = function (ctx) {
             });
 
         }).catch(notifications.handleError);
+    }
+    else {
+        ctx.redirect('index.html');
+    }
 };
 
 handlers.getEditUser = function (ctx) {
@@ -94,27 +134,32 @@ handlers.getEditUser = function (ctx) {
 
     // if (isLogin) {
 
-        let id = ctx.params.id.substring(1);
+    let id = ctx.params.id.substring(1);
 
-        usersService.getEditUserInfo(id)
-            .then(function (usersData) {
+    if (ctx.admin) {
+    usersService.getEditUserInfo(id)
+        .then(function (usersData) {
 
-                ctx.username = usersData.username;
-                ctx._id = usersData._id;
-                ctx.firstName = usersData.firstName;
-                ctx.lastName = usersData.lastName;
-                ctx.email = usersData.email;
-                ctx.isAdmin = usersData.role === 'admin';
-                ctx.isUser = usersData.role === 'user';
+            ctx.username = usersData.username;
+            ctx._id = usersData._id;
+            ctx.firstName = usersData.firstName;
+            ctx.lastName = usersData.lastName;
+            ctx.email = usersData.email;
+            ctx.isAdmin = usersData.role === 'admin';
+            ctx.isUser = usersData.role === 'user';
 
-                ctx.loadPartials({
-                    header: "./templates/common/header.hbs",
-                    footer: "./templates/common/footer.hbs"
-                }).then(function () {
-                    this.partial('./templates/admin/users/userEdit.hbs');
-                });
+            ctx.loadPartials({
+                header: "./templates/admin/common/header.hbs",
+                footer: "./templates/common/footer.hbs"
+            }).then(function () {
+                this.partial('./templates/admin/users/userEdit.hbs');
+            });
 
-            }).catch(notifications.handleError);
+        }).catch(notifications.handleError);
+    }
+    else {
+        ctx.redirect('index.html');
+    }
     // }
 };
 
