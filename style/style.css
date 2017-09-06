@@ -212,6 +212,12 @@ body {
     left: 45%;
 }
 
+#infoBox {
+    position: fixed;
+    top: 2%;
+    left: 42%;
+}
+
 /* USER HEADER STYLING */
 
 #content > header > nav > div > ul > li > a {
