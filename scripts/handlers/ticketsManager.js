@@ -150,6 +150,7 @@ handlers.getEditTicket = function (ctx) {
                     ctx.details = ticketData.details;
                     ctx.eventTime = ticketData.eventTime;
                     ctx.eventDate = ticketData.eventDate;
+                    ctx.price = ticketData.price;
                     ctx.selected = ticketData.categoryId;
                     ctx.categories = categories;
 
@@ -176,6 +177,7 @@ handlers.editTicket = function (ctx) {
 
     let title = ctx.params.title;
     let image = ctx.params.image;
+    let price = ctx.params.price;
     let location = ctx.params.location;
     let details = ctx.params.details;
     let eventTime = ctx.params.eventTime;
@@ -183,12 +185,13 @@ handlers.editTicket = function (ctx) {
     let categoryId = ctx.params.categoryId;
     let id = ticketId;
 
-    console.log(title);
+    console.log(ctx.params);
 
     let ticket = {
         "image": image,
         "title": title,
         "location": location,
+        "price": price,
         "details": details,
         "eventTime": eventTime,
         "eventDate": eventDate,
