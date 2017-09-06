@@ -1,23 +1,51 @@
-#myCarousel .nav a small {
-    display: block;
-}
+/* CAROUSEL */
 
-#myCarousel .nav {
-    background: #eee;
-}
-
-#myCarousel .nav a {
-    border-radius: 0;
-}
-
-#myCarousel img {
-    width: 1200px;
+#myCarousel > div.carousel-inner > div > img {
+    width: 760px;
     height: 400px;
 }
 
-#myCarousel h3 {
-    color: white;
-    text-shadow: 2px 2px 4px #000000;
+#myCarousel .carousel-caption {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: left;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    text-shadow: none;
+}
+
+#myCarousel .list-group {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#myCarousel .list-group-item {
+    border-radius: 0;
+    cursor: pointer;
+}
+
+#myCarousel .list-group .active {
+    background-color: #eee;
+    color: #0076ad;
+}
+
+@media (min-width: 992px) {
+    #myCarousel {
+        padding-right: 33.3333%;
+    }
+
+    #myCarousel .carousel-controls {
+        display: none;
+    }
+}
+
+@media (max-width: 991px) {
+    .carousel-caption p,
+    #myCarousel .list-group {
+        display: none;
+    }
 }
 
 @import url(https://fonts.googleapis.com/css?family=Josefin+Sans:400,700,400italic|Megrim);
@@ -174,7 +202,7 @@ body {
 }
 
 #regBtn {
-    margin-left: 15px;
+    margin-left: 5px;
 }
 
 /* USER HEADER STYLING */
@@ -280,7 +308,6 @@ table.table-striped.table-hover {
 }
 
 /*****************globals*************/
-
 
 .preview {
     display: -webkit-box;
