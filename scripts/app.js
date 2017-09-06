@@ -27,6 +27,7 @@ $(() => {
         this.get('#/editUser/:id', handlers.getEditUser);
         this.get('#/listTickets', handlers.getAllTicketsAdmin);
         this.get('#/editTicket/:id', handlers.getEditTicket);
+        this.get('#/editCategory/:id', handlers.getEditCategory);
 
 
         this.post('#/register', handlers.registerUser);
@@ -37,6 +38,7 @@ $(() => {
         this.post('#/deleteTicket/:id', handlers.deleteTicket);
         this.post('#/editTicket/:id', handlers.editTicket);
         this.post('#/addCategory', handlers.addCategory);
+        this.post('#/editCategory/:id', handlers.editCategory);
     });
 
     app.run();
