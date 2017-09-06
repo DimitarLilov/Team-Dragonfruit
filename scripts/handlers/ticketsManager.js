@@ -6,7 +6,6 @@ handlers.displayTickets = function (ctx) {
     ctx.type = "All Tickets";
 
     if (loggedIn) {
-
         ticketsService.getAllTickets()
             .then(function (tickets) {
                 categoriesService.getCategories().then(function (categories) {
@@ -82,36 +81,22 @@ handlers.displayDetailsTicket = function (ctx) {
 
     let id = ctx.params.id.substring(1);
 
-    ticketsService.getTicketInfo(id)
-        .then(function (ticketData) {
-            categoriesService.getCategories().then(function (categories) {
-
-                for(let category of categories){
-                    if (category._id === ticketData.categoryId) {
-                        ctx.category = category.category;
-                    }
-                }
-
-                ctx.title = ticketData.title;
-                ctx._id = ticketData._id;
-                ctx.image = ticketData.image;
-                ctx.location = ticketData.location;
-                ctx.details = ticketData.details;
-                ctx.eventTime = ticketData.eventTime;
-                ctx.eventDate = ticketData.eventDate;
-                ctx.price = ticketData.price;
-
-                ctx.categories = categories;
-
-                ctx.loadPartials({
-                    header: "./templates/common/header.hbs",
-                    footer: "./templates/common/footer.hbs",
-                    navCategory: "./templates/common/navCategory.hbs"
-                }).then(function () {
-                    this.partial('./templates/tickets/details.hbs');
+    if (ctx.loggedIn) {
+        ticketsService.getTicketInfo(id)
+            .then(function (ticketData) {
+                categoriesService.getCategories().then(function (categories) {
+                    renderTicketDetailsTemplates(ctx,ticketData,categories);
                 });
-            });
-        }).catch(notifications.handleError);
+            }).catch(notifications.handleError);
+    } else {
+
+        ticketsService.getTicketInfoNotLogged(id)
+            .then(function (ticketData) {
+                categoriesService.getCategoriesNotLogged().then(function (categories) {
+                    renderTicketDetailsTemplates(ctx,ticketData,categories)
+                })
+            }).catch(notifications.handleError);
+    }
 };
 
 
@@ -204,6 +189,33 @@ handlers.editTicket = function (ctx) {
     }).catch(notifications.handleError);
 
 };
+
+function renderTicketDetailsTemplates(ctx, ticketData, categories) {
+    for (let category of categories) {
+        if (category._id === ticketData.categoryId) {
+            ctx.category = category.category;
+        }
+    }
+
+    ctx.title = ticketData.title;
+    ctx._id = ticketData._id;
+    ctx.image = ticketData.image;
+    ctx.location = ticketData.location;
+    ctx.details = ticketData.details;
+    ctx.eventTime = ticketData.eventTime;
+    ctx.eventDate = ticketData.eventDate;
+    ctx.price = ticketData.price;
+
+    ctx.categories = categories;
+
+    ctx.loadPartials({
+        header: "./templates/common/header.hbs",
+        footer: "./templates/common/footer.hbs",
+        navCategory: "./templates/common/navCategory.hbs"
+    }).then(function () {
+        this.partial('./templates/tickets/details.hbs');
+    });
+}
 
 function renderTicketsTemplates(ctx, tickets, categories) {
 

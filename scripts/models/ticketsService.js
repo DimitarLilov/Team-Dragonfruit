@@ -12,6 +12,10 @@ let ticketsService = (() => {
         return requester.get('appdata', `tickets/${ticketId}`, 'kinvey');
     }
 
+    function getTicketInfoNotLogged(ticketId) {
+        return requester.get('appdata', `tickets/${ticketId}`, 'master');
+    }
+
     function editTicket(data) {
         return requester.post('rpc', 'custom/editTicket', 'kinvey', data);
     }
@@ -28,6 +32,7 @@ let ticketsService = (() => {
         getAllTickets,
         getAllTicketsNotLogged,
         getTicketInfo,
+        getTicketInfoNotLogged,
         editTicket,
         removeTicket,
         getTicketsByCategoryId
