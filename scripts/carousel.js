@@ -8,7 +8,7 @@ function carouselControls() {
 
     let clickEvent = false;
     $('#myCarousel').carousel({
-        interval:   3000
+        interval:  4000
     }).on('click', '.list-group li', function() {
         clickEvent = true;
 
