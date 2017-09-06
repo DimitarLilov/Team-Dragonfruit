@@ -20,6 +20,7 @@ $(() => {
         this.get('#/logout', handlers.logoutUser);
         this.get('#/admin', handlers.displayAdminPanel);
         this.get('#/categories', handlers.displayAllCategories);
+        this.get('#/addCategory', handlers.displayAddCategory);
         this.get('#/users', handlers.displayAllUsers);
         this.get('#/users/#admin', handlers.displayAdminUsers);
         this.get('#/users/#user', handlers.displayBasicUsers);
@@ -36,6 +37,7 @@ $(() => {
         this.post('#/deleteTicket/:id', handlers.deleteTicket);
         this.post('#/editUser/:id', handlers.editUser);
         this.post('#/editTicket/:id', handlers.editTicket);
+        this.post('#/addCategory', handlers.addCategory);
     });
 
     app.run();

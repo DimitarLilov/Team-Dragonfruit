@@ -12,9 +12,14 @@ let categoriesService = (() => {
         return requester.get('appdata', `categories/${categoryId}`, 'master');
     }
 
+    function addCategory(category) {
+        return requester.post('appdata', `categories`, 'kinvey',category);
+    }
+
     return {
         getCategories,
         getCategoriesNotLogged,
-        getCategory
+        getCategory,
+        addCategory
     }
 })();

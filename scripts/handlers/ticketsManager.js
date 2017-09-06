@@ -170,8 +170,6 @@ handlers.editTicket = function (ctx) {
     let categoryId = ctx.params.categoryId;
     let id = ticketId;
 
-    console.log(ctx.params);
-
     let ticket = {
         "image": image,
         "title": title,
