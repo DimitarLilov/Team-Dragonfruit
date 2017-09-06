@@ -205,6 +205,13 @@ body {
     margin-left: 5px;
 }
 
+#loading {
+    display: none;
+    position: fixed;
+    top: 35%;
+    left: 45%;
+}
+
 /* USER HEADER STYLING */
 
 #content > header > nav > div > ul > li > a {

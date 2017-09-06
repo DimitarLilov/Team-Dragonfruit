@@ -1,15 +1,10 @@
 let notifications = (() => {
-
-    let loading = 0;
-    $(document).on({
-        ajaxStart: () => {
-            if (loading === 0) $('#loadingBox').show();
-            loading++;
-        },
-        ajaxStop: () => {
-            loading--;
-            setTimeout(() => {if (loading === 0) $('#loadingBox').fadeOut()}, 400);
-        }
+    
+    $(document).on("ajaxStart", function () {
+        showLoading();
+    });
+    $(document).on("ajaxComplete", function () {
+        hideLoading();
     });
 
     function handleError(reason) {
@@ -34,6 +29,14 @@ let notifications = (() => {
         errorBox.show();
         errorBox.click((event) => $(event.target).hide());
         setTimeout(() => errorBox.fadeOut(), 3000);
+    }
+
+    function showLoading() {
+        $('#loading').show();
+    }
+
+    function hideLoading() {
+        $('#loading').hide();
     }
 
     return {
