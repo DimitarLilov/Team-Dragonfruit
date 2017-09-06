@@ -173,10 +173,18 @@ body {
     background-color: #0f0f0f;
 }
 
+#regBtn {
+    margin-left: 15px;
+}
+
 /* USER HEADER STYLING */
 
 #content > header > nav > div > ul > li > a {
     font-weight: bold;
+}
+
+#content > header > nav > div > ul.nav.navbar-nav.navbar-right > li:nth-child(3) > a {
+    color: white;
 }
 
 /* ADMIN HEADER STYLING */
