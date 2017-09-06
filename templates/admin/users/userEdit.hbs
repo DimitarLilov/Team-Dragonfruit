@@ -9,9 +9,9 @@
             <br/>
             <form action="#/editUser/:{{_id}}" id="userEditForm" method="post">
 
-                <div class="form-group row">
+                <div class="form-group row required">
                     <label class="form-control-label" for="username">Username</label>
-                    <input type="text" id="username" class="form-control" value="{{username}}" disabled="disabled"/>
+                    <input type="text" id="username" name="username" class="form-control" value="{{username}}" required="required"/>
                 </div>
                 <div class="form-group row required">
                     <label class="form-control-label" for="firstName">First Name</label>
@@ -26,13 +26,13 @@
                     <input type="email" class="form-control" name="email" id="email" value="{{email}}"/>
                 </div>
                 <div class="form-group row required">
-                    <label class="form-control-label" for="firstName">Change Role To: </label>
-                    {{#if isAdmin}}
-                        <a class="btn btn-default" href="#/editUser/:{{_id}}">ADMIN</a>
-                    {{/if}}
-                    {{#if isUser}}
-                        <a class="btn btn-default" href="#/editUser/:{{_id}}">USER</a>
-                    {{/if}}
+                    <label for="role">Change Role To:</label>
+                    <select name="role" class="form-control" id="role">
+                        {{#select role}}
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                        {{/select}}
+                    </select>
                 </div>
                 <br>
                 <br>

@@ -50,8 +50,6 @@ handlers.addCategory = function (ctx) {
 function renderCategoryCommonTemplates(ctx, categoriesData) {
 
     ctx.categories = categoriesData;
-    console.log(categoriesData);
-
 
     ctx.loadPartials({
         header: "./templates/admin/common/header.hbs",

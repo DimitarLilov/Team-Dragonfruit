@@ -20,8 +20,8 @@ let usersService = (() => {
         return requester.get('user', `${userId}`);
     }
 
-    function editUserInfo(userId, userObject) {
-        return requester.update('user', `${userId}`, userObject);
+    function editUserInfo(data) {
+        return requester.post('rpc', 'custom/editUser', 'kinvey', data);
     }
 
     function deleteUser(userId) {
