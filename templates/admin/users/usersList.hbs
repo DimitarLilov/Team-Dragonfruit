@@ -2,17 +2,16 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-10 col-sm-10 col-xs-10">
-
+        <div class="col-lg-10 col-sm-10 col-xs-6">
+            <h3 class="headText">User management</h3>
+            <br>
             <form action="#/users" method="post">
-                <div class="form-group row" id="showform">
-                    <span><b>Show: </b></span>
+                <div class="form-group" id="selectUsers">
                     <a class="btn btn-default" href="#/users">ALL</a>
                     <a class="btn btn-default" href="#/users/#user">USER</a>
                     <a class="btn btn-default" href="#/users/#admin">ADMIN</a>
                 </div>
-                <div>
-                    <label class="form-label">Find by username:</label>
+                <div id="searchInput">
                     <span id="searchForm">
                                 <input id="showform" class="form-control" type="text" name="username" value=""/>
                             </span>

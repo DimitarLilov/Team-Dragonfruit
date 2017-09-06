@@ -210,12 +210,22 @@ body {
 /* ADMIN USERS TABLE STILING */
 
 #searchBtn {
-    display: inline;
+    float: right;
+    padding-right: 5px;
 }
 
 #showform {
     display: inline;
     width: 30%;
+    float: right;
+}
+
+#searchInput {
+    display: inline;
+}
+
+#selectUsers {
+    float: left;
 }
 
 table.table-striped.table-hover {
@@ -223,14 +233,22 @@ table.table-striped.table-hover {
 }
 
 .adminUsersAction {
-    display: inline;
-    padding-left: 14px;
+    display: inline-block;
+}
+
+#content > div > div > div > form > div > label {
+    color: #0f0f0f;
 }
 
 #adminWelcome {
     text-align: center;
     font-size: 150px;
     color: #e2e2e2;
+}
+
+.headText {
+    text-align: center;
+    text-transform: uppercase;
 }
 
 /* LOGIN FORM STYLE */
