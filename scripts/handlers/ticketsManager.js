@@ -3,22 +3,23 @@ handlers.displayTickets = function (ctx) {
     ctx.loggedIn = loggedIn;
     ctx.username = sessionStorage.getItem('username');
     ctx.admin = auth.isAdmin();
+    ctx.type = "All Tickets";
 
     if (loggedIn) {
 
         ticketsService.getAllTickets()
             .then(function (tickets) {
-
-                renderTicketsTemplates(ctx, tickets);
-
+                categoriesService.getCategories().then(function (categories) {
+                    renderTicketsTemplates(ctx, tickets, categories);
+                })
             }).catch(notifications.handleError);
     } else {
 
         ticketsService.getAllTicketsNotLogged()
             .then(function (tickets) {
-
-                renderTicketsTemplates(ctx, tickets);
-
+                categoriesService.getCategoriesNotLogged().then(function (categories) {
+                    renderTicketsTemplates(ctx, tickets, categories);
+                })
             }).catch(notifications.handleError);
     }
 };
@@ -74,6 +75,63 @@ handlers.deleteTicket = function (ctx) {
     }
 };
 
+handlers.displayDetailsTicket = function (ctx) {
+    ctx.loggedIn = auth.isAuthorized();
+    ctx.username = sessionStorage.getItem('username');
+    ctx.admin = auth.isAdmin();
+
+    let id = ctx.params.id.substring(1);
+
+    ticketsService.getTicketInfo(id)
+        .then(function (ticketData) {
+            categoriesService.getCategories().then(function (categories) {
+
+                for(let category of categories){
+                    if (category._id === ticketData.categoryId) {
+                        ctx.category = category.category;
+                    }
+                }
+
+                ctx.title = ticketData.title;
+                ctx._id = ticketData._id;
+                ctx.image = ticketData.image;
+                ctx.location = ticketData.location;
+                ctx.details = ticketData.details;
+                ctx.eventTime = ticketData.eventTime;
+                ctx.eventDate = ticketData.eventDate;
+                ctx.price = ticketData.price;
+
+                ctx.categories = categories;
+
+                ctx.loadPartials({
+                    header: "./templates/common/header.hbs",
+                    footer: "./templates/common/footer.hbs",
+                    navCategory: "./templates/common/navCategory.hbs"
+                }).then(function () {
+                    this.partial('./templates/tickets/details.hbs');
+                });
+            });
+        }).catch(notifications.handleError);
+};
+
+
+handlers.displayCategoryTickets = function (ctx) {
+    ctx.loggedIn = auth.isAuthorized();
+    ctx.username = sessionStorage.getItem('username');
+    ctx.admin = auth.isAdmin();
+
+    let id = ctx.params.id.substring(1);
+
+    ticketsService.getTicketsByCategoryId(id).then(function (tickets) {
+        categoriesService.getCategoriesNotLogged().then(function (categories) {
+            categoriesService.getCategory(id).then(function (category) {
+                ctx.type = category.category;
+                renderTicketsTemplates(ctx, tickets, categories);
+            })
+        })
+    });
+};
+
 handlers.getEditTicket = function (ctx) {
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
@@ -81,9 +139,9 @@ handlers.getEditTicket = function (ctx) {
     let id = ctx.params.id.substring(1);
 
     if (ctx.admin) {
-        ticketsService.getEditTicketInfo(id)
+        ticketsService.getTicketInfo(id)
             .then(function (ticketData) {
-                ticketsService.getCategories().then(function (categories) {
+                categoriesService.getCategories().then(function (categories) {
 
                     ctx.title = ticketData.title;
                     ctx._id = ticketData._id;
@@ -144,14 +202,24 @@ handlers.editTicket = function (ctx) {
 
 };
 
-function renderTicketsTemplates(ctx, tickets) {
+function renderTicketsTemplates(ctx, tickets, categories) {
+
+    for (let category of categories) {
+        for (let ticket of tickets) {
+            if (category._id === ticket.categoryId) {
+                ticket.category = category.category;
+            }
+        }
+    }
 
     ctx.tickets = tickets;
+    ctx.categories = categories;
 
     ctx.loadPartials({
         header: "./templates/common/header.hbs",
         footer: "./templates/common/footer.hbs",
         ticket: "./templates/tickets/ticket.hbs",
+        navCategory: "./templates/common/navCategory.hbs",
 
     }).then(function () {
         this.partial('./templates/tickets/tickets.hbs');

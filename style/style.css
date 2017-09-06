@@ -1,12 +1,15 @@
 #myCarousel .nav a small {
-    display:block;
+    display: block;
 }
+
 #myCarousel .nav {
-    background:#eee;
+    background: #eee;
 }
+
 #myCarousel .nav a {
     border-radius: 0;
 }
+
 #myCarousel img {
     width: 1200px;
     height: 400px;
@@ -18,20 +21,23 @@
 }
 
 @import url(https://fonts.googleapis.com/css?family=Josefin+Sans:400,700,400italic|Megrim);
-*{
+* {
     box-sizing: border-box;
 }
+
 body {
     background: #eee;
     font-family: "Josefin Sans";
 }
-.event{
+
+.event {
     border-radius: 4px;
     width: 400px;
     height: 150px;
     margin: 40px auto 0;
 }
-.event-side{
+
+.event-side {
     padding: 10px;
     border-radius: 4px;
     float: left;
@@ -47,22 +53,27 @@ body {
     font-size: 0.8em;
     text-align: right;
 }
-.event-date, .event-time{
+
+.event-date, .event-time {
     position: absolute;
     width: calc(100% - 20px);
 }
+
 .event-date {
     top: 10px;
     font-size: 1.2em;
 }
-.event-time{
+
+.event-time {
     bottom: 10px;
 }
+
 .to {
     display: block;
     position: relative;
     left: -25%;
 }
+
 .cut-out {
     border-radius: 1000px;
     width: 100%;
@@ -74,6 +85,7 @@ body {
     background: #eee;
     box-shadow: inset -1px 2px 2px -1px #888
 }
+
 .dotted-line-separator {
     right: -2px;
     position: absolute;
@@ -82,10 +94,12 @@ body {
     top: 8px;
     bottom: 8px;
 }
+
 .dotted-line-separator .line {
     /*border-right: 1px dashed #ccc;*/
-    transform:rotate(90deg);
+    transform: rotate(90deg);
 }
+
 .dotted-line-separator .line:after {
     content: "| | | | | | | | | | | | | | | | | | | | | | | | | | |";
     overflow: hidden;
@@ -96,6 +110,7 @@ body {
     margin: 5px 0;
     color: rgba(204, 204, 204, 0.5);
 }
+
 .event-body {
     border-radius: 4px;
     float: left;
@@ -107,30 +122,37 @@ body {
     border-bottom-left-radius: 10px;
     border-top-left-radius: 10px;
 }
-.event-title, .event-location, .event-details{
+
+.event-title, .event-location, .event-details {
     float: left;
     width: 54%;
     padding: 10px;
 }
+
 .event-title, .event-location {
     border-bottom: 1px solid #ccc;
 }
+
 .event-location, .event-details {
     height: 30%;
     line-height: 24px;
 }
+
 .event-title {
     height: 40%;
 }
-.event-title span{
+
+.event-title span {
     font-size: 0.5em;
     text-transform: uppercase;
     color: #888;
 }
+
 .event-title h3 {
     margin: 0;
 }
-.event-image{
+
+.event-image {
     width: calc(46% - 20px);
     height: calc(100% - 20px);
     margin: 10px;
@@ -138,6 +160,7 @@ body {
     overflow: hidden;
     text-align: center;
 }
+
 .image {
     display: block;
     height: 100%;
@@ -186,7 +209,7 @@ body {
 
 /* ADMIN USERS TABLE STILING */
 
-#searchBtn{
+#searchBtn {
     display: inline;
 }
 
@@ -229,3 +252,167 @@ table.table-striped.table-hover {
 #regSpanText {
     color: white;
 }
+
+/*****************globals*************/
+
+
+.preview {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 996px) {
+    .preview {
+        margin-bottom: 20px;
+    }
+}
+
+.preview-pic {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+
+.tab-content {
+    overflow: hidden;
+}
+
+.tab-content img {
+    width: 100%;
+    -webkit-animation-name: opacity;
+    animation-name: opacity;
+    -webkit-animation-duration: .3s;
+    animation-duration: .3s;
+}
+
+.card {
+    margin-top: 50px;
+    background: #eee;
+    padding: 3em;
+    line-height: 1.5em;
+}
+
+@media screen and (min-width: 997px) {
+    .wrapper {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+    }
+}
+
+.details {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.product-title, .price, .location {
+    text-transform: UPPERCASE;
+    font-weight: bold;
+}
+
+.checked, .price span {
+    color: #ff9f1a;
+}
+
+.product-title, .rating, .product-description, .price, .dateTime, .location {
+    margin-bottom: 15px;
+}
+
+.product-title {
+    margin-top: 0;
+}
+
+.size {
+    margin-right: 10px;
+}
+
+.size:first-of-type {
+    margin-left: 40px;
+}
+
+.add-to-cart, .like {
+    background: #ff9f1a;
+    padding: 1.2em 1.5em;
+    border: none;
+    text-transform: UPPERCASE;
+    font-weight: bold;
+    color: #fff;
+    -webkit-transition: background .3s ease;
+    transition: background .3s ease;
+}
+
+.add-to-cart:hover, .like:hover {
+    background: #b36800;
+    color: #fff;
+}
+
+.not-available {
+    text-align: center;
+    line-height: 2em;
+}
+
+.not-available:before {
+    font-family: fontawesome;
+    content: "\f00d";
+    color: #fff;
+}
+
+.orange {
+    background: #ff9f1a;
+}
+
+.green {
+    background: #85ad00;
+}
+
+.blue {
+    background: #0076ad;
+}
+
+.tooltip-inner {
+    padding: 1.3em;
+}
+
+@-webkit-keyframes opacity {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(3);
+        transform: scale(3);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+@keyframes opacity {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(3);
+        transform: scale(3);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+/*# sourceMappingURL=style.css.map */

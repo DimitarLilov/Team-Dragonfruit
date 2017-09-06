@@ -6,7 +6,16 @@
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="#/tickets">Tickets</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="">Tickets
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#/tickets">All Tickets</a></li>
+                        {{#each categories}}
+                            {{> navCategory}}
+                        {{/each}}
+                    </ul>
+                </li>
                 {{#if admin}}
                     <li class="userMenuItem"><a href="#/admin">Admin Panel</a></li>
                 {{/if}}

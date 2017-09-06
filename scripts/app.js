@@ -14,6 +14,8 @@ $(() => {
         this.get('#/home', handlers.displayHome);
         this.get('#/register', handlers.displayRegister);
         this.get('#/tickets', handlers.displayTickets);
+        this.get('#/tickets/category/:id', handlers.displayCategoryTickets);
+        this.get('#/ticket/:id', handlers.displayDetailsTicket);
         this.get('#/login', handlers.displayLogin);
         this.get('#/logout', handlers.logoutUser);
         this.get('#/admin', handlers.displayAdminPanel);

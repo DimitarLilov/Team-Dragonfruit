@@ -8,7 +8,7 @@ let ticketsService = (() => {
         return requester.get('appdata', 'tickets', 'master');
     }
 
-    function getEditTicketInfo(ticketId) {
+    function getTicketInfo(ticketId) {
         return requester.get('appdata', `tickets/${ticketId}`, 'kinvey');
     }
 
@@ -16,10 +16,9 @@ let ticketsService = (() => {
         return requester.post('rpc', 'custom/editTicket', 'kinvey', data);
     }
 
-    function getCategories() {
-        return requester.get('appdata', `categories`, 'kinvey');
+    function getTicketsByCategoryId(categoryId) {
+        return requester.get('appdata', `tickets?query={"categoryId":"${categoryId}"}`, 'master');
     }
-
 
     function removeTicket(data) {
         return requester.post('rpc', `custom/deleteTicket`, 'kinvey', data);
@@ -28,9 +27,9 @@ let ticketsService = (() => {
     return {
         getAllTickets,
         getAllTicketsNotLogged,
-        getEditTicketInfo,
-        getCategories,
+        getTicketInfo,
         editTicket,
-        removeTicket
+        removeTicket,
+        getTicketsByCategoryId
     }
 })();

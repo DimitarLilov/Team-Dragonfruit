@@ -3,11 +3,15 @@ handlers.displayHome = function (ctx) {
     ctx.username = sessionStorage.getItem('username');
     ctx.admin = auth.isAdmin();
 
-    ctx.loadPartials({
-        header: "./templates/common/header.hbs",
-        footer: "./templates/common/footer.hbs",
+    categoriesService.getCategoriesNotLogged().then(function (categories) {
+        ctx.categories = categories;
 
-    }).then(function () {
-        this.partial('./templates/home/home.hbs');
+        ctx.loadPartials({
+            header: "./templates/common/header.hbs",
+            footer: "./templates/common/footer.hbs",
+            navCategory: "./templates/common/navCategory.hbs"
+        }).then(function () {
+            this.partial('./templates/home/home.hbs');
+        });
     });
 };
