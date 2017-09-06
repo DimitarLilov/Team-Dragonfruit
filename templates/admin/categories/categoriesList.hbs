@@ -1,0 +1,34 @@
+{{> header}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 col-sm-10 col-xs-10">
+
+            <form action="#/listTickets" method="post">
+                <div>
+                    <label class="form-label">Find by title:</label>
+                    <span id="searchForm">
+                                <input id="showform" class="form-control" type="text" name="title" value=""/>
+                            </span>
+                    <span id="searchBtn">
+                        <button class="btn btn-default">Find</button>
+                            </span>
+                </div>
+            </form>
+            <br>
+            <div>
+                <a class="btn btn-danger" href="#/addTicket">Add category</a>
+            </div>
+            <table class="table table-striped table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+                {{#each categories}}
+                    {{> category}}
+                {{/each}}
+            </table>
+        </div>
+    </div>
+</div>
+{{> footer}}
