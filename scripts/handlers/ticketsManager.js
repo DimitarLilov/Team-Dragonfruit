@@ -36,6 +36,57 @@ handlers.displayMyTickets = function (ctx) {
         ctx.redirect('#/home');
     }
 };
+
+handlers.displayEditTicket = function (ctx) {
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    ctx.username = sessionStorage.getItem('username');
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+
+    let id = ctx.params.id.substring(1);
+
+    if (ctx.admin) {
+        ticketsService.getTicket(id).then(function (ticket) {
+            ctx.priceCategory = ticket.priceCategory;
+            ctx.price = ticket.price;
+            ctx.ticketsCount = ticket.ticketsCount;
+            ctx.eventId = ticket.eventId;
+            ctx._id = id;
+
+            console.log(ctx.eventId);
+
+            ctx.loadPartials({
+                header: "./templates/admin/common/header.hbs",
+                footer: "./templates/common/footer.hbs"
+            }).then(function () {
+                this.partial('./templates/admin/tickets/editTicket.hbs');
+            });
+        });
+    }
+    else {
+        ctx.redirect('index.html');
+    }
+};
+
+handlers.editTickets = function (ctx) {
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    let id = ctx.params.id.substring(1);
+
+    let ticket =
+        {
+            priceCategory: ctx.params.priceCategory,
+            price: ctx.params.price,
+            ticketsCount: ctx.params.ticketsCount,
+            eventId: ctx.params.eventId,
+            _id: id
+        };
+
+    ticketsService.editTicket(ticket).then(function () {
+        notifications.showInfo(`Ticket edit.`);
+        ctx.redirect("#/admin/events");
+    }).catch(notifications.handleError);
+};
+
 handlers.displayAddTicket = function (ctx) {
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     ctx.username = sessionStorage.getItem('username');

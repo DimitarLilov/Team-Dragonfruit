@@ -1,0 +1,40 @@
+{{> header}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-sm-8 col-xs-8">
+            <div class="form-group row">
+                <h2 class="display-3">Edit Ticket</h2>
+            </div>
+            <br/>
+            <form action="#/admin/events/edit/ticket/:{{_id}}" id="editCategoryForm" method="post">
+
+                <input type="hidden" name="eventId" value="{{eventId}}" />
+                <div class="form-group row required">
+                    <label class="form-control-label" for="priceCategory">Price Category</label>
+                    <input type="text" id="priceCategory" name="priceCategory" class="form-control" value="{{priceCategory}}" required="required"/>
+                </div>
+
+                <div class="form-group row required">
+                    <label class="form-control-label" for="price">Price</label>
+                    <input type="number" step="0.01" id="price" class="form-control" name="price" value="{{price}}" required="required"/>
+                </div>
+
+                <div class="form-group row required">
+                    <label class="form-control-label" for="ticketsCount">Tickets Count</label>
+                    <input type="number" id="ticketsCount" class="form-control" name="ticketsCount" value="{{ticketsCount}}" required="required"/>
+                </div>
+
+                <br>
+                <br>
+                <div class="form-group row">
+                    <button class="btn btn-default">Edit</button>
+                    <a class="btn btn-default" href="#/admin/events">Cancel</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{{> footer}}

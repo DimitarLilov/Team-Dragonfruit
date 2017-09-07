@@ -41,7 +41,7 @@ handlers.getAllEventsAdmin = function (ctx) {
                             ctx.loadPartials({
                                 header: "./templates/admin/common/header.hbs",
                                 event: "./templates/admin/events/event.hbs",
-                                ticket: "./templates/admin/events/ticket.hbs",
+                                ticket: "./templates/admin/events/tickets/ticket.hbs",
                                 footer: "./templates/common/footer.hbs"
                             }).then(function () {
                                 this.partial('./templates/admin/events/eventsList.hbs');

@@ -24,6 +24,7 @@ $(() => {
         this.get('#/admin/events', handlers.getAllEventsAdmin);
         this.get('#/admin/events/edit/:id', handlers.getEditEvent);
         this.get('#/admin/events/add/ticket/:id', handlers.displayAddTicket);
+        this.get('#/admin/events/edit/ticket/:id', handlers.displayEditTicket);
         this.get('#/admin/categories', handlers.displayAllCategories);
         this.get('#/admin/categories/add', handlers.displayAddCategory);
         this.get('#/admin/categories/edit/:id', handlers.getEditCategory);
@@ -42,6 +43,7 @@ $(() => {
         this.post('#/admin/events/delete/:id', handlers.deleteEvent);
         this.post('#/admin/events/edit/:id', handlers.editEvent);
         this.post('#/admin/events/add/ticket/:id', handlers.addEventTicket);
+        this.post('#/admin/events/edit/ticket/:id', handlers.editTickets);
         this.post('#/admin/categories/add', handlers.addCategory);
         this.post('#/admin/categories/edit/:id', handlers.editCategory);
     });
