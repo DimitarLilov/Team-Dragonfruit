@@ -605,3 +605,18 @@ table.table-striped.table-hover {
     margin: 2em 0 0 -0.5em;
 }
 /*# sourceMappingURL=style.css.map */
+
+.tab-pane {
+    margin-left: 5px;
+}
+
+#ticketsCountInput {
+    display: inline;
+    width: 70px;
+    margin-bottom: 15px;
+}
+
+#ticketsCountInputLabel {
+    color: #333333;
+    margin-right: 18px;
+}

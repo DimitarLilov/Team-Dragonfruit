@@ -89,16 +89,27 @@ handlers.displayDetailsEvent = function (ctx) {
     if (ctx.loggedIn) {
         eventsService.getEventsInfo(id)
             .then(function (eventData) {
-                categoriesService.getCategories().then(function (categories) {
-                    renderEventDetailsTemplates(ctx, eventData, categories);
+                categoriesService.getCategories()
+                    .then(function (categories) {
+                        ticketsService.getEventTickets(id)
+                            .then(function (eventDetails) {
+
+                                renderEventDetailsTemplates(ctx, eventData, categories, eventDetails[0]);
+                            })
+
                 });
             }).catch(notifications.handleError);
     } else {
 
         eventsService.getEventsInfoNotLogged(id)
             .then(function (eventData) {
-                categoriesService.getCategoriesNotLogged().then(function (categories) {
-                    renderEventDetailsTemplates(ctx, eventData, categories)
+                categoriesService.getCategoriesNotLogged()
+                    .then(function (categories) {
+                        ticketsService.getEventTicketsNotLogged(id)
+                            .then(function (eventDetails) {
+
+                                renderEventDetailsTemplates(ctx, eventData, categories, eventDetails[0]);
+                            })
                 })
             }).catch(notifications.handleError);
     }
@@ -190,7 +201,7 @@ handlers.editEvent = function (ctx) {
 };
 
 
-function renderEventDetailsTemplates(ctx, eventData, categories) {
+function renderEventDetailsTemplates(ctx, eventData, categories, eventDetails) {
     for (let category of categories) {
         if (category._id === eventData.categoryId) {
             ctx.category = category.category;
@@ -205,6 +216,8 @@ function renderEventDetailsTemplates(ctx, eventData, categories) {
     ctx.eventTime = eventData.eventTime;
     ctx.eventDate = eventData.eventDate;
     ctx.categories = categories;
+    ctx.ticketsAvailable = eventDetails.ticketsCount;
+    ctx.ticketPrice = eventDetails.price;
 
     ctx.loadPartials({
         header: "./templates/common/header.hbs",

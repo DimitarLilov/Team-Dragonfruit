@@ -12,6 +12,10 @@ let ticketsService = (() => {
         return requester.get('appdata', `tickets?query={"eventId":"${eventId}"}`, 'kinvey');
     }
 
+    function getEventTicketsNotLogged(eventId) {
+        return requester.get('appdata', `tickets?query={"eventId":"${eventId}"}`, 'master');
+    }
+
     function editTicket(data) {
         return requester.post('rpc', 'custom/editTicket', 'kinvey', data);
     }
@@ -28,6 +32,7 @@ let ticketsService = (() => {
         getMyTickets,
         addTicket,
         getEventTickets,
+        getEventTicketsNotLogged,
         getTicket,
         editTicket,
         removeTicket

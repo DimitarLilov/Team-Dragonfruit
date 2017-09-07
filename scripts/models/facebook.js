@@ -62,8 +62,8 @@ let facebookService = (() => {
     }
 
     function fbLogout(ctx, id) {
-        FB.logout(function (response) {
-            console.log(response);
+        FB.logout(function () {
+
             sessionStorage.clear();
             notifications.showInfo("Logout successful.");
             ctx.redirect("#/home");
