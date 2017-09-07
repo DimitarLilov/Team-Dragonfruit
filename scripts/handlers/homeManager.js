@@ -4,14 +4,21 @@ handlers.displayHome = function (ctx) {
     ctx.admin = auth.isAdmin();
 
     categoriesService.getCategoriesNotLogged().then(function (categories) {
-        ctx.categories = categories;
+        homeService.getUpcomingEvents().then(function (events) {
+            events[0].active = "active";
 
-        ctx.loadPartials({
-            header: "./templates/common/header.hbs",
-            footer: "./templates/common/footer.hbs",
-            navCategory: "./templates/common/navCategory.hbs"
-        }).then(function () {
-            this.partial('./templates/home/home.hbs');
+            ctx.events = events;
+            ctx.categories = categories;
+
+            ctx.loadPartials({
+                header: "./templates/common/header.hbs",
+                footer: "./templates/common/footer.hbs",
+                event: "./templates/home/event.hbs",
+                eventLi: "./templates/home/eventLi.hbs",
+                navCategory: "./templates/common/navCategory.hbs"
+            }).then(function () {
+                this.partial('./templates/home/home.hbs');
+            });
         });
-    });
+    }).catch(notifications.handleError);
 };
