@@ -35,5 +35,42 @@ handlers.displayMyTickets = function (ctx) {
     else {
         ctx.redirect('#/home');
     }
+};
+handlers.displayAddTicket = function (ctx) {
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    ctx.username = sessionStorage.getItem('username');
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
 
+    ctx.eventId = ctx.params.id.substring(1);
+
+    if (ctx.admin) {
+        ctx.loadPartials({
+            header: "./templates/admin/common/header.hbs",
+            footer: "./templates/common/footer.hbs"
+        }).then(function () {
+            this.partial('./templates/admin/tickets/addTicket.hbs');
+        });
+    }
+    else {
+        ctx.redirect('index.html');
+    }
+};
+handlers.addEventTicket = function (ctx) {
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    ctx.username = sessionStorage.getItem('username');
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+
+    ctx.eventId = ctx.params.id.substring(1);
+
+    let ticket =
+        {
+            priceCategory: ctx.params.priceCategory,
+            ticketsCount: ctx.params.ticketsCount,
+            price: ctx.params.price,
+            eventId: ctx.eventId
+        };
+    ticketsService.addTicket(ticket).then(function () {
+        notifications.showInfo(`Ticket created.`);
+        ctx.redirect("#/admin/events");
+    }).catch(notifications.handleError);
 };
