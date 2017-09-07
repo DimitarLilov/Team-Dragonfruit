@@ -79,21 +79,13 @@ handlers.loginUser = function (ctx) {
 handlers.logoutUser = function (ctx) {
     let fbUserId = sessionStorage.getItem('userFBId');
 
-    auth.logout().then(function () {
-        sessionStorage.clear();
-        notifications.showInfo("Logout successful.");
-        ctx.redirect("#/home");
-
-        if (fbUserId !== null) {
-
-            let data = {
-                userId :fbUserId
-            };
-            
-            usersService.deleteFacebookUser(fbUserId)
-                .then(function () {
-                    sessionStorage.clear();
-                }).catch(notifications.handleError);
-        }
-    }).catch(notifications.handleError);
+    if (fbUserId !== null) {
+        facebookService.fbLogout(ctx, fbUserId);
+    } else {
+        auth.logout().then(function () {
+            sessionStorage.clear();
+            notifications.showInfo("Logout successful.");
+            ctx.redirect("#/home");
+        }).catch(notifications.handleError);
+    }
 };
