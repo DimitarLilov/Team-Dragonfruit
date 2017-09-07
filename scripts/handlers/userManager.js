@@ -85,7 +85,11 @@ handlers.logoutUser = function (ctx) {
         ctx.redirect("#/home");
 
         if (fbUserId !== null) {
-            usersService.deleteUser(fbUserId)
+
+            let data = {
+                userId :fbUserId
+            };
+            usersService.deleteFacebookUser(data)
                 .then(function () {
                     sessionStorage.clear();
                 }).catch(notifications.handleError);
