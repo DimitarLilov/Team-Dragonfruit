@@ -24,6 +24,12 @@ let facebookService = (() => {
 
         FB.login(function (response) {
 
+            // FB.api('/me', { locale: 'en_US', fields: 'name, email' },
+            //     function(response) {
+            //         console.log(response.email);
+            //     }
+            // );
+
             if (response.status === "connected") {
 
                 let loginTokens = {
@@ -32,7 +38,7 @@ let facebookService = (() => {
                             facebook:
                                 {
                                     access_token: response.authResponse.accessToken,
-                                    expires: response.authResponse.expiresIn
+                                    expires: 999999999
                                 }
                         }
                 };
