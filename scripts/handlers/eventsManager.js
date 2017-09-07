@@ -33,17 +33,22 @@ handlers.getAllEventsAdmin = function (ctx) {
         if (ctx.admin) {
             eventsService.getAllEvents()
                 .then(function (eventsData) {
+                    for (let event of eventsData) {
+                        ticketsService.getEventTickets(event._id).then(function (tickets) {
+                            event.tickets = tickets;
+                            ctx.events = eventsData;
 
-                    ctx.events = eventsData;
+                            ctx.loadPartials({
+                                header: "./templates/admin/common/header.hbs",
+                                event: "./templates/admin/events/event.hbs",
+                                ticket: "./templates/admin/events/ticket.hbs",
+                                footer: "./templates/common/footer.hbs"
+                            }).then(function () {
+                                this.partial('./templates/admin/events/eventsList.hbs');
+                            });
 
-                    ctx.loadPartials({
-                        header: "./templates/admin/common/header.hbs",
-                        event: "./templates/admin/events/event.hbs",
-                        footer: "./templates/common/footer.hbs"
-                    }).then(function () {
-                        this.partial('./templates/admin/events/eventsList.hbs');
-                    });
-
+                        });
+                    }
                 }).catch(notifications.handleError);
         }
         else {
@@ -85,7 +90,7 @@ handlers.displayDetailsEvent = function (ctx) {
         eventsService.getEventsInfo(id)
             .then(function (eventData) {
                 categoriesService.getCategories().then(function (categories) {
-                    renderEventDetailsTemplates(ctx,eventData,categories);
+                    renderEventDetailsTemplates(ctx, eventData, categories);
                 });
             }).catch(notifications.handleError);
     } else {
@@ -93,7 +98,7 @@ handlers.displayDetailsEvent = function (ctx) {
         eventsService.getEventsInfoNotLogged(id)
             .then(function (eventData) {
                 categoriesService.getCategoriesNotLogged().then(function (categories) {
-                    renderEventDetailsTemplates(ctx,eventData,categories)
+                    renderEventDetailsTemplates(ctx, eventData, categories)
                 })
             }).catch(notifications.handleError);
     }
