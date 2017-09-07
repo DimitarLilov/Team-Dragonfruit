@@ -18,6 +18,8 @@ let auth = (() => {
         sessionStorage.setItem('username', username);
         let userRole = userInfo.role;
         sessionStorage.setItem('userRole', userRole);
+        let userFullName = userInfo.firstName + " " + userInfo.lastName;
+        sessionStorage.setItem('fullName', userFullName);
     }
 
     // user/login

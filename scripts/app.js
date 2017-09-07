@@ -13,32 +13,34 @@ $(() => {
         this.get('index.html', handlers.displayHome);
         this.get('#/home', handlers.displayHome);
         this.get('#/register', handlers.displayRegister);
-        this.get('#/tickets', handlers.displayTickets);
-        this.get('#/tickets/category/:id', handlers.displayCategoryTickets);
-        this.get('#/ticket/:id', handlers.displayDetailsTicket);
         this.get('#/login', handlers.displayLogin);
         this.get('#/logout', handlers.logoutUser);
+        this.get('#/events', handlers.displayEvents);
+        this.get('#/events/:id', handlers.displayDetailsEvent);
+        this.get('#/events/category/:id', handlers.displayCategoryEvents);
+        this.get('#/my/tickets', handlers.displayMyTickets);
         this.get('#/admin', handlers.displayAdminPanel);
-        this.get('#/categories', handlers.displayAllCategories);
-        this.get('#/addCategory', handlers.displayAddCategory);
+        this.get('#/admin/events', handlers.getAllEventsAdmin);
+        this.get('#/admin/categories', handlers.displayAllCategories);
+        this.get('#/admin/categories/add', handlers.displayAddCategory);
+        this.get('#/admin/categories/edit/:id', handlers.getEditCategory);
+        this.get('#/admin/events/edit/:id', handlers.getEditEvent);
         this.get('#/users', handlers.displayAllUsers);
-        this.get('#/users/#admin', handlers.displayAdminUsers);
-        this.get('#/users/#user', handlers.displayBasicUsers);
-        this.get('#/editUser/:id', handlers.getEditUser);
-        this.get('#/listTickets', handlers.getAllTicketsAdmin);
-        this.get('#/editTicket/:id', handlers.getEditTicket);
-        this.get('#/editCategory/:id', handlers.getEditCategory);
+        this.get('#/users/edit/:id', handlers.getEditUser);
+        this.get('#/users/admin', handlers.displayAdminUsers);
+        this.get('#/users/user', handlers.displayBasicUsers);
+
 
 
         this.post('#/register', handlers.registerUser);
         this.post('#/login', handlers.loginUser);
         this.post('#/users', handlers.getSearchedUser);
-        this.post('#/editUser/:id', handlers.editUser);
-        this.post('#/delete/:id', handlers.deleteUser);
-        this.post('#/deleteTicket/:id', handlers.deleteTicket);
-        this.post('#/editTicket/:id', handlers.editTicket);
-        this.post('#/addCategory', handlers.addCategory);
-        this.post('#/editCategory/:id', handlers.editCategory);
+        this.post('#/users/edit/:id', handlers.editUser);
+        this.post('#/users/delete/:id', handlers.deleteUser);
+        this.post('#/admin/events/delete/:id', handlers.deleteEvent);
+        this.post('#/admin/events/edit/:id', handlers.editEvent);
+        this.post('#/admin/categories/add', handlers.addCategory);
+        this.post('#/admin/categories/edit/:id', handlers.editCategory);
     });
 
     app.run();

@@ -7,10 +7,10 @@
             <ul class="nav navbar-nav">
                 <li><a href="index.html">Home</a></li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="">Tickets
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="">Events
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#/tickets">All Tickets</a></li>
+                        <li><a href="#/events">All Events</a></li>
                         {{#each categories}}
                             {{> navCategory}}
                         {{/each}}
@@ -22,7 +22,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {{#if loggedIn}}
-                    <li><a href="#/cart" class="userMenuItem">My Tickets</a></li>
+                    <li><a href="#/my/tickets" class="userMenuItem">My Tickets</a></li>
                     <li><a href="#/logout" class="userMenuItem">Logout</a></li>
                     <li><a href="#">Welcome, {{username}}!</a></li>
                 {{else}}

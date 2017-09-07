@@ -1,14 +1,14 @@
 {{> header}}
 <div class="container-fluid">
-    <h1 class="my-4">Tickets
+    <h1 class="my-4">Events
         <small>{{type}}</small>
     </h1>
 
     <div class="row">
-        {{#each tickets}}
-            {{> ticket}}
+        {{#each events}}
+            {{> event}}
         {{else}}
-            <p>No tickets in database</p>
+            <p>No events in database</p>
         {{/each}}
     </div>
 </div>

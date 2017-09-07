@@ -52,7 +52,7 @@ handlers.editCategory = function (ctx) {
 
     categoriesService.editCategory(category).then(function () {
         notifications.showInfo(`Category edit.`);
-        ctx.redirect("#/categories");
+        ctx.redirect("#/admin/categories");
     }).catch(notifications.handleError);
 };
 
@@ -84,7 +84,7 @@ handlers.addCategory = function (ctx) {
         };
     categoriesService.addCategory(category).then(function () {
         notifications.showInfo(`Category created.`);
-        ctx.redirect("#/categories");
+        ctx.redirect("#/admin/categories");
     }).catch(notifications.handleError);
 };
 

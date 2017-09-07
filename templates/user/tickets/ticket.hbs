@@ -1,0 +1,39 @@
+<div class="col-sm-4">
+    <div class="ticketWrap">
+        <div class="ticket ticketLeft">
+            <h1>Ticket</h1>
+            <div class="ticket-title">
+                <h2>{{title}}</h2>
+                <span>{{category}}</span>
+            </div>
+            <div class="ticket-name">
+                <h2>{{fullName}}</h2>
+                <span>name</span>
+            </div>
+            <div class="ticket-seat">
+                <h2>{{eventDate}}</h2>
+                <span>date</span>
+            </div>
+            <div class="ticket-time">
+                <h2>{{eventTime}}</h2>
+                <span>time</span>
+            </div>
+
+        </div>
+        <div class="ticket ticketRight">
+            <div class="eye"></div>
+            <div class="barcode" id="{{_id}}"></div>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        new QRCode(document.getElementById("{{_id}}"), {
+            text: "{{_id}}",
+            width: 100,
+            height: 100,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+    </script>
+</div>
