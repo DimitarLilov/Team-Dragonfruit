@@ -140,7 +140,6 @@ handlers.getEditEvent = function (ctx) {
                     ctx.details = eventData.details;
                     ctx.eventTime = eventData.eventTime;
                     ctx.eventDate = eventData.eventDate;
-                    ctx.price = eventData.price;
                     ctx.selected = eventData.categoryId;
                     ctx.categories = categories;
 
@@ -167,24 +166,21 @@ handlers.editEvent = function (ctx) {
 
     let title = ctx.params.title;
     let image = ctx.params.image;
-    let price = ctx.params.price;
     let location = ctx.params.location;
     let details = ctx.params.details;
     let eventTime = ctx.params.eventTime;
     let eventDate = ctx.params.eventDate;
     let categoryId = ctx.params.categoryId;
-    let id = eventId;
 
     let event = {
         "image": image,
         "title": title,
         "location": location,
-        "price": price,
         "details": details,
         "eventTime": eventTime,
         "eventDate": eventDate,
         "categoryId": categoryId,
-        "_id": id,
+        "_id": eventId,
     };
     eventsService.editEvents(event).then(function () {
         notifications.showInfo(`Event ${event.title} updated.`);
@@ -208,8 +204,6 @@ function renderEventDetailsTemplates(ctx, eventData, categories) {
     ctx.details = eventData.details;
     ctx.eventTime = eventData.eventTime;
     ctx.eventDate = eventData.eventDate;
-    ctx.price = eventData.price;
-
     ctx.categories = categories;
 
     ctx.loadPartials({

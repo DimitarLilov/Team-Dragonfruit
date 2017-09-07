@@ -125,3 +125,25 @@ handlers.addEventTicket = function (ctx) {
         ctx.redirect("#/admin/events");
     }).catch(notifications.handleError);
 };
+
+handlers.deleteTickets = function (ctx) {
+    ctx.username = sessionStorage.getItem('username');
+    ctx.admin = auth.isAdmin();
+
+    let ticketId = ctx.params.id.substr(1);
+
+    if (ctx.admin) {
+        let data = {
+            "id": ticketId
+        };
+
+        ticketsService.removeTicket(data)
+            .then(function () {
+                notifications.showInfo(`Ticket deleted.`);
+                ctx.redirect("#/admin/events");
+            }).catch(notifications.showError);
+    }
+    else {
+        ctx.redirect('index.html');
+    }
+};

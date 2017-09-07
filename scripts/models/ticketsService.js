@@ -16,6 +16,10 @@ let ticketsService = (() => {
         return requester.post('rpc', 'custom/editTicket', 'kinvey', data);
     }
 
+    function removeTicket(data) {
+        return requester.post('rpc', 'custom/deleteTicket', 'kinvey', data);
+    }
+
     function getTicket(ticketId) {
         return requester.get('appdata', `tickets/${ticketId}`, 'kinvey');
     }
@@ -25,6 +29,7 @@ let ticketsService = (() => {
         addTicket,
         getEventTickets,
         getTicket,
-        editTicket
+        editTicket,
+        removeTicket
     }
 })();

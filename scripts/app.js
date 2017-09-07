@@ -44,6 +44,7 @@ $(() => {
         this.post('#/admin/events/edit/:id', handlers.editEvent);
         this.post('#/admin/events/add/ticket/:id', handlers.addEventTicket);
         this.post('#/admin/events/edit/ticket/:id', handlers.editTickets);
+        this.post('#/admin/events/delete/ticket/:id', handlers.deleteTickets);
         this.post('#/admin/categories/add', handlers.addCategory);
         this.post('#/admin/categories/edit/:id', handlers.editCategory);
     });
