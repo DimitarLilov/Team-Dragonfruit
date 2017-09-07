@@ -63,17 +63,32 @@ handlers.loginUser = function (ctx) {
     let username = ctx.params.username;
     let password = ctx.params.password;
 
-    auth.login(username, password).then(function (userInfo) {
-        auth.saveSession(userInfo);
-        notifications.showInfo("Login successful.");
-        ctx.redirect("#/home");
-    }).catch(notifications.handleError);
+    if (username !== undefined && password !== undefined) {
+
+        auth.login(username, password).then(function (userInfo) {
+            auth.saveSession(userInfo);
+            notifications.showInfo("Login successful.");
+            ctx.redirect("#/home");
+        }).catch(notifications.handleError);
+    } else {
+
+        facebookService.fbLogin(ctx);
+    }
 };
 
 handlers.logoutUser = function (ctx) {
+    let fbUserId = sessionStorage.getItem('userFBId');
+
     auth.logout().then(function () {
         sessionStorage.clear();
         notifications.showInfo("Logout successful.");
         ctx.redirect("#/home");
+
+        if (fbUserId !== null) {
+            usersService.deleteUser(fbUserId)
+                .then(function () {
+                    sessionStorage.clear();
+                }).catch(notifications.handleError);
+        }
     }).catch(notifications.handleError);
 };

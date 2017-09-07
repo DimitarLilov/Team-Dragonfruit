@@ -32,6 +32,11 @@ let auth = (() => {
         return requester.post('user', 'login', 'basic', userData);
     }
 
+    function loginFB(userData) {
+
+        return requester.post('user', '', 'basic', userData);
+    }
+
     // user/register
     function register(username, password, email, firstName, lastName, role) {
         let userData = {
@@ -57,6 +62,7 @@ let auth = (() => {
 
     return {
         login,
+        loginFB,
         register,
         logout,
         saveSession,

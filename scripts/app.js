@@ -14,6 +14,7 @@ $(() => {
         this.get('#/home', handlers.displayHome);
         this.get('#/register', handlers.displayRegister);
         this.get('#/login', handlers.displayLogin);
+        this.get('loginF', handlers.loginUser);
         this.get('#/logout', handlers.logoutUser);
         this.get('#/events', handlers.displayEvents);
         this.get('#/events/:id', handlers.displayDetailsEvent);
