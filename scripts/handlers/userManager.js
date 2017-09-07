@@ -89,7 +89,8 @@ handlers.logoutUser = function (ctx) {
             let data = {
                 userId :fbUserId
             };
-            usersService.deleteFacebookUser(data)
+            
+            usersService.deleteFacebookUser(fbUserId)
                 .then(function () {
                     sessionStorage.clear();
                 }).catch(notifications.handleError);
