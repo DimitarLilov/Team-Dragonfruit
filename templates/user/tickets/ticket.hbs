@@ -1,7 +1,7 @@
 <div class="col-sm-4">
     <div class="ticketWrap">
         <div class="ticket ticketLeft">
-            <h1>Ticket</h1>
+            <h1>{{ticketCategory}} <span>Ticket</span></h1>
             <div class="ticket-title">
                 <h2>{{title}}</h2>
                 <span>{{category}}</span>
@@ -21,7 +21,7 @@
 
         </div>
         <div class="ticket ticketRight">
-            <div class="eye"></div>
+            <div class="ticket-price">Price: {{price}} &euro;</div>
             <div class="barcode" id="{{_id}}"></div>
         </div>
 

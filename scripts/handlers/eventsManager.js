@@ -91,13 +91,8 @@ handlers.displayDetailsEvent = function (ctx) {
             .then(function (eventData) {
                 categoriesService.getCategories()
                     .then(function (categories) {
-                        ticketsService.getEventTickets(id)
-                            .then(function (eventDetails) {
-
-                                renderEventDetailsTemplates(ctx, eventData, categories, eventDetails[0]);
-                            })
-
-                });
+                        renderEventDetailsTemplates(ctx, eventData, categories);
+                    });
             }).catch(notifications.handleError);
     } else {
 
@@ -105,12 +100,8 @@ handlers.displayDetailsEvent = function (ctx) {
             .then(function (eventData) {
                 categoriesService.getCategoriesNotLogged()
                     .then(function (categories) {
-                        ticketsService.getEventTicketsNotLogged(id)
-                            .then(function (eventDetails) {
-
-                                renderEventDetailsTemplates(ctx, eventData, categories, eventDetails[0]);
-                            })
-                })
+                        renderEventDetailsTemplates(ctx, eventData, categories);
+                    })
             }).catch(notifications.handleError);
     }
 };
@@ -152,11 +143,13 @@ handlers.getEditEvent = function (ctx) {
                     ctx.eventTime = eventData.eventTime;
                     ctx.eventDate = eventData.eventDate;
                     ctx.selected = eventData.categoryId;
+                    ctx.selectTown = eventData.town;
                     ctx.categories = categories;
 
                     ctx.loadPartials({
                         header: "./templates/admin/common/header.hbs",
                         footer: "./templates/common/footer.hbs",
+                        towns: "./templates/towns/towns.hbs",
                         category: "./templates/admin/events/category.hbs"
                     }).then(function () {
                         this.partial('./templates/admin/events/eventEdit.hbs');
@@ -181,6 +174,7 @@ handlers.editEvent = function (ctx) {
     let details = ctx.params.details;
     let eventTime = ctx.params.eventTime;
     let eventDate = ctx.params.eventDate;
+    let town = ctx.params.town;
     let categoryId = ctx.params.categoryId;
 
     let event = {
@@ -190,6 +184,7 @@ handlers.editEvent = function (ctx) {
         "details": details,
         "eventTime": eventTime,
         "eventDate": eventDate,
+        "town": town,
         "categoryId": categoryId,
         "_id": eventId,
     };
@@ -201,7 +196,7 @@ handlers.editEvent = function (ctx) {
 };
 
 
-function renderEventDetailsTemplates(ctx, eventData, categories, eventDetails) {
+function renderEventDetailsTemplates(ctx, eventData, categories) {
     for (let category of categories) {
         if (category._id === eventData.categoryId) {
             ctx.category = category.category;
@@ -215,9 +210,8 @@ function renderEventDetailsTemplates(ctx, eventData, categories, eventDetails) {
     ctx.details = eventData.details;
     ctx.eventTime = eventData.eventTime;
     ctx.eventDate = eventData.eventDate;
+    ctx.town = eventData.town;
     ctx.categories = categories;
-    ctx.ticketsAvailable = eventDetails.ticketsCount;
-    ctx.ticketPrice = eventDetails.price;
 
     ctx.loadPartials({
         header: "./templates/common/header.hbs",

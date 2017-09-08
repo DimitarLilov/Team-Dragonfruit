@@ -568,38 +568,13 @@ table.table-striped.table-hover {
     float: left;
 }
 
-.eye {
+.ticket-price {
     position: relative;
-    width: 2em;
+    width: 9em;
     height: 1.5em;
-    background: #fff;
     margin: 0 auto;
-    border-radius: 1em/0.6em;
     z-index: 1;
 }
-.eye:before, .eye:after {
-    content: "";
-    display: block;
-    position: absolute;
-    border-radius: 50%;
-}
-.eye:before {
-    width: 1em;
-    height: 1em;
-    background: #e84c3d;
-    z-index: 2;
-    left: 8px;
-    top: 4px;
-}
-.eye:after {
-    width: .5em;
-    height: .5em;
-    background: #fff;
-    z-index: 3;
-    left: 12px;
-    top: 8px;
-}
-
 
 .barcode {
     margin: 2em 0 0 -0.5em;

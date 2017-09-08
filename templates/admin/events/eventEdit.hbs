@@ -11,7 +11,8 @@
 
                 <div class="form-group row required">
                     <label class="form-control-label" for="title">Title</label>
-                    <input type="text" id="title" name="title" class="form-control" value="{{title}}" required="required"/>
+                    <input type="text" id="title" name="title" class="form-control" value="{{title}}"
+                           required="required"/>
                 </div>
                 <div class="form-group row required">
                     <label class="form-control-label" for="image">Poster</label>
@@ -32,6 +33,15 @@
                 <div class="form-group row required">
                     <label class="form-control-label" for="eventTime">Event Time</label>
                     <input type="time" class="form-control" name="eventTime" id="eventTime" value="{{eventTime}}"/>
+                </div>
+
+                <div class="form-group row required">
+                    <label for="town">Town</label>
+                    <select name="town" class="form-control" id="town">
+                        {{#select selectTown}}
+                            {{> towns}}
+                        {{/select}}
+                    </select>
                 </div>
 
                 <div class="form-group row required">
