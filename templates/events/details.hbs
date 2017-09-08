@@ -14,14 +14,13 @@
                 <span class="category">{{category}}</span>
             </div>
             <p class="product-description">{{details}}</p>
-            <!--<h4 class="price">current price: <span>{{price}}</span></h4>-->
             <p class="dateTime"><strong>Date: {{eventDate}}</strong></p>
             <p class="dateTime"><strong>Time: {{eventTime}}</strong></p>
             <h5 class="location">Location:
                 <span class="size" data-toggle="tooltip" title="small">{{town}} - {{location}}</span>
             </h5>
             <div class="action">
-                <button class="add-to-cart btn btn-default" type="button">Tickets</button>
+                <a href="#/events/tickets/:{{_id}}" class="add-to-cart btn btn-default" type="button">Tickets</a>
             </div>
         </div>
     </div>

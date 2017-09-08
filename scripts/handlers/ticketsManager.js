@@ -106,6 +106,35 @@ handlers.displayAddTicket = function (ctx) {
         ctx.redirect('index.html');
     }
 };
+
+handlers.displayEventTickets = function (ctx) {
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    ctx.username = sessionStorage.getItem('username');
+
+    let eventId = ctx.params.id.substring(1);
+
+    ticketsService.getEventTicketsNotLogged(eventId)
+        .then(function (tickets) {
+            for (let ticket of tickets) {
+                if (Number(ticket.ticketsCount) <= 0) {
+                    ticket.disabled = "disabled";
+                }
+            }
+            ctx.eventId = eventId;
+            ctx.tickets = tickets;
+            ctx.loadPartials({
+                header: "./templates/common/header.hbs",
+                footer: "./templates/common/footer.hbs",
+                ticket: "./templates/tickets/ticket.hbs",
+                navCategory: "./templates/common/navCategory.hbs",
+            }).then(function () {
+                this.partial('./templates/tickets/tickets.hbs');
+            });
+        }).catch(notifications.handleError);
+}
+;
+
 handlers.addEventTicket = function (ctx) {
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     ctx.username = sessionStorage.getItem('username');
@@ -124,6 +153,27 @@ handlers.addEventTicket = function (ctx) {
         notifications.showInfo(`Ticket created.`);
         ctx.redirect("#/admin/events");
     }).catch(notifications.handleError);
+};
+
+handlers.buyTicket = function (ctx) {
+    let loggedIn = sessionStorage.getItem('authtoken') !== null;
+
+    if (loggedIn) {
+        let data = {
+            userId: sessionStorage.getItem('userId'),
+            ticketId: ctx.params.ticketId,
+            eventId: ctx.params.id.substring(1),
+            ticketAmount: ctx.params.ticketAmount
+        };
+
+        cartService.addTicketCart(data).then(function () {
+            notifications.showInfo(`Ticket added in cart.`);
+            ctx.redirect(`#/events/:${ctx.params.id.substring(1)}`);
+        }).catch(notifications.handleError);
+    }else {
+        ctx.redirect("#/login");
+    }
+
 };
 
 handlers.deleteTickets = function (ctx) {
