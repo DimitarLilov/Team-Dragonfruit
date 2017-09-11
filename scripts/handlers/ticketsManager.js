@@ -155,6 +155,7 @@ handlers.addEventTicket = function (ctx) {
     }).catch(notifications.handleError);
 };
 
+
 handlers.buyTicket = function (ctx) {
     let loggedIn = sessionStorage.getItem('authtoken') !== null;
 
@@ -165,16 +166,18 @@ handlers.buyTicket = function (ctx) {
             eventId: ctx.params.id.substring(1),
             ticketAmount: ctx.params.ticketAmount
         };
+        cartService.addTicketCart(data)
+            .then(function () {
+                notifications.showInfo(`Ticket added in cart.`);
+                ctx.redirect(`#/shop/:${ctx.params.id.substring(1)}`);
+                }).catch(notifications.handleError);
 
-        cartService.addTicketCart(data).then(function () {
-            notifications.showInfo(`Ticket added in cart.`);
-            ctx.redirect(`#/events/:${ctx.params.id.substring(1)}`);
-        }).catch(notifications.handleError);
     }else {
         ctx.redirect("#/login");
     }
 
 };
+
 
 handlers.deleteTickets = function (ctx) {
     ctx.username = sessionStorage.getItem('username');
