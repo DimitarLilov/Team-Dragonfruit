@@ -29,31 +29,26 @@ handlers.displayLogin = function (ctx) {
 handlers.registerUser = function (ctx) {
     ctx.loggedIn = auth.isAuthorized();
 
-    let userReg = new RegExp("^([a-zA-Z]){3,}$");
-    let passReg = new RegExp("^([a-zA-Z0-9]){6,}$");
+    let user = {
+        username: ctx.params.username,
+        password: ctx.params.password,
+        repeatPassword: ctx.params.repeatPassword,
+        firstName: ctx.params.firstName,
+        lastName: ctx.params.lastName,
+        email: ctx.params.email,
+        role: 'user'
+    };
 
-    let username = ctx.params.username;
-    let firstName = ctx.params.firstName;
-    let lastName = ctx.params.lastName;
-    let email = ctx.params.email;
-    let password = ctx.params.password;
-    let repeatPassword = ctx.params.repeatPassword;
+    let isValid = validateRegisterUser(user);
 
-    // admin || user - roles
-    let role = "user";
+    if (isValid) {
 
-    if (password !== repeatPassword) {
-        notifications.showError("The Passwords and Repeat Password do not match")
-    } else if (!userReg.test(username)) {
-        notifications.showError("invalid username")
-    } else if (!passReg.test(password)) {
-        notifications.showError("invalid password")
-    } else {
-        auth.register(username, password, email, firstName, lastName, role).then(function (userInfo) {
-            auth.saveSession(userInfo);
-            notifications.showInfo("User registration successful.");
-            ctx.redirect("#/home");
-        }).catch(notifications.handleError);
+        auth.register(user)
+            .then(function (userInfo) {
+                auth.saveSession(userInfo);
+                notifications.showInfo("User registration successful.");
+                ctx.redirect("#/home");
+            }).catch(notifications.handleError);
     }
 };
 
@@ -89,3 +84,63 @@ handlers.logoutUser = function (ctx) {
         }).catch(notifications.handleError);
     }
 };
+
+function validateRegisterUser(user) {
+
+    let userReg = new RegExp("^([a-zA-Z]){3,}$");
+    let passReg = new RegExp("^([a-zA-Z0-9]){6,}$");
+
+    if (userReg.test(user.username)) {
+
+        $('#username').removeClass('error');
+    } else {
+
+        notifications.showError('Username must more than 2 characters long and contains only lower and/or uppercase english letters!');
+        $('#username').addClass('error');
+        return false;
+    }
+
+    if (user.firstName === null || user.firstName.length < 3) {
+
+        notifications.showError('First name length must be greater than 2 characters!');
+        $('#firstName').addClass('error');
+        return false;
+    } else {
+
+        $('#firstName').removeClass('error');
+    }
+
+    if (user.lastName === null || user.lastName.length < 3) {
+
+        notifications.showError('Last name length must be greater than 2 characters!');
+        $('#lastName').addClass('error');
+        return false;
+    } else {
+
+        $('#lastName').removeClass('error');
+    }
+
+    if (passReg.test(user.password)) {
+
+        $('#password').removeClass('error');
+    } else {
+
+        notifications.showError('Password must more than 5 characters long and contains only lower and/or uppercase letters and/or digits!');
+        $('#password').addClass('error');
+        return false;
+    }
+
+    if (user.password !== user.repeatPassword) {
+
+        notifications.showError("The Passwords and Repeat Password do not match.");
+        $('#password').addClass('error');
+        $('#repeatPassword').addClass('error');
+        return false;
+    } else {
+
+        $('#password').removeClass('error');
+        $('#repeatPassword').removeClass('error');
+    }
+
+    return true;
+}

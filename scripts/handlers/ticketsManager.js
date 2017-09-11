@@ -52,8 +52,6 @@ handlers.displayEditTicket = function (ctx) {
             ctx.eventId = ticket.eventId;
             ctx._id = id;
 
-            console.log(ctx.eventId);
-
             ctx.loadPartials({
                 header: "./templates/admin/common/header.hbs",
                 footer: "./templates/common/footer.hbs"
@@ -81,10 +79,14 @@ handlers.editTickets = function (ctx) {
             _id: id
         };
 
-    ticketsService.editTicket(ticket).then(function () {
-        notifications.showInfo(`Ticket edit.`);
-        ctx.redirect("#/admin/events");
-    }).catch(notifications.handleError);
+    let isValidTicket = validateTicket(ticket);
+
+    if (isValidTicket) {
+        ticketsService.editTicket(ticket).then(function () {
+            notifications.showInfo(`Ticket edit.`);
+            ctx.redirect("#/admin/events");
+        }).catch(notifications.handleError);
+    }
 };
 
 handlers.displayAddTicket = function (ctx) {
@@ -149,10 +151,15 @@ handlers.addEventTicket = function (ctx) {
             price: ctx.params.price,
             eventId: ctx.eventId
         };
-    ticketsService.addTicket(ticket).then(function () {
-        notifications.showInfo(`Ticket created.`);
-        ctx.redirect("#/admin/events");
-    }).catch(notifications.handleError);
+
+    let isValidTicket = validateTicket(ticket);
+
+    if (isValidTicket) {
+        ticketsService.addTicket(ticket).then(function () {
+            notifications.showInfo(`Ticket created.`);
+            ctx.redirect("#/admin/events");
+        }).catch(notifications.handleError);
+    }
 };
 
 
@@ -182,7 +189,7 @@ handlers.buyTicket = function (ctx) {
         });
 
 
-    }else {
+    } else {
         ctx.redirect("#/login");
     }
 
@@ -210,3 +217,42 @@ handlers.deleteTickets = function (ctx) {
         ctx.redirect('index.html');
     }
 };
+
+function validateTicket(ticket) {
+
+    if (ticket.priceCategory === null || ticket.priceCategory.length < 3) {
+
+        notifications.showError('Ticket category name must be greater than 2 characters!');
+        $('#priceCategory').addClass('error');
+        return false;
+    } else {
+
+        $('#priceCategory').removeClass('error');
+    }
+
+    let ticketPrice = Number(ticket.price);
+
+    if (ticketPrice < 0) {
+
+        notifications.showError('Ticket price must not be negative number!');
+        $('#price').addClass('error');
+        return false;
+    } else {
+
+        $('#price').removeClass('error');
+    }
+
+    let ticketCount = Number(ticket.ticketsCount);
+
+    if (ticketCount < 0) {
+
+        notifications.showError('Tickets count must not be negative number!');
+        $('#ticketsCount').addClass('error');
+        return false;
+    } else {
+
+        $('#ticketsCount').removeClass('error');
+    }
+
+    return true;
+}
