@@ -15,8 +15,13 @@ let categoriesService = (() => {
     function addCategory(category) {
         return requester.post('appdata', `categories`, 'kinvey',category);
     }
+
     function editCategory(data) {
         return requester.post('rpc', 'custom/editCategory', 'kinvey', data);
+    }
+
+    function removeCategory(categoryId) {
+        return requester.remove('appdata', `categories/${categoryId}`, 'kinvey');
     }
 
     return {
@@ -24,6 +29,7 @@ let categoriesService = (() => {
         getCategoriesNotLogged,
         getCategory,
         addCategory,
-        editCategory
+        editCategory,
+        removeCategory
     }
 })();
