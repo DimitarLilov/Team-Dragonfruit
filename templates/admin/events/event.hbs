@@ -1,10 +1,10 @@
-<tr class="warning" data-toggle="collapse" data-target="#{{title}}">
+<tr class="warning" data-toggle="collapse" data-target="#{{_id}}">
     <td>
         <button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button>
     </td>
     <td>{{title}}</td>
     <td>{{location}}</td>
-    <td>{{details}}</td>
+    <td><span class="descriptionText">{{details}}</span></td>
     <td>
         <a class="btn btn-default" href="#/admin/events/edit/:{{_id}}">Edit</a>
         <a class="btn btn-default" href="#/admin/events/add/ticket/:{{_id}}">Add Ticket</a>
@@ -14,7 +14,7 @@
     </td>
 </tr>
 
-<tr class="collapse" id="{{title}}">
+<tr class="collapse" id="{{_id}}">
     <td colspan="12" class="hiddenRow">
         <table class="table table-striped table-hover">
             <thead>

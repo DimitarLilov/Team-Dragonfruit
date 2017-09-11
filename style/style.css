@@ -599,3 +599,11 @@ table.table-striped.table-hover {
     color: #333333;
     margin-right: 18px;
 }
+
+.descriptionText {
+    display: inline-block;
+    width: 12em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
