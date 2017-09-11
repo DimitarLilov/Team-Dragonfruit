@@ -124,6 +124,61 @@ handlers.displayCategoryEvents = function (ctx) {
     });
 };
 
+handlers.getAddEvent = function (ctx) {
+    ctx.loggedIn = auth.isAuthorized();
+    ctx.username = sessionStorage.getItem('username');
+    ctx.admin = auth.isAdmin();
+
+    if (ctx.admin) {
+
+        categoriesService.getCategories()
+            .then(function (categoriesData) {
+
+                ctx.categories = categoriesData;
+
+                ctx.loadPartials({
+                    header: "./templates/admin/common/header.hbs",
+                    towns: "./templates/towns/towns.hbs",
+                    category: "./templates/admin/events/category.hbs",
+                    footer: "./templates/common/footer.hbs"
+                }).then(function () {
+                    this.partial('./templates/admin/events/eventAdd.hbs');
+                });
+            });
+    }
+};
+
+handlers.addEvent = function (ctx) {
+
+    let title = ctx.params.title;
+    let image = ctx.params.image;
+    let location = ctx.params.location;
+    let details = ctx.params.details;
+    let eventTime = ctx.params.eventTime;
+    let eventDate = ctx.params.eventDate;
+    let town = ctx.params.town;
+    let categoryId = ctx.params.categoryId;
+
+    let newEvent = {
+        "image": image,
+        "title": title,
+        "location": location,
+        "details": details,
+        "eventTime": eventTime,
+        "eventDate": eventDate,
+        "town": town,
+        "categoryId": categoryId
+    };
+
+    // TODO: VALIDATION
+
+    eventsService.addEvent(newEvent)
+        .then(function (dd) {
+            console.log(dd);
+            ctx.redirect("#/admin/events");
+        }).catch(notifications.handleError);
+};
+
 handlers.getEditEvent = function (ctx) {
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
