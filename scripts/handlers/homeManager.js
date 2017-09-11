@@ -3,8 +3,20 @@ handlers.displayHome = function (ctx) {
     ctx.username = sessionStorage.getItem('username');
     ctx.admin = auth.isAdmin();
 
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth()+1; //January is 0!
+    let yyyy = today.getFullYear();
+    if(dd<10) {
+        dd = '0'+dd
+    }
+    if(mm<10) {
+        mm = '0'+mm
+    }
+    today = yyyy + '-' + mm + '-' + dd;
+
     categoriesService.getCategoriesNotLogged().then(function (categories) {
-        homeService.getUpcomingEvents().then(function (events) {
+        homeService.getUpcomingEvents(today).then(function (events) {
             events[0].active = "active";
 
             ctx.events = events;
