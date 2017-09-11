@@ -38,15 +38,7 @@ let auth = (() => {
     }
 
     // user/register
-    function register(username, password, email, firstName, lastName, role) {
-        let userData = {
-            username,
-            password,
-            email,
-            firstName,
-            lastName,
-            role
-        };
+    function register(userData) {
 
         return requester.post('user', '', 'basic', userData);
     }
