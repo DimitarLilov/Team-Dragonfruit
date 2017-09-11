@@ -1,0 +1,25 @@
+<tr>
+    <td class="col-sm-8 col-md-6">
+        <div class="media">
+            <a class="thumbnail pull-left" href="#">
+                <img class="media-object"
+                     src="{{image}}"
+                     style="width: 72px; height: 72px;">
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading"><a href="#">{{title}}</a></h4>
+                <h5 class="media-heading">{{eventDate}} - {{eventTime}}</h5>
+            </div>
+        </div>
+    </td>
+    <td class="col-sm-1 col-md-1" style="text-align: center">
+        <strong>{{quantity}}</strong>
+    </td>
+    <td class="col-sm-1 col-md-1 text-center"><strong>{{price}} &euro;</strong></td>
+    <td class="col-sm-1 col-md-1 text-center"><strong>{{totalProductPrice}}</strong></td>
+    <td class="col-sm-1 col-md-1">
+        <button type="button" class="btn btn-danger" data-id="{{id}}">
+            <span class="glyphicon glyphicon-remove"></span> Remove
+        </button>
+    </td>
+</tr>

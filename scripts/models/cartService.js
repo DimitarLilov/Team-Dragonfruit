@@ -10,9 +10,13 @@ let cartService = (() => {
         return requester.post('appdata', `cart`, 'master',data);
     }
 
+    function deleteTicket(ticketId) {
+        return requester.remove('appdata','cart/'+ticketId,'kinvey');
+    }
     return {
         addTicketCart,
         getTicketByEventId,
         getTicketByUserId,
+        deleteTicket,
     }
 })();

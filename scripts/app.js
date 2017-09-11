@@ -34,7 +34,7 @@ $(() => {
         this.get('#/users/edit/:id', handlers.getEditUser);
         this.get('#/users/admin', handlers.displayAdminUsers);
         this.get('#/users/user', handlers.displayBasicUsers);
-        this.get('#/cart/:id',handlers.displayCart);
+        this.get('#/cart',handlers.displayCart);
 
 
 
