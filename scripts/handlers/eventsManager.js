@@ -124,6 +124,64 @@ handlers.displayCategoryEvents = function (ctx) {
     });
 };
 
+handlers.getAddEvent = function (ctx) {
+    ctx.loggedIn = auth.isAuthorized();
+    ctx.username = sessionStorage.getItem('username');
+    ctx.admin = auth.isAdmin();
+
+    if (ctx.admin) {
+
+        categoriesService.getCategories()
+            .then(function (categoriesData) {
+
+                ctx.categories = categoriesData;
+
+                ctx.loadPartials({
+                    header: "./templates/admin/common/header.hbs",
+                    towns: "./templates/towns/towns.hbs",
+                    category: "./templates/admin/events/category.hbs",
+                    footer: "./templates/common/footer.hbs"
+                }).then(function () {
+                    this.partial('./templates/admin/events/eventAdd.hbs');
+                });
+            });
+    }
+};
+
+handlers.addEvent = function (ctx) {
+
+    let title = ctx.params.title;
+    let image = ctx.params.image;
+    let location = ctx.params.location;
+    let details = ctx.params.details;
+    let eventTime = ctx.params.eventTime;
+    let eventDate = ctx.params.eventDate;
+    let town = ctx.params.town;
+    let categoryId = ctx.params.categoryId;
+
+    let newEvent = {
+        "image": image,
+        "title": title,
+        "location": location,
+        "details": details,
+        "eventTime": eventTime,
+        "eventDate": eventDate,
+        "town": town,
+        "categoryId": categoryId
+    };
+
+    let isValidEvent = validateEvent(newEvent);
+
+    if (isValidEvent) {
+
+        eventsService.addEvent(newEvent)
+            .then(function (dd) {
+                console.log(dd);
+                ctx.redirect("#/admin/events");
+            }).catch(notifications.handleError);
+    }
+};
+
 handlers.getEditEvent = function (ctx) {
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
@@ -188,11 +246,16 @@ handlers.editEvent = function (ctx) {
         "categoryId": categoryId,
         "_id": eventId,
     };
-    eventsService.editEvents(event).then(function () {
-        notifications.showInfo(`Event ${event.title} updated.`);
-        ctx.redirect("#/admin/events");
-    }).catch(notifications.handleError);
 
+    let isValidEvent = validateEvent(event);
+
+    if (isValidEvent) {
+
+        eventsService.editEvents(event).then(function () {
+            notifications.showInfo(`Event ${event.title} updated.`);
+            ctx.redirect("#/admin/events");
+        }).catch(notifications.handleError);
+    }
 };
 
 
@@ -244,4 +307,105 @@ function renderEventsTemplates(ctx, events, categories) {
     }).then(function () {
         this.partial('./templates/events/events.hbs');
     });
+}
+
+function validateEvent(event) {
+
+    if (event.title === null || event.title.length < 4) {
+
+        notifications.showError('Title length must be greater than 4 characters!');
+        $('#title').addClass('error');
+        return false;
+    } else {
+
+        $('#title').removeClass('error');
+    }
+
+    let urlRegex = new RegExp(/^(ftp|http[s]*|smtp):\/\/.*$/, 'i');
+
+    if (urlRegex.test(event.image)) {
+
+        $('#image').removeClass('error');
+    } else {
+
+        notifications.showError('Please enter valid image url!');
+        $('#image').addClass('error');
+        return false;
+    }
+
+    if (event.location === null || event.location.length < 3) {
+
+        notifications.showError('Location length must be greater than 3 characters!');
+        $('#location').addClass('error');
+        return false;
+    } else {
+
+        $('#location').removeClass('error');
+    }
+
+    if (event.eventDate.length === 0) {
+
+        notifications.showError('Event date must not be present day or in the past!');
+        $('#eventDate').addClass('error');
+        return false;
+    } else {
+
+        $('#eventDate').removeClass('error');
+    }
+
+    let dateNow = new Date();
+    let dateOfEvent = new Date(event.eventDate);
+
+    if (dateOfEvent <= dateNow) {
+
+        notifications.showError('Event date must not be present day or in the past!');
+        $('#eventDate').addClass('error');
+        return false;
+    } else {
+
+        $('#eventDate').removeClass('error');
+    }
+
+    if (event.eventTime.indexOf(':') > 0) {
+
+        let timeTokens = event.eventTime.split(/:/);
+
+        let hours = Number(timeTokens[0]);
+        let minutes = Number(timeTokens[1]);
+
+        if (hours < 0 || hours > 24) {
+
+            notifications.showError('Enter valid hour of event.');
+            $('#eventTime').addClass('error');
+            return false;
+        } else {
+            $('#eventTime').removeClass('error');
+        }
+
+        if (minutes < 0 || minutes > 59) {
+
+            notifications.showError('Enter valid minutes of event.');
+            $('#eventTime').addClass('error');
+            return false;
+        } else {
+            $('#eventTime').removeClass('error');
+        }
+    } else {
+
+        notifications.showError('Enter valid time in format HH:mm.');
+        $('#eventTime').addClass('error');
+        return false;
+    }
+
+    if (event.details === null || event.details.length < 10) {
+
+        notifications.showError('Description length must be greater than 10 characters!');
+        $('#details').addClass('error');
+        return false;
+    } else {
+
+        $('#details').removeClass('error');
+    }
+
+    return true;
 }

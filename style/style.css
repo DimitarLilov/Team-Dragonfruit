@@ -222,6 +222,10 @@ body {
     margin-top: 15px;
 }
 
+.error {
+    border: 1px solid red;
+}
+
 /* USER HEADER STYLING */
 
 #content > header > nav > div > ul > li > a {
@@ -594,4 +598,12 @@ table.table-striped.table-hover {
 #ticketsCountInputLabel {
     color: #333333;
     margin-right: 18px;
+}
+
+.descriptionText {
+    display: inline-block;
+    width: 12em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

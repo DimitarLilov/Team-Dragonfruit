@@ -28,6 +28,10 @@ let eventsService = (() => {
         return requester.post('rpc', `custom/deleteEvent`, 'kinvey', data);
     }
 
+    function addEvent(data) {
+        return requester.post('appdata', 'events', 'kinvey', data);
+    }
+
     return {
         getAllEvents,
         getAllEventsNotLogged,
@@ -35,6 +39,7 @@ let eventsService = (() => {
         getEventsInfoNotLogged,
         editEvents,
         removeEvents,
-        getEventsByCategoryId
+        getEventsByCategoryId,
+        addEvent
     }
 })();
