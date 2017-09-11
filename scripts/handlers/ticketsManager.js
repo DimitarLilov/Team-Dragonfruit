@@ -158,19 +158,29 @@ handlers.addEventTicket = function (ctx) {
 
 handlers.buyTicket = function (ctx) {
     let loggedIn = sessionStorage.getItem('authtoken') !== null;
+    let eventId = ctx.params.id.substring(1);
 
     if (loggedIn) {
-        let data = {
-            userId: sessionStorage.getItem('userId'),
-            ticketId: ctx.params.ticketId,
-            eventId: ctx.params.id.substring(1),
-            ticketAmount: ctx.params.ticketAmount
-        };
-        cartService.addTicketCart(data)
-            .then(function () {
-                notifications.showInfo(`Ticket added in cart.`);
-                ctx.redirect(`#/cart/:${ctx.params.id.substring(1)}`);
-                }).catch(notifications.handleError);
+        ticketsService.getTicket(ctx.params.ticketId).then(function (ticket) {
+            eventsService.getEventsInfo(eventId).then(function (event) {
+                let data = {
+                    image: event.image,
+                    title: event.title,
+                    ticketAmount: ctx.params.ticketAmount,
+                    eventDate: event.eventDate,
+                    eventTime: event.eventTime,
+                    price: ticket.price,
+                    userId: sessionStorage.getItem('userId')
+                };
+                cartService.addTicketCart(data)
+                    .then(function () {
+                        notifications.showInfo(`Ticket added in cart.`);
+                        ctx.redirect(`#/events`);
+                    }).catch(notifications.handleError);
+
+            })
+        });
+
 
     }else {
         ctx.redirect("#/login");
