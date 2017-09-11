@@ -366,26 +366,35 @@ function validateEvent(event) {
         $('#eventDate').removeClass('error');
     }
 
-    let timeTokens = event.eventTime.split(/:/);
-    let hours = Number(timeTokens[0]);
-    let minutes = Number(timeTokens[1]);
+    if (event.eventTime.indexOf(':') > 0) {
 
-    if (hours < 0 || hours > 12) {
+        let timeTokens = event.eventTime.split(/:/);
 
-        notifications.showError('Hours must be between 0 and 12.');
+        let hours = Number(timeTokens[0]);
+        let minutes = Number(timeTokens[1]);
+
+        if (hours < 0 || hours > 24) {
+
+            notifications.showError('Enter valid hour of event.');
+            $('#eventTime').addClass('error');
+            return false;
+        } else {
+            $('#eventTime').removeClass('error');
+        }
+
+        if (minutes < 0 || minutes > 59) {
+
+            notifications.showError('Enter valid minutes of event.');
+            $('#eventTime').addClass('error');
+            return false;
+        } else {
+            $('#eventTime').removeClass('error');
+        }
+    } else {
+
+        notifications.showError('Enter valid time in format HH:mm.');
         $('#eventTime').addClass('error');
         return false;
-    } else {
-        $('#eventTime').removeClass('error');
-    }
-
-    if (minutes < 0 || minutes > 59) {
-
-        notifications.showError('Minutes must be between 0 and 59.');
-        $('#eventTime').addClass('error');
-        return false;
-    } else {
-        $('#eventTime').removeClass('error');
     }
 
     if (event.details === null || event.details.length < 10) {

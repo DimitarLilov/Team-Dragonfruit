@@ -123,11 +123,15 @@ handlers.editUser = function (ctx) {
         role: ctx.params.role
     };
 
-    usersService.editUserInfo(user).then(function () {
-        notifications.showInfo(`User updated.`);
-        ctx.redirect("#/users");
-    }).catch(notifications.handleError);
+    let isValid = validateEditUser(user);
 
+    if (isValid) {
+
+        usersService.editUserInfo(user).then(function () {
+            notifications.showInfo(`User updated.`);
+            ctx.redirect("#/users");
+        }).catch(notifications.handleError);
+    }
 };
 
 handlers.getSearchedUser = function (ctx) {
@@ -169,4 +173,41 @@ function renderCommonTemplates(ctx, usersData) {
     }).then(function () {
         this.partial('./templates/admin/users/usersList.hbs');
     });
+}
+
+function validateEditUser(user) {
+
+    let userReg = new RegExp("^([a-zA-Z]){3,}$");
+
+    if (userReg.test(user.username)) {
+
+        $('#username').removeClass('error');
+    } else {
+
+        notifications.showError('Username must more than 2 characters long and contains only lower and/or uppercase english letters!');
+        $('#username').addClass('error');
+        return false;
+    }
+
+    if (user.firstName === null || user.firstName.length < 3) {
+
+        notifications.showError('First name length must be greater than 2 characters!');
+        $('#firstName').addClass('error');
+        return false;
+    } else {
+
+        $('#firstName').removeClass('error');
+    }
+
+    if (user.lastName === null || user.lastName.length < 3) {
+
+        notifications.showError('Last name length must be greater than 2 characters!');
+        $('#lastName').addClass('error');
+        return false;
+    } else {
+
+        $('#lastName').removeClass('error');
+    }
+
+    return false;
 }
