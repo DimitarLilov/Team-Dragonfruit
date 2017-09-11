@@ -102,7 +102,6 @@ handlers.addCategory = function (ctx) {
 handlers.deleteCategory = function (ctx) {
 
     let id = ctx.params.id.substring(1);
-    console.log(id);
 
     categoriesService.removeCategory(id)
         .then(function () {
