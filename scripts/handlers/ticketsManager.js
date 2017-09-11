@@ -169,7 +169,7 @@ handlers.buyTicket = function (ctx) {
         cartService.addTicketCart(data)
             .then(function () {
                 notifications.showInfo(`Ticket added in cart.`);
-                ctx.redirect(`#/shop/:${ctx.params.id.substring(1)}`);
+                ctx.redirect(`#/cart/:${ctx.params.id.substring(1)}`);
                 }).catch(notifications.handleError);
 
     }else {

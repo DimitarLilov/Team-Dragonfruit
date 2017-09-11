@@ -2,28 +2,36 @@ handlers.displayCart = function (ctx) {
     let loggedIn = auth.isAuthorized();
     ctx.loggedIn = loggedIn;
     ctx.username = sessionStorage.getItem('username');
-    let userId=sessionStorage.getItem('userId');
     let eventId = ctx.params.id.substring(1);
 
-    let ticketCountPromise=cartService.getTicketByEventId(eventId);
-    let ticketTitlePromise=eventsService.getEventsInfo(eventId);
-    let ticketInfoByUserIdPromise=cartService.getTicketByUserId(userId);
+    cartService.getTicketByEventId(eventId)
+        .then(function (detailsInfo) {
+            eventsService.getEventsInfo(eventId)
+                .then(function (amountInfo) {
 
-    Promise.all([ticketTitlePromise,ticketCountPromise,ticketInfoByUserIdPromise])
-        .then(function ([ticketInfo,eventInfo,userInfo]) {
-                ctx.image=ticketInfo.image;
-                ctx.title=ticketInfo.title;
-                ctx.details=ticketInfo.details;
+                    let details = [];
+                    for (let detail of detailsInfo) {
+                        let detailsObj = {
+                            title: amountInfo.title,
+                            details: amountInfo.details,
+                            image: amountInfo.image,
+                            amount: detail.ticketAmount,
+                        };
 
-                ctx.amount=eventInfo.ticketAmount;
+                        details.push(detailsObj);
+                    }
 
-
-            ctx.loadPartials({
-                header:'./templates/common/header.hbs',
-                footer:'./templates/common/footer.hbs',
-                navCategory: "./templates/common/navCategory.hbs",
-            }).then(function () {
-                this.partial('./templates/shoppingCart/shoppingCartForm.hbs');
-            })
+                    ctx.details = details;
+                    ctx.loadPartials({
+                        header: './templates/common/header.hbs',
+                        footer: './templates/common/footer.hbs',
+                        navCategory: "./templates/common/navCategory.hbs",
+                        detail: './templates/shoppingCart/shoppingCartForm.hbs',
+                    }).then(function () {
+                        this.partial('./templates/shoppingCart/shoppingCartPage.hbs');
+                    })
+                })
         })
 }
+
+
