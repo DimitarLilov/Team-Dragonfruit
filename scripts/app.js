@@ -51,6 +51,7 @@ $(() => {
         this.post('#/admin/events/delete/ticket/:id', handlers.deleteTickets);
         this.post('#/admin/categories/add', handlers.addCategory);
         this.post('#/admin/categories/edit/:id', handlers.editCategory);
+        this.post('#/admin/categories/delete/:id', handlers.deleteCategory);
         this.post('#/events/tickets/:id', handlers.buyTicket);
     });
 

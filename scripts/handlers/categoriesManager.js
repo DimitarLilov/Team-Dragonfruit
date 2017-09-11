@@ -50,10 +50,15 @@ handlers.editCategory = function (ctx) {
             "_id" : id
         };
 
-    categoriesService.editCategory(category).then(function () {
-        notifications.showInfo(`Category edit.`);
-        ctx.redirect("#/admin/categories");
-    }).catch(notifications.handleError);
+    let isValidCategory = validateCategory(category);
+
+    if (isValidCategory) {
+
+        categoriesService.editCategory(category).then(function () {
+            notifications.showInfo(`Category edit.`);
+            ctx.redirect("#/admin/categories");
+        }).catch(notifications.handleError);
+    }
 };
 
 handlers.displayAddCategory = function (ctx) {
@@ -82,10 +87,28 @@ handlers.addCategory = function (ctx) {
         {
             "category": ctx.params.name,
         };
-    categoriesService.addCategory(category).then(function () {
-        notifications.showInfo(`Category created.`);
-        ctx.redirect("#/admin/categories");
-    }).catch(notifications.handleError);
+
+    let isValidCategory = validateCategory(category);
+
+    if (isValidCategory) {
+
+        categoriesService.addCategory(category).then(function () {
+            notifications.showInfo(`Category created.`);
+            ctx.redirect("#/admin/categories");
+        }).catch(notifications.handleError);
+    }
+};
+
+handlers.deleteCategory = function (ctx) {
+
+    let id = ctx.params.id.substring(1);
+    console.log(id);
+
+    categoriesService.removeCategory(id)
+        .then(function () {
+            ctx.redirect('#/admin/categories');
+            setTimeout(() => notifications.showInfo(`Category deleted.`), 500);
+        }).catch(notifications.showError);
 };
 
 function renderCategoryCommonTemplates(ctx, categoriesData) {
@@ -99,4 +122,19 @@ function renderCategoryCommonTemplates(ctx, categoriesData) {
     }).then(function () {
         this.partial('./templates/admin/categories/categoriesList.hbs');
     });
+}
+
+function validateCategory(category) {
+
+    if (category.category === null || category.category.length < 5) {
+
+        notifications.showError('Category name must be greater than 4 characters!');
+        $('#name').addClass('error');
+        return false;
+    } else {
+
+        $('#name').removeClass('error');
+    }
+
+    return true;
 }

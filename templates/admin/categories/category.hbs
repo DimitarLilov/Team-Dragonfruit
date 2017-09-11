@@ -2,5 +2,8 @@
     <td>{{category}}</td>
     <td>
         <a class="btn btn-default" href="#/admin/categories/edit/:{{_id}}">Edit</a>
+        <form class="adminUsersAction" action="#/admin/categories/delete/:{{_id}}" method="post">
+            <button class="btn btn-default">Delete</button>
+        </form>
     </td>
 </tr>

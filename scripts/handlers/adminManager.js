@@ -209,5 +209,5 @@ function validateEditUser(user) {
         $('#lastName').removeClass('error');
     }
 
-    return false;
+    return true;
 }
