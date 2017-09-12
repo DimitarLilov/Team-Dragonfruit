@@ -1,7 +1,7 @@
 {{> header}}
 <div class="row">
     <div class="col-sm-12 col-md-10 col-md-offset-1">
-        <form class="form" action='#/cart' method="POST">
+        <form class="form" action='#/cart' method="post">
         <table class="table table-hover">
             <thead>
             <tr>
@@ -24,8 +24,8 @@
                 <td class="text-right"><h3><strong>{{totalPrice}}</strong></h3></td>
             </tr>
             <tr>
-                <td>  </td>
-                <td>  </td>
+                <td><input type="hidden" name="ticketsCount" value="{{ticketsCount}}"></td>
+                <td><input type="hidden" name="totalPrice" value="{{totalPrice}}"></td>
                 <td>  </td>
                 <td>  </td>
                 <td>

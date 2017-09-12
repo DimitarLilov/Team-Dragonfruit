@@ -12,11 +12,13 @@ handlers.displayCart = function (ctx) {
 
             let tickets = [];
             let totalPrice = 0;
+            let ticketsCount = 0;
 
             for (let product of products) {
 
                 let totalProductPrice = Number(product.ticketAmount) * Number(product.price);
                 totalPrice += totalProductPrice;
+                ticketsCount++;
 
                 let ticket = {
                     id: product._id,
@@ -27,14 +29,13 @@ handlers.displayCart = function (ctx) {
                     eventTime: product.eventTime,
                     price: product.price,
                     totalProductPrice: totalProductPrice,
-                    eventId: product.eventId,
-                    ticketId: product.ticketId
                 };
 
                 tickets.push(ticket);
             }
 
             ctx.categories = categories;
+            ctx.ticketsCount = ticketsCount;
             ctx.tickets = tickets;
             ctx.totalPrice = totalPrice;
 
@@ -81,8 +82,48 @@ handlers.cartDeleteTicket = function (ctx) {
     }).catch(notifications.handleError);
 };
 
-handlers.buyTicket = function (ctx) {
+handlers.displayPayment = function (ctx) {
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    ctx.username = sessionStorage.getItem('username');
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    ctx.id = sessionStorage.getItem('userId');
 
     console.log(ctx.params);
+
+    categoriesService.getCategories().then(function (categories) {
+
+        let ticketsId = [];
+        ctx.categories = categories;
+        ctx.totalPrice = ctx.params.totalPrice;
+
+        for(let ticket of ctx.params.id){
+            let ticketId = {
+                id: ticket
+            };
+            ticketsId.push(ticketId)
+        }
+
+        ctx.tickets = ticketsId;
+        ctx.ticketsCount = ctx.params.ticketsCount;
+
+
+
+        ctx.loadPartials({
+            header: './templates/common/header.hbs',
+            footer: './templates/common/footer.hbs',
+            hiddenTicket: './templates/cart/hiddenTicket.hbs',
+            navCategory: "./templates/common/navCategory.hbs",
+        }).then(function () {
+            this.partial('./templates/cart/payment.hbs')
+        })
+
+    }).catch(notifications.handleError);
+
+};
+
+handlers.payment = function (ctx) {
+    console.log(ctx.params);
+
+
 
 };

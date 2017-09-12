@@ -367,13 +367,6 @@ table.table-striped.table-hover {
     animation-duration: .3s;
 }
 
-.card {
-    margin-top: 50px;
-    background: #eee;
-    padding: 3em;
-    line-height: 1.5em;
-}
-
 @media screen and (min-width: 997px) {
     .wrapper {
         display: -webkit-box;
@@ -606,4 +599,11 @@ table.table-striped.table-hover {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.credit-card-box .display-tr {
+    display: table-row;
+}
+.card-type a {
+    text-decoration: none;
 }
