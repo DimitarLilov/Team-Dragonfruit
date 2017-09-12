@@ -187,15 +187,22 @@ handlers.buyTicket = function (ctx) {
                 };
 
                 let newAmount = Number(ticket.ticketsCount) - Number(data.ticketAmount);
-                ticket.ticketsCount = newAmount;
 
-                cartService.addTicketCart(data).then(function () {
+                if (newAmount >= 0) {
+
+                    ticket.ticketsCount = newAmount;
+
+                    cartService.addTicketCart(data).then(function () {
                         ticketsService.editTicket(ticket).then(function () {
+                            
                             notifications.showInfo(`Ticket(s) added in cart.`);
                             ctx.redirect(`#/cart`);
                         });
                     }).catch(notifications.handleError);
+                } else {
 
+                    notifications.showError('Selected tickets amount can\'t be more than available amount!');
+                }
             })
         });
 
