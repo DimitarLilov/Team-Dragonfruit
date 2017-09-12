@@ -7,6 +7,7 @@ handlers.displayCart = function (ctx) {
     let userId = sessionStorage.getItem('userId');
 
     cartService.getTicketByUserId(userId).then(function (products) {
+        ctx.isEmpty = products.length ===0;
 
         categoriesService.getCategories().then(function (categories) {
 
@@ -88,30 +89,14 @@ handlers.displayPayment = function (ctx) {
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
     ctx.id = sessionStorage.getItem('userId');
 
-    console.log(ctx.params);
-
     categoriesService.getCategories().then(function (categories) {
 
-        let ticketsId = [];
         ctx.categories = categories;
         ctx.totalPrice = ctx.params.totalPrice;
-
-        for(let ticket of ctx.params.id){
-            let ticketId = {
-                id: ticket
-            };
-            ticketsId.push(ticketId)
-        }
-
-        ctx.tickets = ticketsId;
-        ctx.ticketsCount = ctx.params.ticketsCount;
-
-
 
         ctx.loadPartials({
             header: './templates/common/header.hbs',
             footer: './templates/common/footer.hbs',
-            hiddenTicket: './templates/cart/hiddenTicket.hbs',
             navCategory: "./templates/common/navCategory.hbs",
         }).then(function () {
             this.partial('./templates/cart/payment.hbs')
@@ -122,8 +107,30 @@ handlers.displayPayment = function (ctx) {
 };
 
 handlers.payment = function (ctx) {
-    console.log(ctx.params);
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    ctx.username = sessionStorage.getItem('username');
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    let userId = sessionStorage.getItem('userId');
+
+    cartService.getTicketByUserId(userId).then(function (tickets) {
+        for(let ticket of tickets){
+            ticketsService.getTicket(ticket.ticketId).then(function (ticketData) {
+                let data = {
+                    price: ticketData.price,
+                    ticketCategory: ticketData.priceCategory,
+                    userId: userId,
+                    title: ticket.title,
+                    eventTime: ticket.eventTime,
+                    eventDate: ticket.eventDate,
+                    categoryId: ticket.categoryId
+                }
+                ticketsService.buyTicket(data).then(function () {
+                    cartService.deleteTicket(ticket._id);
+                    ctx.redirect('#/my/tickets')
+                })
+            })
+        }
 
 
-
+    }).catch(notifications.handleError);
 };

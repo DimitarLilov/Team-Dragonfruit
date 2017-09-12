@@ -184,7 +184,8 @@ handlers.addTicketInCart = function (ctx) {
                     price: ticket.price,
                     userId: sessionStorage.getItem('userId'),
                     ticketId: ticket._id,
-                    eventId: eventId
+                    eventId: eventId,
+                    categoryId: event.categoryId
                 };
 
                 let newAmount = Number(ticket.ticketsCount) - Number(data.ticketAmount);

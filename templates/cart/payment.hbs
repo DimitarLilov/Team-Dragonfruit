@@ -25,13 +25,13 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <form action="#/cart/payment" id="payment-form" class='form' method="post">
+                    <form action="#/cart/payment" id="payment-form" method="post">
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group required">
-                                    <label class="form-control-label" for="cardNumber" style="color:black">CARD NUMBER</label>
-                                    <input type="text" id="cardNumber" name="cardNumber" placeholder="Valid Card Number"
-                                           class="form-control"
+                                    <label class="form-control-label" for="cardNumber">CARD NUMBER</label>
+                                    <input type="tel" id="cardNumber" name="cardNumber" placeholder="Valid Card Number"
+                                           class="form-control" autocomplete="cc-number"
                                            required="required" autofocus/>
                                 </div>
                             </div>
@@ -39,17 +39,17 @@
                         <div class="row">
                             <div class="col-xs-7 col-md-7">
                                 <div class="form-group required">
-                                    <label class="form-control-label" for="cardExpiry" style="color:black">EXPIRATION</label>
-                                    <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM / YY"
-                                           class="form-control"
+                                    <label class="form-control-label" for="cardExpiry">EXPIRATION</label>
+                                    <input type="tel" id="cardExpiry" name="cardExpiry" placeholder="MM / YY"
+                                           class="form-control" autocomplete="cc-exp"
                                            required="required"/>
                                 </div>
                             </div>
                             <div class="col-xs-5 col-md-5 pull-right">
                                 <div class="form-group required">
-                                    <label class="form-control-label" for="cardCVC" style="color:black">CV CODE</label>
-                                    <input type="text" id="cardCVC" name="cardCVC" placeholder="CVC"
-                                           class="form-control"
+                                    <label class="form-control-label" for="cardCVC">CV CODE</label>
+                                    <input type="tel" id="cardCVC" name="cardCVC" placeholder="CVC"
+                                           class="form-control" autocomplete="cc-csc"
                                            required="required"/>
                                 </div>
                             </div>
@@ -57,27 +57,17 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group required">
-                                    <label class="form-control-label" for="couponCode" style="color:black">COUPON CODE</label>
+                                    <label class="form-control-label" for="couponCode">COUPON CODE</label>
                                     <input type="text" id="couponCode" name="couponCode" class="form-control"
                                            required="required"/>
                                 </div>
                             </div>
                         </div>
 
-                        <input type="hidden" name="ticketsCount" value="{{ticketsCount}}">
-                        <input type="hidden" name="totalPrice" value="{{totalPrice}}">
-
-                        {{#each tickets}}
-                            {{> hiddenTicket}}
-                        {{/each}}
-
-                        <div class="control-group">
-                            <div class="controls">
-                                <button class="subscribe btn btn-success btn-lg btn-block" type="button">
-                                    Start Subscription
-                                </button>
-                            </div>
+                        <div class="form-group row">
+                            <button class="btn btn-success btn-lg btn-block">Start Subscription</button>
                         </div>
+
                     </form>
                 </div>
             </div>

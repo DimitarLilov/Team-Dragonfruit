@@ -36,7 +36,7 @@ $(() => {
         this.get('#/users/user', handlers.displayBasicUsers);
         this.get('#/cart',handlers.displayCart);
         this.get('#/cart/delete/ticket/:id',handlers.cartDeleteTicket);
-        // this.post('#/cart/payment', handlers.displayPayment);
+        this.get('#/cart/payment', handlers.displayPayment);
 
 
 
@@ -55,7 +55,6 @@ $(() => {
         this.post('#/admin/categories/edit/:id', handlers.editCategory);
         this.post('#/admin/categories/delete/:id', handlers.deleteCategory);
         this.post('#/events/tickets/:id', handlers.addTicketInCart);
-        this.post('#/cart', handlers.displayPayment);
         this.post('#/cart/payment', handlers.payment);
 
     });

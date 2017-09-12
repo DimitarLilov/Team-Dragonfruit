@@ -5,7 +5,7 @@ let ticketsService = (() => {
     }
 
     function addTicket(ticket) {
-        return requester.post('appdata', `tickets`, 'kinvey',ticket);
+        return requester.post('appdata', `tickets`, 'kinvey', ticket);
     }
 
     function getEventTickets(eventId) {
@@ -24,6 +24,10 @@ let ticketsService = (() => {
         return requester.post('rpc', 'custom/deleteTicket', 'kinvey', data);
     }
 
+    function buyTicket(data) {
+        return requester.post('appdata', 'userTickets', 'kinvey', data);
+    }
+
     function getTicket(ticketId) {
         return requester.get('appdata', `tickets/${ticketId}`, 'kinvey');
     }
@@ -35,6 +39,7 @@ let ticketsService = (() => {
         getEventTicketsNotLogged,
         getTicket,
         editTicket,
-        removeTicket
+        removeTicket,
+        buyTicket
     }
 })();
