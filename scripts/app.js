@@ -31,6 +31,7 @@ $(() => {
         this.get('#/admin/categories/add', handlers.displayAddCategory);
         this.get('#/admin/categories/edit/:id', handlers.getEditCategory);
         this.get('#/users', handlers.displayAllUsers);
+        this.get('#/users/edit', handlers.getUserEditInfo);
         this.get('#/users/edit/:id', handlers.getEditUser);
         this.get('#/users/admin', handlers.displayAdminUsers);
         this.get('#/users/user', handlers.displayBasicUsers);
@@ -43,6 +44,7 @@ $(() => {
         this.post('#/register', handlers.registerUser);
         this.post('#/login', handlers.loginUser);
         this.post('#/users', handlers.getSearchedUser);
+        this.post('#/users/edit', handlers.userEditInfo);
         this.post('#/users/edit/:id', handlers.editUser);
         this.post('#/users/delete/:id', handlers.deleteUser);
         this.post('#/admin/events/add', handlers.addEvent);
