@@ -58,17 +58,22 @@ handlers.displayCart = function (ctx) {
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     ctx.username = sessionStorage.getItem('username');
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
-    ctx.id=sessionStorage.getItem('userId');
+    ctx.id = sessionStorage.getItem('userId');
 
     let userId = sessionStorage.getItem('userId');
 
     cartService.getTicketByUserId(userId).then(function (products) {
+
         categoriesService.getCategories().then(function (categories) {
+
             let tickets = [];
             let totalPrice = 0;
+
             for (let product of products) {
+
                 let totalProductPrice = Number(product.ticketAmount) * Number(product.price);
                 totalPrice += totalProductPrice;
+
                 let ticket = {
                     id: product._id,
                     image: product.image,
@@ -105,19 +110,36 @@ handlers.displayCart = function (ctx) {
             })
 
         }).catch(notifications.handleError);
-    })
+    });
+
     function deleteTicket(ticketId) {
         ctx.username = sessionStorage.getItem('username');
         ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
-        console.log(ticketId);
-        cartService.deleteTicket(ticketId)
-            .then(function () {
-                notifications.showInfo('Ticket deleted')
-                window.history.go(-1);
-            }).catch(auth.handleError)
-    }
 
-}
+        cartService.getCartTicketById(ticketId).then(function (cartTicketData) {
+
+            let boughtAmount = Number(cartTicketData.ticketAmount);
+
+            ticketsService.getTicket(cartTicketData.ticketId).then(function (eventTicketData) {
+
+                let currAmount = Number(eventTicketData.ticketsCount);
+                currAmount += boughtAmount;
+                eventTicketData.ticketsCount = currAmount;
+
+                ticketsService.editTicket(eventTicketData).then(function () {
+
+                    cartService.deleteTicket(ticketId).then(function () {
+
+                        notifications.showInfo('Ticket deleted');
+                        window.history.go(-1);
+                    })
+                }).catch(notifications.handleError);
+
+            }).catch(notifications.handleError);
+
+        }).catch(notifications.handleError);
+    }
+};
 
 
 

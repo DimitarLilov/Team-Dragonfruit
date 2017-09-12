@@ -1,8 +1,8 @@
-<div class="required form-check" {{disabled}}>
+<div class="required form-check" {{disabled}} id="radioDiv">
     <label class="form-check-label">
         <input type="radio" class="form-check-input" name="ticketId"
                id="{{_id}}"
-               value="{{_id}}" {{disabled}} required="required">
-        <span style="color:black">{{priceCategory}} - {{price}} &euro;</span>
+               value="{{_id}}" {{disabled}} data-amount="{{ticketsCount}}" required="required" onclick="setTicketsAmountLeft({{ticketsCount}})">
+        <span style="color:black">{{priceCategory}} - {{price}} &euro; - наличност ({{ticketsCount}})</span>
     </label>
 </div>

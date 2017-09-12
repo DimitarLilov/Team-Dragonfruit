@@ -1,5 +1,10 @@
 let cartService = (() => {
 
+    function getCartTicketById(id) {
+
+        return requester.get('appdata', `cart/${id}`, 'kinvey');
+    }
+
     function getTicketByUserId(userId) {
 
        return requester.get('appdata', `cart?query={"userId":"${userId}"}`, 'kinvey')
@@ -21,6 +26,7 @@ let cartService = (() => {
     }
 
     return {
+        getCartTicketById,
         addTicketCart,
         getTicketByEventId,
         getTicketByUserId,
