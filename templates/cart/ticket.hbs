@@ -1,7 +1,9 @@
 <tr>
     <td class="col-sm-8 col-md-6">
+        <input type="hidden" name="eventId" value="{{eventId}}">
+        <input type="hidden" name="ticketId" value="{{ticketId}}">
         <div class="media">
-            <a class="thumbnail pull-left" href="#">
+            <a class="pull-left" href="#">
                 <img class="media-object"
                      src="{{image}}"
                      style="width: 72px; height: 72px;">
@@ -19,7 +21,7 @@
     <td class="col-sm-1 col-md-1 text-center"><strong>{{totalProductPrice}}</strong></td>
     <td class="col-sm-1 col-md-1">
         <button type="button" class="btn btn-danger" data-id="{{id}}">
-            <span class="glyphicon glyphicon-remove"></span> Remove
+            <span class="glyphicon glyphicon-remove"></span> <a style="color: inherit; text-decoration: none" href="#/cart/delete/ticket/:{{id}}">Remove</a>
         </button>
     </td>
 </tr>

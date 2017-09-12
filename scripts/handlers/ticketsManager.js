@@ -167,7 +167,7 @@ handlers.addEventTicket = function (ctx) {
 };
 
 
-handlers.buyTicket = function (ctx) {
+handlers.addTicketInCart = function (ctx) {
     let loggedIn = sessionStorage.getItem('authtoken') !== null;
     let eventId = ctx.params.id.substring(1);
 
@@ -183,7 +183,8 @@ handlers.buyTicket = function (ctx) {
                     eventTime: event.eventTime,
                     price: ticket.price,
                     userId: sessionStorage.getItem('userId'),
-                    ticketId: ticket._id
+                    ticketId: ticket._id,
+                    eventId: eventId
                 };
 
                 let newAmount = Number(ticket.ticketsCount) - Number(data.ticketAmount);

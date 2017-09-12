@@ -35,6 +35,7 @@ $(() => {
         this.get('#/users/admin', handlers.displayAdminUsers);
         this.get('#/users/user', handlers.displayBasicUsers);
         this.get('#/cart',handlers.displayCart);
+        this.get('#/cart/delete/ticket/:id',handlers.cartDeleteTicket);
 
 
 
@@ -52,7 +53,9 @@ $(() => {
         this.post('#/admin/categories/add', handlers.addCategory);
         this.post('#/admin/categories/edit/:id', handlers.editCategory);
         this.post('#/admin/categories/delete/:id', handlers.deleteCategory);
-        this.post('#/events/tickets/:id', handlers.buyTicket);
+        this.post('#/events/tickets/:id', handlers.addTicketInCart);
+        this.post('#/cart', handlers.buyTicket);
+
     });
 
     app.run();
