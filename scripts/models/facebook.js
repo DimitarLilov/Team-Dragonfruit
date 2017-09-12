@@ -67,7 +67,7 @@ let facebookService = (() => {
         }, {scope: 'public_profile,email'});
     }
 
-    function fbLogout(ctx, id) {
+    function fbLogout(ctx, userId) {
         FB.logout(function () {
 
             sessionStorage.clear();
@@ -75,7 +75,10 @@ let facebookService = (() => {
             ctx.redirect("#/home");
         });
 
-        usersService.deleteUser(id).catch(notifications.handleError);
+        let data = {
+            userId: userId
+        };
+        usersService.removeUser(data).catch(notifications.handleError);
     }
 
     return {
