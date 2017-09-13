@@ -1,7 +1,7 @@
 handlers.searchByTown=function (ctx) {
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     ctx.username = sessionStorage.getItem('username');
-    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
 
 
 

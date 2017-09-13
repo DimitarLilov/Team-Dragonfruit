@@ -1,8 +1,8 @@
 const handlers = {};
 
-Handlebars.registerHelper('select', function( value, options ){
-    let $el = $('<select />').html( options.fn(this) );
-    $el.find('[value="' + value + '"]').attr({'selected':'selected'});
+Handlebars.registerHelper('select', function (value, options) {
+    let $el = $('<select />').html(options.fn(this));
+    $el.find('[value="' + value + '"]').attr({'selected': 'selected'});
     return $el.html();
 });
 
@@ -31,36 +31,40 @@ $(() => {
         this.get('#/admin/categories/add', handlers.displayAddCategory);
         this.get('#/admin/categories/edit/:id', handlers.getEditCategory);
         this.get('#/users', handlers.displayAllUsers);
+        this.get('#/users/edit', handlers.getUserEditInfo);
         this.get('#/users/edit/:id', handlers.getEditUser);
         this.get('#/users/admin', handlers.displayAdminUsers);
         this.get('#/users/user', handlers.displayBasicUsers);
-        this.get('#/cart',handlers.displayCart);
-        this.get('#/cart/delete/:id',handlers.deleteTicketByCart);
-        this.get('#/searchByTown',handlers.searchByTown);
-        this.get('#/searchByTime',handlers.searchByTime);
-        this.get('#/searchByPrice',handlers.searchByPrice);
-
+        this.get('#/cart', handlers.displayCart);
+        this.get('#/cart/delete/ticket/:id', handlers.cartDeleteTicket);
+        this.get('#/cart/payment', handlers.displayPayment);
+        this.get('#/searchByTown', handlers.searchByTown);
+        this.get('#/searchByTime', handlers.searchByTime);
+        this.get('#/searchByPrice', handlers.searchByPrice);
 
 
         this.post('#/register', handlers.registerUser);
         this.post('#/login', handlers.loginUser);
         this.post('#/users', handlers.getSearchedUser);
+        this.post('#/users/edit', handlers.userEditInfo);
         this.post('#/users/edit/:id', handlers.editUser);
         this.post('#/users/delete/:id', handlers.deleteUser);
         this.post('#/admin/events/add', handlers.addEvent);
+        this.post('#/admin/events', handlers.getSearchedEvent);
         this.post('#/admin/events/delete/:id', handlers.deleteEvent);
         this.post('#/admin/events/edit/:id', handlers.editEvent);
         this.post('#/admin/events/add/ticket/:id', handlers.addEventTicket);
         this.post('#/admin/events/edit/ticket/:id', handlers.editTickets);
         this.post('#/admin/events/delete/ticket/:id', handlers.deleteTickets);
+        this.post('#/admin/categories', handlers.getSearchedCategory);
         this.post('#/admin/categories/add', handlers.addCategory);
         this.post('#/admin/categories/edit/:id', handlers.editCategory);
         this.post('#/admin/categories/delete/:id', handlers.deleteCategory);
-        this.post('#/events/tickets/:id', handlers.buyTicket);
-        this.post('#/cart/delete/:id',handlers.deleteTicketByCart);
-        this.post('#/searchByTown',handlers.displayAllTicketsByTown);
-        this.post('#/searchByTime',handlers.displayAllTicketsByTime);
-        this.post('#/searchByPrice',handlers.displayAllTicketsByPrice);
+        this.post('#/events/tickets/:id', handlers.addTicketInCart);
+        this.post('#/cart/payment', handlers.payment);
+        this.post('#/searchByTown', handlers.displayAllTicketsByTown);
+        this.post('#/searchByTime', handlers.displayAllTicketsByTime);
+        this.post('#/searchByPrice', handlers.displayAllTicketsByPrice);
     });
 
     app.run();

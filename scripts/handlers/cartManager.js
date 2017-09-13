@@ -2,19 +2,26 @@ handlers.displayCart = function (ctx) {
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     ctx.username = sessionStorage.getItem('username');
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
-    ctx.id=sessionStorage.getItem('userId');
+    ctx.id = sessionStorage.getItem('userId');
 
     let userId = sessionStorage.getItem('userId');
 
     cartService.getTicketByUserId(userId).then(function (products) {
+        ctx.isEmpty = products.length === 0;
+
         categoriesService.getCategories().then(function (categories) {
+
             let tickets = [];
             let totalPrice = 0;
+            let ticketsCount = 0;
+
             for (let product of products) {
+
                 let totalProductPrice = Number(product.ticketAmount) * Number(product.price);
                 totalPrice += totalProductPrice;
+                ticketsCount++;
+
                 let ticket = {
-                    isAuthor:product._acl.creator===sessionStorage.getItem('userId'),
                     id: product._id,
                     image: product.image,
                     title: product.title,
@@ -22,15 +29,22 @@ handlers.displayCart = function (ctx) {
                     eventDate: product.eventDate,
                     eventTime: product.eventTime,
                     price: product.price,
-                    totalProductPrice: totalProductPrice
+                    totalProductPrice: totalProductPrice,
+                    eventId: product.eventId
                 };
 
                 tickets.push(ticket);
             }
 
             ctx.categories = categories;
+            ctx.ticketsCount = ticketsCount;
             ctx.tickets = tickets;
             ctx.totalPrice = totalPrice;
+            sessionStorage.setItem('ticketsCount', ticketsCount);
+
+            if (ticketsCount === 0) {
+                ctx.badgeHidden = "hidden"
+            }
 
             ctx.loadPartials({
                 header: './templates/common/header.hbs',
@@ -42,24 +56,89 @@ handlers.displayCart = function (ctx) {
             })
 
         }).catch(notifications.handleError);
-    })
+    });
+};
 
-}
-handlers.deleteTicketByCart=function (ctx) {
-    let loggedIn = auth.isAuthorized();
-    ctx.loggedIn = loggedIn;
+handlers.cartDeleteTicket = function (ctx) {
     ctx.username = sessionStorage.getItem('username');
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
 
-    let ticketId = ctx.params.id.substr(1);
+    let ticketId = ctx.params.id.substring(1);
 
-    cartService.deleteTicket(ticketId)
-        .then(function () {
-            notifications.showInfo('Ticket deleted!')
-            window.history.go(-1);
-        }).catch(auth.handleError)
+    cartService.deleteTicket(ticketId).then(function () {
 
-}
+        notifications.showInfo('Ticket deleted');
+        ctx.redirect('#/cart')
+    }).catch(notifications.handleError);
+
+};
+
+handlers.displayPayment = function (ctx) {
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    ctx.username = sessionStorage.getItem('username');
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    ctx.id = sessionStorage.getItem('userId');
+
+    categoriesService.getCategories().then(function (categories) {
+
+        getCountTicketsInCart(ctx);
+
+        ctx.categories = categories;
+        ctx.totalPrice = ctx.params.totalPrice;
+
+        ctx.loadPartials({
+            header: './templates/common/header.hbs',
+            footer: './templates/common/footer.hbs',
+            navCategory: "./templates/common/navCategory.hbs",
+        }).then(function () {
+            this.partial('./templates/cart/payment.hbs')
+        })
+
+    }).catch(notifications.handleError);
+
+};
+
+handlers.payment = function (ctx) {
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    ctx.username = sessionStorage.getItem('username');
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+    let userId = sessionStorage.getItem('userId');
+
+    cartService.getTicketByUserId(userId).then(function (tickets) {
+        for (let ticket of tickets) {
+            ticketsService.getTicket(ticket.ticketId).then(function (ticketData) {
+                let data = {
+                    price: ticketData.price,
+                    ticketCategory: ticketData.priceCategory,
+                    userId: userId,
+                    title: ticket.title,
+                    eventTime: ticket.eventTime,
+                    eventDate: ticket.eventDate,
+                    categoryId: ticket.categoryId
+                };
+
+                ticketData.ticketsCount -= Number(ticket.ticketAmount);
+                if (ticketData.ticketsCount >= 0) {
+                    ticketsService.editTicket(ticketData).then(function () {
+                    });
+
+                    for (let i = 0, len = ticket.ticketAmount; i < len; i++) {
+                        ticketsService.buyTicket(data).then(function () {
+                            if (i === 0) {
+                                cartService.deleteTicket(ticket._id);
+                            }
+                            sessionStorage.setItem('ticketsCount', 0);
+                            ctx.redirect('#/my/tickets')
+                        })
+                    }
+                }
+                else {
+                    notifications.showError("Selected tickets amount can\\'t be more than available amount!")
+                }
+
+            })
+        }
 
 
-
+    }).catch(notifications.handleError);
+};
