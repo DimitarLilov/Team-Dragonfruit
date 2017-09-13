@@ -62,8 +62,9 @@ $(() => {
         this.post('#/admin/categories/delete/:id', handlers.deleteCategory);
         this.post('#/events/tickets/:id', handlers.addTicketInCart);
         this.post('#/cart/payment', handlers.payment);
-        this.post('#/search/town', handlers.displayAllTicketsByTown);
-        this.post('#/search/date', handlers.displayAllTicketsByDate);
+        this.post('#/search/town', handlers.displayAllEventsByTown);
+        this.post('#/search/date', handlers.displayAllEventsByDate);
+        this.post('#/search/title', handlers.displayAllEventsByTitle);
     });
 
     app.run();

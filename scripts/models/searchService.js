@@ -14,9 +14,13 @@ let searchService = (() => {
    function getTiketById(ticketId) {
        return requester.get('appdata',`events/${ticketId}`,'master')
    }
+   function getTicketByTitle(title) {
+       return requester.get('appdata',`events?query={"title":"${title}"}`,'master')
+   }
    return {
        getTicketByTownName,
        getTicketByDate,
+       getTicketByTitle,
        getTicketByPrice,
        getTiketById,
    }

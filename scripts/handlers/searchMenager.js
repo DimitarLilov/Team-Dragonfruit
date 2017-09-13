@@ -7,10 +7,13 @@ handlers.displaySearch = function (ctx) {
     categoriesService.getCategoriesNotLogged().then(function (categories) {
         ctx.categories = categories;
         getCountTicketsInCart(ctx);
+        ctx.isEmpty = true;
+
         ctx.loadPartials({
             header: "./templates/common/header.hbs",
             navCategory: "./templates/common/navCategory.hbs",
-            footer: "./templates/common/footer.hbs"
+            footer: "./templates/common/footer.hbs",
+            eventPage: "./templates/search/eventPage.hbs",
         }).then(function () {
             this.partial('./templates/search/search.hbs')
         })
@@ -63,7 +66,7 @@ handlers.searchByDate = function (ctx) {
     }).catch(notifications.handleError);
 };
 
-handlers.displayAllTicketsByTown = function (ctx) {
+handlers.displayAllEventsByTown = function (ctx) {
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     ctx.username = sessionStorage.getItem('username');
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
@@ -101,7 +104,7 @@ handlers.displayAllTicketsByTown = function (ctx) {
     }).catch(notifications.handleError);
 };
 
-handlers.displayAllTicketsByDate = function (ctx) {
+handlers.displayAllEventsByDate = function (ctx) {
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     ctx.username = sessionStorage.getItem('username');
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
@@ -132,6 +135,43 @@ handlers.displayAllTicketsByDate = function (ctx) {
                     navCategory: "./templates/common/navCategory.hbs",
                 }).then(function () {
                     this.partial('./templates/search/searchFormDate.hbs');
+                });
+            })
+    }).catch(notifications.handleError);
+
+};
+
+handlers.displayAllEventsByTitle = function (ctx) {
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    ctx.username = sessionStorage.getItem('username');
+    ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
+
+    let title = ctx.params.title;
+    categoriesService.getCategoriesNotLogged().then(function (categories) {
+        searchService.getTicketByTitle(title)
+            .then(function (events) {
+
+                for (let category of categories) {
+                    for (let event of events) {
+                        if (category._id === event.categoryId) {
+                            event.category = category.category;
+                        }
+                    }
+                }
+                getCountTicketsInCart(ctx);
+                ctx.isEmpty = false;
+                ctx.events = events;
+                ctx.categories = categories;
+                ctx.title = title;
+
+                ctx.loadPartials({
+                    header: "./templates/common/header.hbs",
+                    footer: "./templates/common/footer.hbs",
+                    eventPage: "./templates/search/eventPage.hbs",
+                    event: "./templates/events/event.hbs",
+                    navCategory: "./templates/common/navCategory.hbs",
+                }).then(function () {
+                    this.partial('./templates/search/search.hbs');
                 });
             })
     }).catch(notifications.handleError);
