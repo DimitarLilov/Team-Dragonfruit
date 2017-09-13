@@ -12,10 +12,6 @@ let usersService = (() => {
         return requester.get('user', '?query={"role":"user"}');
     }
 
-    function getUserByEmail(email) {
-        return requester.get('user', `?query={"email":"${email}"}`, 'master');
-    }
-
     function getSearchedUser(username) {
         return requester.get('user', `?query={"username":"${username}"}`);
     }
@@ -32,14 +28,18 @@ let usersService = (() => {
         return requester.post('rpc', 'custom/deleteUser', 'kinvey', data);
     }
 
+    function getFacebookUsers(data) {
+        return requester.post('user', '_lookup', 'master', data);
+    }
+
     return {
         getUsers,
         getAdminUsers,
         getBasicUsers,
-        getUserByEmail,
         getSearchedUser,
         getEditUserInfo,
         editUserInfo,
         removeUser,
+        getFacebookUsers
     }
 })();

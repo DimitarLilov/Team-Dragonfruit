@@ -1,7 +1,6 @@
 let facebookService = (() => {
 
     window.fbAsyncInit = function () {
-
         FB.init({
             appId: '1825836177742564',
             autoLogAppEvents: true,
@@ -11,7 +10,6 @@ let facebookService = (() => {
     };
 
     (function (d, s, id) {
-
         let js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {
             return;
@@ -20,22 +18,19 @@ let facebookService = (() => {
         js.id = id;
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
-
     }(document, 'script', 'facebook-jssdk'));
 
     function fbLogin(ctx) {
 
         FB.login(function (response) {
 
-            FB.api('/me', {locale: 'en_US', fields: 'name, email'},
-
-                function (response) {
-
-                    sessionStorage.setItem('userMail', response.email);
-                }
-            );
-
+            // FB.api('/me', { locale: 'en_US', fields: 'name, email' },
+            //     function(response) {
+            //         console.log(response.email);
+            //     }
+            // );
             if (response.status === "connected") {
+
 
                 let loginTokens = {
                     _socialIdentity:
@@ -47,25 +42,40 @@ let facebookService = (() => {
                                 }
                         }
                 };
+                let data = {
+                    "_socialIdentity.facebook.id": response.authResponse.userID
+                };
 
-                auth.loginFB(loginTokens).then(function (userInfo) {
+                usersService.getFacebookUsers(data).then(function (user) {
+                    if (user.length === 0) {
+                        auth.registerFB(loginTokens).then(function (userInfo) {
+                            auth.login(userInfo.username, userInfo.password)
+                                .then(function (userInfo) {
+                                    let displayUsername = userInfo._socialIdentity.facebook.name;
+                                    sessionStorage.setItem('userFBId', userInfo._id);
+                                    userInfo.role = 'user';
+                                    userInfo.username = displayUsername;
+                                    auth.saveSession(userInfo);
 
-                    auth.login(userInfo.username, userInfo.password)
-                        .then(function (userInfo) {
-
-                            let displayUsername = userInfo._socialIdentity.facebook.name;
-                            sessionStorage.setItem('userFBId', userInfo._id);
-                            userInfo.role = 'user';
-                            userInfo.username = displayUsername;
-                            auth.saveSession(userInfo);
-
-                            notifications.showInfo("Facebook login successful.");
-                            ctx.redirect("#/home");
-
-
+                                    notifications.showInfo("Facebook login successful.");
+                                    ctx.redirect("#/home")
+                                }).catch(notifications.handleError);
                         }).catch(notifications.handleError);
-                }).catch(notifications.handleError);
+                    }
+                    else{
+                        auth.loginFB(loginTokens)
+                            .then(function (userInfo) {
+                                let displayUsername = userInfo._socialIdentity.facebook.name;
+                                sessionStorage.setItem('userFBId', userInfo._id);
+                                userInfo.role = 'user';
+                                userInfo.username = displayUsername;
+                                auth.saveSession(userInfo);
 
+                                notifications.showInfo("Facebook login successful.");
+                                ctx.redirect("#/home")
+                            }).catch(notifications.handleError);
+                    }
+                });
             } else if (response.status === "not_authorized") {
                 notifications.showError('Not logged in.');
             } else {
@@ -77,16 +87,18 @@ let facebookService = (() => {
 
     function fbLogout(ctx, userId) {
         FB.logout(function () {
+            auth.logout().then(function () {
+                sessionStorage.clear();
+                notifications.showInfo("Logout successful.");
+                ctx.redirect("#/home");
+            });
 
-            sessionStorage.clear();
-            notifications.showInfo("Logout successful.");
-            ctx.redirect("#/home");
         });
 
         let data = {
             userId: userId
         };
-        usersService.removeUser(data).catch(notifications.handleError);
+        // usersService.removeUser(data).catch(notifications.handleError);
     }
 
     return {
