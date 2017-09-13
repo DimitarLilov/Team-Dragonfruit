@@ -1,44 +1,51 @@
 {{> header}}
 <div class="row">
     <div class="col-sm-12 col-md-10 col-md-offset-1">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>Ticket</th>
-                <th>Quantity</th>
-                <th class="text-center">Price</th>
-                <th class="text-center">Total</th>
-                <th> </th>
-            </tr>
-            </thead>
-            <tbody>
-            {{#each tickets}}
-                {{> ticket}}
-            {{/each}}
-            <tr>
-                <td>  </td>
-                <td>  </td>
-                <td>  </td>
-                <td><h3>Total</h3></td>
-                <td class="text-right"><h3><strong>{{totalPrice}}</strong></h3></td>
-            </tr>
-            <tr>
-                <td>  </td>
-                <td>  </td>
-                <td>  </td>
-                <td>
-                    <button type="button" class="btn btn-default">
-                        <span class="glyphicon glyphicon-shopping-cart"></span><a href="#/my/tickets"> Continue Shopping</a>
-                    </button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-success">
-                        Checkout <span class="glyphicon glyphicon-play"></span>
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        {{#if isEmpty}}
+            <h1><p>No tickets in cart</p></h1>
+        {{else}}
+            <form class="form" action='#/cart/payment' method="get">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Ticket</th>
+                        <th>Quantity</th>
+                        <th class="text-center">Price</th>
+                        <th class="text-center">Total</th>
+                        <th> </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each tickets}}
+                        {{> ticket}}
+                    {{/each}}
+                    <tr>
+                        <td>  </td>
+                        <td>  </td>
+                        <td>  </td>
+                        <td><h3>Total</h3></td>
+                        <td class="text-right"><h3><strong>{{totalPrice}}</strong></h3></td>
+                    </tr>
+                    <tr>
+                        <td><input type="hidden" name="totalPrice" value="{{totalPrice}}"></td>
+                        <td></td>
+                        <td>  </td>
+                        <td>  </td>
+                        <td>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <button id="regBtn" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-shopping-cart"></span>Continue
+                                        Shopping
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        {{/if}}
     </div>
 </div>
 {{> footer}}

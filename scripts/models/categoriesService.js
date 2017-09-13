@@ -4,6 +4,10 @@ let categoriesService = (() => {
         return requester.get('appdata', `categories`, 'kinvey');
     }
 
+    function getSearchedCategory(categoryName) {
+        return requester.get('appdata', `categories/?query={"category":"${categoryName}"}`);
+    }
+
     function getCategoriesNotLogged() {
         return requester.get('appdata', 'categories', 'master');
     }
@@ -26,6 +30,7 @@ let categoriesService = (() => {
 
     return {
         getCategories,
+        getSearchedCategory,
         getCategoriesNotLogged,
         getCategory,
         addCategory,

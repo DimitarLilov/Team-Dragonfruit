@@ -18,6 +18,8 @@ handlers.displayMyTickets = function (ctx) {
                         }
                     }
 
+                    getCountTicketsInCart(ctx);
+
                     ctx.tickets = tickets;
                     ctx.categories = categories;
                     ctx.loadPartials({
@@ -96,6 +98,8 @@ handlers.displayAddTicket = function (ctx) {
 
     ctx.eventId = ctx.params.id.substring(1);
 
+    getCountTicketsInCart(ctx);
+
     if (ctx.admin) {
         ctx.loadPartials({
             header: "./templates/admin/common/header.hbs",
@@ -118,13 +122,19 @@ handlers.displayEventTickets = function (ctx) {
 
     ticketsService.getEventTicketsNotLogged(eventId)
         .then(function (tickets) {
+
+            ctx.isEmpty = tickets.length === 0;
             for (let ticket of tickets) {
+
                 if (Number(ticket.ticketsCount) <= 0) {
                     ticket.disabled = "disabled";
                 }
             }
+            getCountTicketsInCart(ctx);
+
             ctx.eventId = eventId;
             ctx.tickets = tickets;
+
             ctx.loadPartials({
                 header: "./templates/common/header.hbs",
                 footer: "./templates/common/footer.hbs",
@@ -163,13 +173,14 @@ handlers.addEventTicket = function (ctx) {
 };
 
 
-handlers.buyTicket = function (ctx) {
+handlers.addTicketInCart = function (ctx) {
     let loggedIn = sessionStorage.getItem('authtoken') !== null;
     let eventId = ctx.params.id.substring(1);
 
     if (loggedIn) {
         ticketsService.getTicket(ctx.params.ticketId).then(function (ticket) {
             eventsService.getEventsInfo(eventId).then(function (event) {
+
                 let data = {
                     image: event.image,
                     title: event.title,
@@ -177,17 +188,19 @@ handlers.buyTicket = function (ctx) {
                     eventDate: event.eventDate,
                     eventTime: event.eventTime,
                     price: ticket.price,
-                    userId: sessionStorage.getItem('userId')
+                    userId: sessionStorage.getItem('userId'),
+                    ticketId: ticket._id,
+                    eventId: eventId,
+                    categoryId: event.categoryId
                 };
-                cartService.addTicketCart(data)
-                    .then(function () {
-                        notifications.showInfo(`Ticket added in cart.`);
-                        ctx.redirect(`#/events`);
-                    }).catch(notifications.handleError);
+
+                cartService.addTicketCart(data).then(function () {
+                    notifications.showInfo(`Ticket(s) added in cart.`);
+                    ctx.redirect(`#/cart`);
+                }).catch(notifications.handleError);
 
             })
         });
-
 
     } else {
         ctx.redirect("#/login");
@@ -210,7 +223,7 @@ handlers.deleteTickets = function (ctx) {
         ticketsService.removeTicket(data)
             .then(function () {
                 notifications.showInfo(`Ticket deleted.`);
-                ctx.redirect("#/admin/events");
+                ctx.redirect("#/cart");
             }).catch(notifications.showError);
     }
     else {
@@ -255,4 +268,9 @@ function validateTicket(ticket) {
     }
 
     return true;
+}
+
+function setTicketsAmountLeft(amount) {
+
+    $('#ticketAmount').attr('max', amount);
 }

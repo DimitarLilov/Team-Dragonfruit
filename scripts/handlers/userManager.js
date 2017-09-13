@@ -85,6 +85,67 @@ handlers.logoutUser = function (ctx) {
     }
 };
 
+handlers.userEditInfo = function (ctx) {
+    ctx.loggedIn = auth.isAuthorized();
+    ctx.username = sessionStorage.getItem('username');
+    ctx.admin = auth.isAdmin();
+
+    let id = sessionStorage.getItem('userId');
+
+    let user = {
+        _id: id,
+        username: ctx.params.username,
+        firstName: ctx.params.firstName,
+        lastName: ctx.params.lastName,
+        email: ctx.params.email,
+        role: ctx.params.role
+    };
+
+    let isValid = validateEditUser(user);
+
+    if (isValid) {
+
+        usersService.editUserInfo(user).then(function () {
+            notifications.showInfo(`User updated.`);
+            ctx.redirect("#/home");
+        }).catch(notifications.handleError);
+    }
+};
+
+handlers.getUserEditInfo = function (ctx) {
+    ctx.loggedIn = auth.isAuthorized();
+    ctx.username = sessionStorage.getItem('username');
+    ctx.admin = auth.isAdmin();
+
+    let userId = sessionStorage.getItem('userId');
+    if (ctx.loggedIn) {
+        usersService.getEditUserInfo(userId)
+            .then(function (usersData) {
+                categoriesService.getCategories().then(function (categories) {
+                    ctx.editUsername = ctx.username;
+                    ctx._id = usersData._id;
+                    ctx.firstName = usersData.firstName;
+                    ctx.lastName = usersData.lastName;
+                    ctx.email = usersData.email;
+                    ctx.categories = categories;
+                    ctx.role = usersData.role;
+
+                    ctx.loadPartials({
+                        header: "./templates/common/header.hbs",
+                        footer: "./templates/common/footer.hbs",
+                        navCategory: "./templates/common/navCategory.hbs"
+                    }).then(function () {
+                        this.partial('./templates/user/userEdit.hbs');
+                    });
+                })
+            }).catch(notifications.handleError);
+    }
+    else {
+        ctx.redirect('#/home');
+    }
+};
+
+
 function validateRegisterUser(user) {
 
     let userReg = new RegExp("^([a-zA-Z]){3,}$");

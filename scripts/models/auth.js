@@ -32,9 +32,12 @@ let auth = (() => {
         return requester.post('user', 'login', 'basic', userData);
     }
 
-    function loginFB(userData) {
+    function registerFB(userData) {
 
         return requester.post('user', '', 'basic', userData);
+    }
+    function loginFB(userData) {
+        return requester.post('user', 'login', 'basic', userData);
     }
 
     // user/register
@@ -54,11 +57,12 @@ let auth = (() => {
 
     return {
         login,
-        loginFB,
+        registerFB,
         register,
         logout,
         saveSession,
         isAuthorized,
-        isAdmin
+        isAdmin,
+        loginFB
     }
 })();

@@ -29,8 +29,8 @@ let facebookService = (() => {
             //         console.log(response.email);
             //     }
             // );
-
             if (response.status === "connected") {
+
 
                 let loginTokens = {
                     _socialIdentity:
@@ -42,22 +42,46 @@ let facebookService = (() => {
                                 }
                         }
                 };
+                let data = {
+                    "_socialIdentity.facebook.id": response.authResponse.userID
+                };
 
-                auth.loginFB(loginTokens).then(function (userInfo) {
-                    auth.login(userInfo.username, userInfo.password)
-                        .then(function (userInfo) {
+                usersService.getFacebookUsers(data).then(function (user) {
+                    if (user.length === 0) {
+                        auth.registerFB(loginTokens).then(function (userInfo) {
+                            auth.login(userInfo.username, userInfo.password)
+                                .then(function (userInfo) {
+                                    let displayUsername = userInfo._socialIdentity.facebook.name;
+                                    sessionStorage.setItem('userFBId', userInfo._id);
+                                    let [firstName,lastName] = displayUsername.split(' ');
+                                    userInfo.firstName = firstName;
+                                    userInfo.lastName = lastName;
+                                    userInfo.role = 'user';
+                                    userInfo.username = displayUsername;
+                                    auth.saveSession(userInfo);
 
-                            let displayUsername = userInfo._socialIdentity.facebook.name;
-                            sessionStorage.setItem('userFBId', userInfo._id);
-                            userInfo.role = 'user';
-                            userInfo.username = displayUsername;
-                            auth.saveSession(userInfo);
-
-                            notifications.showInfo("Facebook login successful.");
-                            ctx.redirect("#/home")
+                                    notifications.showInfo("Facebook login successful.");
+                                    ctx.redirect("#/home")
+                                }).catch(notifications.handleError);
                         }).catch(notifications.handleError);
-                }).catch(notifications.handleError);
+                    }
+                    else{
+                        auth.loginFB(loginTokens)
+                            .then(function (userInfo) {
+                                let displayUsername = userInfo._socialIdentity.facebook.name;
+                                sessionStorage.setItem('userFBId', userInfo._id);
+                                let [firstName,lastName] = displayUsername.split(' ');
+                                userInfo.firstName = firstName;
+                                userInfo.lastName = lastName;
+                                userInfo.role = 'user';
+                                userInfo.username = displayUsername;
+                                auth.saveSession(userInfo);
 
+                                notifications.showInfo("Facebook login successful.");
+                                ctx.redirect("#/home")
+                            }).catch(notifications.handleError);
+                    }
+                });
             } else if (response.status === "not_authorized") {
                 notifications.showError('Not logged in.');
             } else {
@@ -67,15 +91,20 @@ let facebookService = (() => {
         }, {scope: 'public_profile,email'});
     }
 
-    function fbLogout(ctx, id) {
+    function fbLogout(ctx, userId) {
         FB.logout(function () {
+            auth.logout().then(function () {
+                sessionStorage.clear();
+                notifications.showInfo("Logout successful.");
+                ctx.redirect("#/home");
+            });
 
-            sessionStorage.clear();
-            notifications.showInfo("Logout successful.");
-            ctx.redirect("#/home");
         });
 
-        usersService.deleteUser(id).catch(notifications.handleError);
+        let data = {
+            userId: userId
+        };
+        // usersService.removeUser(data).catch(notifications.handleError);
     }
 
     return {

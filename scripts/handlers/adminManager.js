@@ -152,14 +152,23 @@ handlers.getSearchedUser = function (ctx) {
 };
 
 handlers.deleteUser = function (ctx) {
-
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     let userId = ctx.params.id.substr(1);
 
-    usersService.deleteUser(userId)
-        .then(function () {
-            ctx.redirect('#/users');
-            setTimeout(() => notifications.showInfo(`User deleted.`), 500);
-        }).catch(notifications.showError);
+    let data = {
+        userId: userId
+    };
+
+    if (ctx.admin) {
+        usersService.removeUser(data)
+            .then(function () {
+                notifications.showInfo(`User deleted.`);
+                ctx.redirect("#/users");
+            }).catch(notifications.showError);
+    }
+    else {
+        ctx.redirect('index.html');
+    }
 };
 
 function renderCommonTemplates(ctx, usersData) {

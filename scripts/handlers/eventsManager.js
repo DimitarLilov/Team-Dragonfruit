@@ -28,13 +28,19 @@ handlers.getAllEventsAdmin = function (ctx) {
     ctx.loggedIn = loggedIn;
 
     if (loggedIn) {
+
         ctx.username = sessionStorage.getItem('username');
         ctx.admin = auth.isAdmin();
+
         if (ctx.admin) {
+
             eventsService.getAllEvents()
                 .then(function (eventsData) {
+
                     for (let event of eventsData) {
+
                         ticketsService.getEventTickets(event._id).then(function (tickets) {
+
                             event.tickets = tickets;
                             ctx.events = eventsData;
 
@@ -54,6 +60,40 @@ handlers.getAllEventsAdmin = function (ctx) {
         else {
             ctx.redirect('index.html');
         }
+    }
+};
+
+handlers.getSearchedEvent = function (ctx) {
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    let title = ctx.params.title;
+
+    if (ctx.admin) {
+        eventsService.getSearchedEvent(title)
+            .then(function (eventsData) {
+
+                for (let event of eventsData) {
+
+                    ticketsService.getEventTickets(event._id).then(function (tickets) {
+
+                        event.tickets = tickets;
+                        ctx.events = eventsData;
+
+                        ctx.loadPartials({
+                            header: "./templates/admin/common/header.hbs",
+                            event: "./templates/admin/events/event.hbs",
+                            ticket: "./templates/admin/events/tickets/ticket.hbs",
+                            footer: "./templates/common/footer.hbs"
+                        }).then(function () {
+                            this.partial('./templates/admin/events/eventsList.hbs');
+                        });
+
+                    });
+                }
+
+            }).catch(notifications.handleError);
+    }
+    else {
+        ctx.redirect('index.html');
     }
 };
 
@@ -265,6 +305,7 @@ function renderEventDetailsTemplates(ctx, eventData, categories) {
             ctx.category = category.category;
         }
     }
+    getCountTicketsInCart(ctx);
 
     ctx.title = eventData.title;
     ctx._id = eventData._id;
@@ -294,6 +335,7 @@ function renderEventsTemplates(ctx, events, categories) {
             }
         }
     }
+    getCountTicketsInCart(ctx);
 
     ctx.events = events;
     ctx.categories = categories;

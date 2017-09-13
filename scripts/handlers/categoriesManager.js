@@ -15,6 +15,23 @@ handlers.displayAllCategories = function (ctx) {
 
 };
 
+handlers.getSearchedCategory = function (ctx) {
+    ctx.admin = sessionStorage.getItem('userRole') === 'admin';
+    let category = ctx.params.category;
+
+    if (ctx.admin) {
+        categoriesService.getSearchedCategory(category)
+            .then(function (categoryData) {
+
+                renderCategoryCommonTemplates(ctx, categoryData);
+
+            }).catch(notifications.handleError);
+    }
+    else {
+        ctx.redirect('index.html');
+    }
+};
+
 handlers.getEditCategory = function (ctx) {
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
     ctx.username = sessionStorage.getItem('username');

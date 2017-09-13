@@ -4,6 +4,11 @@ let eventsService = (() => {
         return requester.get('appdata', 'events', 'kinvey');
     }
 
+    function getSearchedEvent(eventTitle) {
+
+        return requester.get('appdata', `events/?query={"title":"${eventTitle}"}`);
+    }
+
     function getAllEventsNotLogged() {
         return requester.get('appdata', 'events', 'master');
     }
@@ -34,6 +39,7 @@ let eventsService = (() => {
 
     return {
         getAllEvents,
+        getSearchedEvent,
         getAllEventsNotLogged,
         getEventsInfo,
         getEventsInfoNotLogged,

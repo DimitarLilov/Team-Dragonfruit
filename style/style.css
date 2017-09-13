@@ -367,13 +367,6 @@ table.table-striped.table-hover {
     animation-duration: .3s;
 }
 
-.card {
-    margin-top: 50px;
-    background: #eee;
-    padding: 3em;
-    line-height: 1.5em;
-}
-
 @media screen and (min-width: 997px) {
     .wrapper {
         display: -webkit-box;
@@ -490,7 +483,7 @@ table.table-striped.table-hover {
 }
 
 .ticketWrap {
-    width: 27em;
+    width: 28em;
     margin: -5em auto;
     color: #fff;
     font-family: sans-serif;
@@ -498,7 +491,7 @@ table.table-striped.table-hover {
 
 .ticket {
     background: linear-gradient(to bottom, #e84c3d 0%, #e84c3d 26%, #ffffff 26%, #ffffff 100%);
-    height: 13em;
+    height: 15em;
     float: left;
     position: relative;
     padding: 1em;
@@ -606,4 +599,27 @@ table.table-striped.table-hover {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.credit-card-box .display-tr {
+    display: table-row;
+}
+.card-type a {
+    text-decoration: none;
+}
+
+.badge {
+    padding-left: 5px;
+    padding-right: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 100px;
+}
+
+#cart-badge {
+    font-size: 15px;
+    background: #ff0000;
+    color: #fff;
+    padding: 0 5px;
+    vertical-align: top;
 }

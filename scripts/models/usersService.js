@@ -24,8 +24,12 @@ let usersService = (() => {
         return requester.post('rpc', 'custom/editUser', 'kinvey', data);
     }
 
-    function deleteUser(userId) {
-        return requester.remove('user', `${userId}/?hard=true`, 'kinvey');
+    function removeUser(data) {
+        return requester.post('rpc', 'custom/deleteUser', 'kinvey', data);
+    }
+
+    function getFacebookUsers(data) {
+        return requester.post('user', '_lookup', 'master', data);
     }
 
     return {
@@ -35,6 +39,7 @@ let usersService = (() => {
         getSearchedUser,
         getEditUserInfo,
         editUserInfo,
-        deleteUser,
+        removeUser,
+        getFacebookUsers
     }
 })();

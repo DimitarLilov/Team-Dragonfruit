@@ -17,7 +17,8 @@
                     </ul>
                 </li>
                 {{#if admin}}
-                    <li class="userMenuItem"><a href="#/admin">Admin Panel</a></li>
+                    <li class="userMenuItem"><a href="#/admin">Admin Panel <span
+                            class="glyphicon glyphicon-user"></span></a></li>
                 {{/if}}
             </ul>
 
@@ -47,10 +48,19 @@
 
             <ul class="nav navbar-nav navbar-right">
                 {{#if loggedIn}}
-                    <li><a href="#/cart" class="userMenuItem"><span class="glyphicon glyphicon-shopping-cart"></span></a></li>
-                    <li><a href="#/my/tickets" class="userMenuItem">My Tickets</a></li>
-                    <li><a href="#/logout" class="userMenuItem">Logout</a></li>
-                    <li><a href="#">Welcome, {{username}}!</a></li>
+                    <li>
+                        <a href="#/cart" class="userMenuItem">
+                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                            <span id="cart-badge" class="badge badge-danger {{badgeHidden}}">{{ticketsCount}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#/my/tickets" class="userMenuItem">My Tickets</a>
+                    </li>
+                    <li>
+                        <a href="#/logout" class="userMenuItem">Logout <span class="glyphicon glyphicon-log-out"></span></a>
+                    </li>
+                    <li><a href="#/users/edit">Welcome, {{username}}!</a></li>
                 {{else}}
                     <li><a href="#/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                     <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>

@@ -1,0 +1,44 @@
+{{> header}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-sm-8 col-xs-8">
+            <div class="form-group row">
+                <h2 class="display-3">Edit User</h2>
+            </div>
+            <br/>
+            <form action="#/users/edit" id="userEditForm" method="post">
+
+                <div class="form-group row required">
+                    <label class="form-control-label" for="user">Username</label>
+                    <input type="text" id="user" name="user" class="form-control" value="{{editUsername}}" disabled/>
+                    <input type="hidden" name="username" value="{{editUsername}}">
+                    <input type="hidden" name="role" value="{{role}}">
+                </div>
+                <div class="form-group row required">
+                    <label class="form-control-label" for="email">Email</label>
+                    <input type="email" class="form-control" id="email" value="{{email}}" disabled/>
+                    <input type="hidden" name="email" value="{{email}}">
+                </div>
+                <div class="form-group row required">
+                    <label class="form-control-label" for="firstName">First Name</label>
+                    <input type="text" id="firstName" class="form-control" name="firstName" value="{{firstName}}"
+                           required="required"/>
+                </div>
+                <div class="form-group row required">
+                    <label class="form-control-label" for="lastName">Last Name</label>
+                    <input type="text" id="lastName" class="form-control" name="lastName" value="{{lastName}}"
+                           required="required"/>
+                </div>
+                <br>
+                <br>
+                <div class="form-group row">
+                    <button class="btn btn-default">Edit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{{> footer}}
