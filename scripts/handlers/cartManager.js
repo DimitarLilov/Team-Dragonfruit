@@ -65,28 +65,12 @@ handlers.cartDeleteTicket = function (ctx) {
 
     let ticketId = ctx.params.id.substring(1);
 
-    cartService.getCartTicketById(ticketId).then(function (cartTicketData) {
+    cartService.deleteTicket(ticketId).then(function () {
 
-        let boughtAmount = Number(cartTicketData.ticketAmount);
-
-        ticketsService.getTicket(cartTicketData.ticketId).then(function (eventTicketData) {
-
-            let currAmount = Number(eventTicketData.ticketsCount);
-            currAmount += boughtAmount;
-            eventTicketData.ticketsCount = currAmount;
-
-            ticketsService.editTicket(eventTicketData).then(function () {
-
-                cartService.deleteTicket(ticketId).then(function () {
-
-                    notifications.showInfo('Ticket deleted');
-                    ctx.redirect('#/cart')
-                })
-            }).catch(notifications.handleError);
-
-        }).catch(notifications.handleError);
-
+        notifications.showInfo('Ticket deleted');
+        ctx.redirect('#/cart')
     }).catch(notifications.handleError);
+
 };
 
 handlers.displayPayment = function (ctx) {
@@ -132,13 +116,16 @@ handlers.payment = function (ctx) {
                 };
 
                 ticketData.ticketsCount -= Number(ticket.ticketAmount);
+                ticketsService.editTicket(ticketData).then(function () {
+                });
 
                 for (let i = 0, len = ticket.ticketAmount; i < len; i++) {
                     ticketsService.buyTicket(data).then(function () {
                         if (i === 0) {
                             cartService.deleteTicket(ticket._id);
                         }
-                        ctx.redirect('#/cart')
+                        sessionStorage.setItem('ticketsCount', 0);
+                        ctx.redirect('#/my/tickets')
                     })
                 }
             })
