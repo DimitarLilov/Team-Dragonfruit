@@ -35,6 +35,10 @@ $(() => {
         this.get('#/users/admin', handlers.displayAdminUsers);
         this.get('#/users/user', handlers.displayBasicUsers);
         this.get('#/cart',handlers.displayCart);
+        this.get('#/cart/delete/:id',handlers.deleteTicketByCart);
+        this.get('#/searchByTown',handlers.searchByTown);
+        this.get('#/searchByTime',handlers.searchByTime);
+        this.get('#/searchByPrice',handlers.searchByPrice);
 
 
 
@@ -53,6 +57,10 @@ $(() => {
         this.post('#/admin/categories/edit/:id', handlers.editCategory);
         this.post('#/admin/categories/delete/:id', handlers.deleteCategory);
         this.post('#/events/tickets/:id', handlers.buyTicket);
+        this.post('#/cart/delete/:id',handlers.deleteTicketByCart);
+        this.post('#/searchByTown',handlers.displayAllTicketsByTown);
+        this.post('#/searchByTime',handlers.displayAllTicketsByTime);
+        this.post('#/searchByPrice',handlers.displayAllTicketsByPrice);
     });
 
     app.run();

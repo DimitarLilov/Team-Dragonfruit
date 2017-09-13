@@ -18,8 +18,11 @@
     <td class="col-sm-1 col-md-1 text-center"><strong>{{price}} &euro;</strong></td>
     <td class="col-sm-1 col-md-1 text-center"><strong>{{totalProductPrice}}</strong></td>
     <td class="col-sm-1 col-md-1">
-        <button type="button" class="btn btn-danger" data-id="{{id}}">
-            <span class="glyphicon glyphicon-remove"></span> Remove
-        </button>
+
+        <form  action="#/cart/delete/:{{id}}" method="get">
+            <button class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash" > </span>
+                Delete</button>
+        </form>
     </td>
 </tr>
