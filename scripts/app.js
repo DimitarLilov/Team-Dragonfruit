@@ -38,6 +38,7 @@ $(() => {
         this.get('#/cart', handlers.displayCart);
         this.get('#/cart/delete/ticket/:id', handlers.cartDeleteTicket);
         this.get('#/cart/payment', handlers.displayPayment);
+        this.get('#/search', handlers.displaySearch);
         this.get('#/searchByTown', handlers.searchByTown);
         this.get('#/searchByTime', handlers.searchByTime);
         this.get('#/searchByPrice', handlers.searchByPrice);
