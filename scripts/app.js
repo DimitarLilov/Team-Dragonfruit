@@ -48,11 +48,13 @@ $(() => {
         this.post('#/users/edit/:id', handlers.editUser);
         this.post('#/users/delete/:id', handlers.deleteUser);
         this.post('#/admin/events/add', handlers.addEvent);
+        this.post('#/admin/events', handlers.getSearchedEvent);
         this.post('#/admin/events/delete/:id', handlers.deleteEvent);
         this.post('#/admin/events/edit/:id', handlers.editEvent);
         this.post('#/admin/events/add/ticket/:id', handlers.addEventTicket);
         this.post('#/admin/events/edit/ticket/:id', handlers.editTickets);
         this.post('#/admin/events/delete/ticket/:id', handlers.deleteTickets);
+        this.post('#/admin/categories', handlers.getSearchedCategory);
         this.post('#/admin/categories/add', handlers.addCategory);
         this.post('#/admin/categories/edit/:id', handlers.editCategory);
         this.post('#/admin/categories/delete/:id', handlers.deleteCategory);

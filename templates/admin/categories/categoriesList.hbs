@@ -5,6 +5,18 @@
         <div class="col-lg-12 col-sm-12 col-xs-12">
             <h3 class="headText">Category management</h3>
             <br>
+            <form action="#/admin/categories" method="post">
+                <div>
+                    <label class="form-label"></label>
+                    <span id="searchForm">
+                                <input id="showform" class="form-control" type="text" name="category" value="" placeholder="Enter category name..."/>
+                            </span>
+                    <span id="searchBtn">
+                        <button class="btn btn-default">Find</button>
+                            </span>
+                </div>
+            </form>
+            <br>
             <div>
                 <a class="btn btn-danger" href="#/admin/categories/add">Add category</a>
             </div>
