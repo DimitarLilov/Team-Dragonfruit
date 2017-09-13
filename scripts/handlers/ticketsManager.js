@@ -194,6 +194,7 @@ handlers.addEventTicket = function (ctx) {
 handlers.addTicketInCart = function (ctx) {
     let loggedIn = sessionStorage.getItem('authtoken') !== null;
     let eventId = ctx.params.id.substring(1);
+    let fbEmail = sessionStorage.getItem('userMail');
 
     if (loggedIn) {
         ticketsService.getTicket(ctx.params.ticketId).then(function (ticket) {
@@ -212,11 +213,36 @@ handlers.addTicketInCart = function (ctx) {
                     categoryId: event.categoryId
                 };
 
-                cartService.addTicketCart(data).then(function () {
-                    notifications.showInfo(`Ticket(s) added in cart.`);
-                    ctx.redirect(`#/cart`);
-                }).catch(notifications.handleError);
+                if (fbEmail !== null) {
 
+                    usersService.getUserByEmail(fbEmail)
+                        .then(function (userData) {
+
+                            let dataFb = {
+                                image: event.image,
+                                title: event.title,
+                                ticketAmount: ctx.params.ticketAmount,
+                                eventDate: event.eventDate,
+                                eventTime: event.eventTime,
+                                price: ticket.price,
+                                userId: userData[0]._id,
+                                ticketId: ticket._id,
+                                eventId: eventId,
+                                categoryId: event.categoryId
+                            };
+                            console.log(dataFb.userId);
+                            cartService.addTicketCart(dataFb).then(function () {
+                                notifications.showInfo(`Ticket(s) added in cart.`);
+                                ctx.redirect(`#/cart`);
+                            }).catch(notifications.handleError);
+                        });
+                } else {
+                    console.log(data.userId);
+                    cartService.addTicketCart(data).then(function () {
+                        notifications.showInfo(`Ticket(s) added in cart.`);
+                        ctx.redirect(`#/cart`);
+                    }).catch(notifications.handleError);
+                }
             })
         });
 
