@@ -81,6 +81,8 @@ handlers.displayPayment = function (ctx) {
 
     categoriesService.getCategories().then(function (categories) {
 
+        getCountTicketsInCart(ctx);
+
         ctx.categories = categories;
         ctx.totalPrice = ctx.params.totalPrice;
 
@@ -116,18 +118,24 @@ handlers.payment = function (ctx) {
                 };
 
                 ticketData.ticketsCount -= Number(ticket.ticketAmount);
-                ticketsService.editTicket(ticketData).then(function () {
-                });
+                if (ticketData.ticketsCount >= 0) {
+                    ticketsService.editTicket(ticketData).then(function () {
+                    });
 
-                for (let i = 0, len = ticket.ticketAmount; i < len; i++) {
-                    ticketsService.buyTicket(data).then(function () {
-                        if (i === 0) {
-                            cartService.deleteTicket(ticket._id);
-                        }
-                        sessionStorage.setItem('ticketsCount', 0);
-                        ctx.redirect('#/my/tickets')
-                    })
+                    for (let i = 0, len = ticket.ticketAmount; i < len; i++) {
+                        ticketsService.buyTicket(data).then(function () {
+                            if (i === 0) {
+                                cartService.deleteTicket(ticket._id);
+                            }
+                            sessionStorage.setItem('ticketsCount', 0);
+                            ctx.redirect('#/my/tickets')
+                        })
+                    }
                 }
+                else {
+                    notifications.showError("Selected tickets amount can\\'t be more than available amount!")
+                }
+
             })
         }
 
