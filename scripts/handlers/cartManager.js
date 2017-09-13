@@ -30,6 +30,7 @@ handlers.displayCart = function (ctx) {
                     eventTime: product.eventTime,
                     price: product.price,
                     totalProductPrice: totalProductPrice,
+                    eventId: product.eventId
                 };
 
                 tickets.push(ticket);
