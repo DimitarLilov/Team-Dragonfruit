@@ -26,10 +26,13 @@ handlers.searchByTown = function (ctx) {
     categoriesService.getCategoriesNotLogged().then(function (categories) {
         ctx.categories = categories;
         getCountTicketsInCart(ctx);
+        ctx.isEmpty = true;
+
         ctx.loadPartials({
             header: "./templates/common/header.hbs",
             navCategory: "./templates/common/navCategory.hbs",
             towns: "./templates/towns/towns.hbs",
+            eventPage: "./templates/search/eventPage.hbs",
             footer: "./templates/common/footer.hbs"
         }).then(function () {
             this.partial('./templates/search/searchFormTown.hbs')
@@ -52,6 +55,7 @@ handlers.searchByDate = function (ctx) {
         ctx.loadPartials({
             header: "./templates/common/header.hbs",
             navCategory: "./templates/common/navCategory.hbs",
+            eventPage: "./templates/search/eventPage.hbs",
             footer: "./templates/common/footer.hbs"
         }).then(function () {
             this.partial('./templates/search/searchFormDate.hbs')
@@ -60,40 +64,41 @@ handlers.searchByDate = function (ctx) {
 };
 
 handlers.displayAllTicketsByTown = function (ctx) {
-    console.log(ctx.params);
     ctx.admin = sessionStorage.getItem('userRole') === 'admin';
     ctx.username = sessionStorage.getItem('username');
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
 
     let townName = ctx.params.town;
 
-    searchService.getTicketByTownName(townName)
-        .then(function (ticketsArr) {
-            let tickets = [];
-            for (let ticket of ticketsArr) {
-                let ticketObj = {
-                    title: ticket.title,
-                    details: ticket.details,
-                    image: ticket.image,
-                    location: ticket.location,
-                    town: ticket.town,
-                    eventDate: ticket.eventDate,
-                    eventTime: ticket.eventTime,
+    categoriesService.getCategoriesNotLogged().then(function (categories) {
+        searchService.getTicketByTownName(townName)
+            .then(function (events) {
 
-                };
-                tickets.push(ticketObj);
-            }
-            ctx.tickets = tickets;
-            ctx.loadPartials({
-                header: "./templates/common/header.hbs",
-                footer: "./templates/common/footer.hbs",
-                ticket: "./templates/search/ticketForm.hbs",
-                navCategory: "./templates/common/navCategory.hbs",
-            }).then(function () {
-                this.partial('./templates/search/ticketPage.hbs');
-            });
-        })
+                for (let category of categories) {
+                    for (let event of events) {
+                        if (category._id === event.categoryId) {
+                            event.category = category.category;
+                        }
+                    }
+                }
+                getCountTicketsInCart(ctx);
+                ctx.isEmpty = false;
+                ctx.events = events;
+                ctx.categories = categories;
+                ctx.selectTown = townName;
 
+                ctx.loadPartials({
+                    header: "./templates/common/header.hbs",
+                    footer: "./templates/common/footer.hbs",
+                    towns: "./templates/towns/towns.hbs",
+                    eventPage: "./templates/search/eventPage.hbs",
+                    event: "./templates/events/event.hbs",
+                    navCategory: "./templates/common/navCategory.hbs",
+                }).then(function () {
+                    this.partial('./templates/search/searchFormTown.hbs');
+                });
+            })
+    }).catch(notifications.handleError);
 };
 
 handlers.displayAllTicketsByDate = function (ctx) {
@@ -117,11 +122,12 @@ handlers.displayAllTicketsByDate = function (ctx) {
                 ctx.isEmpty = false;
                 ctx.events = events;
                 ctx.categories = categories;
-
+                ctx.eventDate = date;
 
                 ctx.loadPartials({
                     header: "./templates/common/header.hbs",
                     footer: "./templates/common/footer.hbs",
+                    eventPage: "./templates/search/eventPage.hbs",
                     event: "./templates/events/event.hbs",
                     navCategory: "./templates/common/navCategory.hbs",
                 }).then(function () {
