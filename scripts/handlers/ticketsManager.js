@@ -123,6 +123,7 @@ handlers.displayEventTickets = function (ctx) {
     ticketsService.getEventTicketsNotLogged(eventId)
         .then(function (tickets) {
 
+            ctx.isEmpty = tickets.length === 0;
             for (let ticket of tickets) {
 
                 if (Number(ticket.ticketsCount) <= 0) {
