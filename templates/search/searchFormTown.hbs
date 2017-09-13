@@ -1,0 +1,33 @@
+{{> header}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-sm-8 col-xs-8">
+            <div class="form-group row">
+                <h2 class="display-3">Search Ticket By Town:</h2>
+            </div>
+            <br/>
+            <form action="#/searchByTown" id="eventAddForm" method="post">
+
+                <div class="form-group row required">
+                    <label for="town">Town</label>
+                    <select name="town" class="form-control" id="town">
+                        {{#select selectTown}}
+                            {{> towns}}
+                        {{/select}}
+                    </select>
+                </div>
+
+                <br>
+                <br>
+                <div class="form-group row">
+                    <button class="btn btn-default" >Search</button>
+                    <a class="btn btn-default" href="#/home">Cancel</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{{> footer}}

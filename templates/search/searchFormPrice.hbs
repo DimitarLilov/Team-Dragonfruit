@@ -1,0 +1,29 @@
+{{> header}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-sm-8 col-xs-8">
+            <div class="form-group row">
+                <h2 class="display-3">Search Ticket By :</h2>
+            </div>
+            <br/>
+            <form action="#/searchByPrice" id="eventAddForm" method="post">
+                <div class="form-group row required">
+                    <label class="form-control-label" for="Price">Price:</label>
+                    <input type="number" class="form-control" name="eventPrice" id="Price" />
+                </div>
+
+
+                <br>
+                <br>
+                <div class="form-group row">
+                    <button class="btn btn-default" >Search</button>
+                    <a class="btn btn-default" href="#/home">Cancel</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{{> footer}}
