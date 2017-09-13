@@ -12,6 +12,10 @@ let usersService = (() => {
         return requester.get('user', '?query={"role":"user"}');
     }
 
+    function getUserByEmail(email) {
+        return requester.get('user', `?query={"email":"${email}"}`, 'master');
+    }
+
     function getSearchedUser(username) {
         return requester.get('user', `?query={"username":"${username}"}`);
     }
@@ -32,6 +36,7 @@ let usersService = (() => {
         getUsers,
         getAdminUsers,
         getBasicUsers,
+        getUserByEmail,
         getSearchedUser,
         getEditUserInfo,
         editUserInfo,

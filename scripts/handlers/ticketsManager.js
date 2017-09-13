@@ -4,6 +4,34 @@ handlers.displayMyTickets = function (ctx) {
     ctx.loggedIn = sessionStorage.getItem('authtoken') !== null;
 
     let userId = sessionStorage.getItem('userId');
+    let fbEmail = sessionStorage.getItem('userMail');
+
+    if (fbEmail !== null) {
+
+        usersService.getUserByEmail(fbEmail)
+            .then(function (userData) {
+
+                userId = userData[0]._id;
+
+                ticketsService.getMyTickets(userId)
+                    .then(function (tickets) {
+                        categoriesService.getCategories().then(function (categories) {
+                            for (let category of categories) {
+                                for (let ticket of tickets) {
+                                    if (category._id === ticket.categoryId) {
+                                        ticket.category = category.category;
+                                        ticket.fullName = sessionStorage.getItem('fullName');
+                                    }
+                                }
+                            }
+
+                            getCountTicketsInCart(ctx);
+                            renderTemplates(ctx, tickets, categories);
+
+                        })
+                    }).catch(notifications.handleError);
+            });
+    }
 
     if (ctx.loggedIn) {
         ticketsService.getMyTickets(userId)
@@ -19,17 +47,7 @@ handlers.displayMyTickets = function (ctx) {
                     }
 
                     getCountTicketsInCart(ctx);
-
-                    ctx.tickets = tickets;
-                    ctx.categories = categories;
-                    ctx.loadPartials({
-                        header: "./templates/common/header.hbs",
-                        footer: "./templates/common/footer.hbs",
-                        ticket: "./templates/user/tickets/ticket.hbs",
-                        navCategory: "./templates/common/navCategory.hbs",
-                    }).then(function () {
-                        this.partial('./templates/user/tickets/tickets.hbs');
-                    });
+                    renderTemplates(ctx, tickets, categories);
 
                 })
             }).catch(notifications.handleError);
@@ -273,4 +291,18 @@ function validateTicket(ticket) {
 function setTicketsAmountLeft(amount) {
 
     $('#ticketAmount').attr('max', amount);
+}
+
+function renderTemplates(ctx, tickets, categories) {
+
+    ctx.tickets = tickets;
+    ctx.categories = categories;
+    ctx.loadPartials({
+        header: "./templates/common/header.hbs",
+        footer: "./templates/common/footer.hbs",
+        ticket: "./templates/user/tickets/ticket.hbs",
+        navCategory: "./templates/common/navCategory.hbs",
+    }).then(function () {
+        this.partial('./templates/user/tickets/tickets.hbs');
+    });
 }

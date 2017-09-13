@@ -5,58 +5,38 @@ handlers.displayCart = function (ctx) {
     ctx.id = sessionStorage.getItem('userId');
 
     let userId = sessionStorage.getItem('userId');
+    let fbEmail = sessionStorage.getItem('userMail');
 
-    cartService.getTicketByUserId(userId).then(function (products) {
-        ctx.isEmpty = products.length === 0;
+    if (fbEmail !== null) {
 
-        categoriesService.getCategories().then(function (categories) {
+        usersService.getUserByEmail(fbEmail)
+            .then(function (userData) {
 
-            let tickets = [];
-            let totalPrice = 0;
-            let ticketsCount = 0;
+                userId = userData[0]._id;
 
-            for (let product of products) {
+                cartService.getTicketByUserId(userId).then(function (products) {
+                    ctx.isEmpty = products.length === 0;
 
-                let totalProductPrice = Number(product.ticketAmount) * Number(product.price);
-                totalPrice += totalProductPrice;
-                ticketsCount++;
+                    categoriesService.getCategories().then(function (categories) {
 
-                let ticket = {
-                    id: product._id,
-                    image: product.image,
-                    title: product.title,
-                    quantity: product.ticketAmount,
-                    eventDate: product.eventDate,
-                    eventTime: product.eventTime,
-                    price: product.price,
-                    totalProductPrice: totalProductPrice,
-                    eventId: product.eventId
-                };
+                        render(ctx, products, categories);
 
-                tickets.push(ticket);
-            }
+                    }).catch(notifications.handleError);
+                });
+            });
+    } else {
 
-            ctx.categories = categories;
-            ctx.ticketsCount = ticketsCount;
-            ctx.tickets = tickets;
-            ctx.totalPrice = totalPrice;
-            sessionStorage.setItem('ticketsCount', ticketsCount);
+        cartService.getTicketByUserId(userId).then(function (products) {
+            ctx.isEmpty = products.length === 0;
 
-            if (ticketsCount === 0) {
-                ctx.badgeHidden = "hidden"
-            }
+            categoriesService.getCategories().then(function (categories) {
 
-            ctx.loadPartials({
-                header: './templates/common/header.hbs',
-                footer: './templates/common/footer.hbs',
-                ticket: './templates/cart/ticket.hbs',
-                navCategory: "./templates/common/navCategory.hbs",
-            }).then(function () {
-                this.partial('./templates/cart/cart.hbs')
-            })
+                render(ctx, products, categories);
 
-        }).catch(notifications.handleError);
-    });
+            }).catch(notifications.handleError);
+        });
+    }
+
 };
 
 handlers.cartDeleteTicket = function (ctx) {
@@ -142,3 +122,49 @@ handlers.payment = function (ctx) {
 
     }).catch(notifications.handleError);
 };
+
+function render(ctx, products, categories) {
+    let tickets = [];
+    let totalPrice = 0;
+    let ticketsCount = 0;
+
+    for (let product of products) {
+
+        let totalProductPrice = Number(product.ticketAmount) * Number(product.price);
+        totalPrice += totalProductPrice;
+        ticketsCount++;
+
+        let ticket = {
+            id: product._id,
+            image: product.image,
+            title: product.title,
+            quantity: product.ticketAmount,
+            eventDate: product.eventDate,
+            eventTime: product.eventTime,
+            price: product.price,
+            totalProductPrice: totalProductPrice,
+            eventId: product.eventId
+        };
+
+        tickets.push(ticket);
+    }
+
+    ctx.categories = categories;
+    ctx.ticketsCount = ticketsCount;
+    ctx.tickets = tickets;
+    ctx.totalPrice = totalPrice;
+    sessionStorage.setItem('ticketsCount', ticketsCount);
+
+    if (ticketsCount === 0) {
+        ctx.badgeHidden = "hidden"
+    }
+
+    ctx.loadPartials({
+        header: './templates/common/header.hbs',
+        footer: './templates/common/footer.hbs',
+        ticket: './templates/cart/ticket.hbs',
+        navCategory: "./templates/common/navCategory.hbs",
+    }).then(function () {
+        this.partial('./templates/cart/cart.hbs')
+    })
+}

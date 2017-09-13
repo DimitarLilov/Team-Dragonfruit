@@ -1,6 +1,7 @@
 let facebookService = (() => {
 
     window.fbAsyncInit = function () {
+
         FB.init({
             appId: '1825836177742564',
             autoLogAppEvents: true,
@@ -10,6 +11,7 @@ let facebookService = (() => {
     };
 
     (function (d, s, id) {
+
         let js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {
             return;
@@ -18,17 +20,20 @@ let facebookService = (() => {
         js.id = id;
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
+
     }(document, 'script', 'facebook-jssdk'));
 
     function fbLogin(ctx) {
 
         FB.login(function (response) {
 
-            // FB.api('/me', { locale: 'en_US', fields: 'name, email' },
-            //     function(response) {
-            //         console.log(response.email);
-            //     }
-            // );
+            FB.api('/me', {locale: 'en_US', fields: 'name, email'},
+
+                function (response) {
+
+                    sessionStorage.setItem('userMail', response.email);
+                }
+            );
 
             if (response.status === "connected") {
 
@@ -44,6 +49,7 @@ let facebookService = (() => {
                 };
 
                 auth.loginFB(loginTokens).then(function (userInfo) {
+
                     auth.login(userInfo.username, userInfo.password)
                         .then(function (userInfo) {
 
@@ -54,7 +60,9 @@ let facebookService = (() => {
                             auth.saveSession(userInfo);
 
                             notifications.showInfo("Facebook login successful.");
-                            ctx.redirect("#/home")
+                            ctx.redirect("#/home");
+
+
                         }).catch(notifications.handleError);
                 }).catch(notifications.handleError);
 
