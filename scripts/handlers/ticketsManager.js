@@ -18,6 +18,8 @@ handlers.displayMyTickets = function (ctx) {
                         }
                     }
 
+                    getCountTicketsInCart(ctx);
+
                     ctx.tickets = tickets;
                     ctx.categories = categories;
                     ctx.loadPartials({
@@ -96,6 +98,8 @@ handlers.displayAddTicket = function (ctx) {
 
     ctx.eventId = ctx.params.id.substring(1);
 
+    getCountTicketsInCart(ctx);
+
     if (ctx.admin) {
         ctx.loadPartials({
             header: "./templates/admin/common/header.hbs",
@@ -125,6 +129,7 @@ handlers.displayEventTickets = function (ctx) {
                     ticket.disabled = "disabled";
                 }
             }
+            getCountTicketsInCart(ctx);
 
             ctx.eventId = eventId;
             ctx.tickets = tickets;

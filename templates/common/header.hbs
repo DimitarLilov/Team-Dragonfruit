@@ -25,7 +25,8 @@
                 {{#if loggedIn}}
                     <li>
                         <a href="#/cart" class="userMenuItem">
-                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                            <span id="cart-badge" class="badge badge-danger {{badgeHidden}}">{{ticketsCount}}</span>
                         </a>
                     </li>
                     <li>

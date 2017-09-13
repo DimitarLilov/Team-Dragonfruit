@@ -305,6 +305,7 @@ function renderEventDetailsTemplates(ctx, eventData, categories) {
             ctx.category = category.category;
         }
     }
+    getCountTicketsInCart(ctx);
 
     ctx.title = eventData.title;
     ctx._id = eventData._id;
@@ -334,6 +335,7 @@ function renderEventsTemplates(ctx, events, categories) {
             }
         }
     }
+    getCountTicketsInCart(ctx);
 
     ctx.events = events;
     ctx.categories = categories;

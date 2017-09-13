@@ -40,6 +40,11 @@ handlers.displayCart = function (ctx) {
             ctx.ticketsCount = ticketsCount;
             ctx.tickets = tickets;
             ctx.totalPrice = totalPrice;
+            sessionStorage.setItem('ticketsCount', ticketsCount);
+
+            if (ticketsCount === 0) {
+                ctx.badgeHidden = "hidden"
+            }
 
             ctx.loadPartials({
                 header: './templates/common/header.hbs',
