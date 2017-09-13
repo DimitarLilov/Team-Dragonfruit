@@ -7,7 +7,7 @@ handlers.displayCart = function (ctx) {
     let userId = sessionStorage.getItem('userId');
 
     cartService.getTicketByUserId(userId).then(function (products) {
-        ctx.isEmpty = products.length ===0;
+        ctx.isEmpty = products.length === 0;
 
         categoriesService.getCategories().then(function (categories) {
 
@@ -113,7 +113,7 @@ handlers.payment = function (ctx) {
     let userId = sessionStorage.getItem('userId');
 
     cartService.getTicketByUserId(userId).then(function (tickets) {
-        for(let ticket of tickets){
+        for (let ticket of tickets) {
             ticketsService.getTicket(ticket.ticketId).then(function (ticketData) {
                 let data = {
                     price: ticketData.price,
@@ -123,11 +123,15 @@ handlers.payment = function (ctx) {
                     eventTime: ticket.eventTime,
                     eventDate: ticket.eventDate,
                     categoryId: ticket.categoryId
+                };
+                for (let i = 0, len = ticket.ticketAmount; i < len; i++) {
+                    ticketsService.buyTicket(data).then(function () {
+                        if (i === 0) {
+                            cartService.deleteTicket(ticket._id);
+                        }
+                        ctx.redirect('#/my/tickets')
+                    })
                 }
-                ticketsService.buyTicket(data).then(function () {
-                    cartService.deleteTicket(ticket._id);
-                    ctx.redirect('#/my/tickets')
-                })
             })
         }
 
