@@ -53,6 +53,9 @@ let facebookService = (() => {
                                 .then(function (userInfo) {
                                     let displayUsername = userInfo._socialIdentity.facebook.name;
                                     sessionStorage.setItem('userFBId', userInfo._id);
+                                    let [firstName,lastName] = displayUsername.split(' ');
+                                    userInfo.firstName = firstName;
+                                    userInfo.lastName = lastName;
                                     userInfo.role = 'user';
                                     userInfo.username = displayUsername;
                                     auth.saveSession(userInfo);
@@ -67,6 +70,9 @@ let facebookService = (() => {
                             .then(function (userInfo) {
                                 let displayUsername = userInfo._socialIdentity.facebook.name;
                                 sessionStorage.setItem('userFBId', userInfo._id);
+                                let [firstName,lastName] = displayUsername.split(' ');
+                                userInfo.firstName = firstName;
+                                userInfo.lastName = lastName;
                                 userInfo.role = 'user';
                                 userInfo.username = displayUsername;
                                 auth.saveSession(userInfo);

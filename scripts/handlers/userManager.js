@@ -122,7 +122,7 @@ handlers.getUserEditInfo = function (ctx) {
         usersService.getEditUserInfo(userId)
             .then(function (usersData) {
                 categoriesService.getCategories().then(function (categories) {
-                    ctx.username = usersData.username;
+                    ctx.editUsername = ctx.username;
                     ctx._id = usersData._id;
                     ctx.firstName = usersData.firstName;
                     ctx.lastName = usersData.lastName;
