@@ -130,12 +130,15 @@ handlers.payment = function (ctx) {
                     eventDate: ticket.eventDate,
                     categoryId: ticket.categoryId
                 };
+
+                ticketData.ticketsCount -= Number(ticket.ticketAmount);
+
                 for (let i = 0, len = ticket.ticketAmount; i < len; i++) {
                     ticketsService.buyTicket(data).then(function () {
                         if (i === 0) {
                             cartService.deleteTicket(ticket._id);
                         }
-                        ctx.redirect('#/my/tickets')
+                        ctx.redirect('#/cart')
                     })
                 }
             })
