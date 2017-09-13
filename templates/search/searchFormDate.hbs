@@ -1,0 +1,76 @@
+{{> header}}
+
+<!--<div class="container">-->
+<!--<div class="row">-->
+<!--<div class="col-lg-8 col-sm-8 col-xs-8">-->
+<!--<div class="form-group row">-->
+<!--<h2 class="display-3">Search Ticket By Time:</h2>-->
+<!--</div>-->
+<!--<br/>-->
+<!--<form action="#/searchByTime" id="eventAddForm" method="post">-->
+
+<!--<div class="form-group row required">-->
+<!--<label class="form-control-label" for="eventTime">Event Time</label>-->
+<!--<input type="time" class="form-control" name="eventTime" id="eventTime"/>-->
+<!--</div>-->
+
+<!--<br>-->
+<!--<br>-->
+
+<!--</form>-->
+
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form" action='#/search/date' method="post">
+                <div class="input-group">
+                    <div class="input-group-btn search-panel">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span id="search_concept">Filter By Date</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#/search">Search By Title</a></li>
+                            <li><a href="#/search/town">Search By Town</a></li>
+                        </ul>
+                    </div>
+                    <form action="#/searchByTime" id="eventAddForm" method="post">
+
+                        <div class="form-group required">
+                            <input type="date" class="form-control" name="eventDate" id="eventDate"/>
+                        </div>
+
+                        <div class="input-group-btn">
+                            <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                        </div>
+                        <!--<div class="input-group-btn">-->
+                        <!--<button class="btn btn-default" type="button">-->
+
+                        <!--</button>-->
+                        <!--</div>-->
+                    </form>
+                </div>
+            </form>
+        </div>
+    </div>
+{{#if isEmpty}}
+        <p></p>
+{{else}}
+        <h1 class="my-4">Events
+            <small></small>
+        </h1>
+
+        <div class="row">
+            {{#each events}}
+                {{> event}}
+
+            {{else}}
+                <p>No events in database</p>
+            {{/each}}
+        </div>
+    </div>
+{{/if}}
+{{> footer}}

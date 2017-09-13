@@ -1,32 +1,31 @@
 {{> header}}
-
 <div class="container">
     <div class="row">
-        <div class="col-lg-8 col-sm-8 col-xs-8">
-            <div class="form-group row">
-                <h2 class="display-3">Search Ticket By Town:</h2>
-            </div>
-            <br/>
-            <form action="#/searchByTown" id="eventAddForm" method="post">
-
-                <div class="form-group row required">
-                    <label for="town">Town</label>
+        <form class="form" action='#/search/town' method="post">
+            <div class="col-xs-12">
+                <div class="input-group">
+                    <div class="input-group-btn search-panel">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span id="search_concept">Filter By Town</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#/search">Search By Title</a></li>
+                            <li><a href="#/search/date">Search By Date</a></li>
+                        </ul>
+                    </div>
+                    <input type="hidden" name="search_param" value="all" id="search_param">
                     <select name="town" class="form-control" id="town">
                         {{#select selectTown}}
                             {{> towns}}
                         {{/select}}
                     </select>
+                    <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search"></span></button>
+                    </span>
                 </div>
-
-                <br>
-                <br>
-                <div class="form-group row">
-                    <button class="btn btn-default" >Search</button>
-                    <a class="btn btn-default" href="#/home">Cancel</a>
-                </div>
-            </form>
-
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 

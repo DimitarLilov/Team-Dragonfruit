@@ -3,8 +3,8 @@ let searchService = (() => {
        let endpoint=`events?query={"town":"${townName}"}`;
        return requester.get('appdata',endpoint,'master')
    }
-   function getTicketByTime(time) {
-       let endpoint=`events?query={"eventTime":"${time}"}`;
+   function getTicketByDate(date) {
+       let endpoint=`events?query={"eventDate":"${date}"}`;
        return requester.get('appdata',endpoint,'master')
    }
    function getTicketByPrice(price) {
@@ -16,7 +16,7 @@ let searchService = (() => {
    }
    return {
        getTicketByTownName,
-       getTicketByTime,
+       getTicketByDate,
        getTicketByPrice,
        getTiketById,
    }

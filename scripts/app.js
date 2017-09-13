@@ -39,9 +39,8 @@ $(() => {
         this.get('#/cart/delete/ticket/:id', handlers.cartDeleteTicket);
         this.get('#/cart/payment', handlers.displayPayment);
         this.get('#/search', handlers.displaySearch);
-        this.get('#/searchByTown', handlers.searchByTown);
-        this.get('#/searchByTime', handlers.searchByTime);
-        this.get('#/searchByPrice', handlers.searchByPrice);
+        this.get('#/search/town', handlers.searchByTown);
+        this.get('#/search/date', handlers.searchByDate);
 
 
         this.post('#/register', handlers.registerUser);
@@ -63,9 +62,8 @@ $(() => {
         this.post('#/admin/categories/delete/:id', handlers.deleteCategory);
         this.post('#/events/tickets/:id', handlers.addTicketInCart);
         this.post('#/cart/payment', handlers.payment);
-        this.post('#/searchByTown', handlers.displayAllTicketsByTown);
-        this.post('#/searchByTime', handlers.displayAllTicketsByTime);
-        this.post('#/searchByPrice', handlers.displayAllTicketsByPrice);
+        this.post('#/search/town', handlers.displayAllTicketsByTown);
+        this.post('#/search/date', handlers.displayAllTicketsByDate);
     });
 
     app.run();
