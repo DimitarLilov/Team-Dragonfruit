@@ -85,7 +85,7 @@ handlers.getEditUser = function (ctx) {
         usersService.getEditUserInfo(userId)
             .then(function (usersData) {
 
-                ctx.username = usersData.username;
+                ctx.editUsername = usersData.username;
                 ctx._id = usersData._id;
                 ctx.firstName = usersData.firstName;
                 ctx.lastName = usersData.lastName;
@@ -116,7 +116,7 @@ handlers.editUser = function (ctx) {
 
     let user = {
         _id: id,
-        username: ctx.params.username,
+        username: ctx.params.editUsername,
         firstName: ctx.params.firstName,
         lastName: ctx.params.lastName,
         email: ctx.params.email,
@@ -200,7 +200,7 @@ function renderCommonTemplates(ctx, usersData) {
 
 function validateEditUser(user) {
 
-    let userReg = new RegExp("^(\\W){3,}$");
+    let userReg = new RegExp("^(\\W|\\w){3,}$");
 
     if (userReg.test(user.username)) {
 

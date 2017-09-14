@@ -108,7 +108,7 @@ handlers.userEditInfo = function (ctx) {
             user._socialIdentity = userData._socialIdentity;
             usersService.editUserInfo(user).then(function () {
                 notifications.showInfo(`User updated.`);
-                ctx.redirect("#/users");
+                ctx.redirect("#/home");
             });
         }).catch(notifications.handleError);
     }
