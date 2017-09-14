@@ -126,10 +126,12 @@ handlers.editUser = function (ctx) {
     let isValid = validateEditUser(user);
 
     if (isValid) {
-
-        usersService.editUserInfo(user).then(function () {
-            notifications.showInfo(`User updated.`);
-            ctx.redirect("#/users");
+        usersService.getEditUserInfo(id).then(function (userData) {
+            user._socialIdentity = userData._socialIdentity;
+            usersService.editUserInfo(user).then(function () {
+                notifications.showInfo(`User updated.`);
+                ctx.redirect("#/users");
+            });
         }).catch(notifications.handleError);
     }
 };
@@ -173,13 +175,13 @@ handlers.deleteUser = function (ctx) {
 
 function renderCommonTemplates(ctx, usersData) {
 
-    for(let user of usersData){
+    for (let user of usersData) {
 
         if (user._socialIdentity !== undefined) {
             user.icon = "facebook-square";
             user.color = "blue"
         }
-        else{
+        else {
             user.icon = "user";
             user.color = "black"
         }
@@ -198,14 +200,14 @@ function renderCommonTemplates(ctx, usersData) {
 
 function validateEditUser(user) {
 
-    let userReg = new RegExp("^([a-zA-Z]){3,}$");
+    let userReg = new RegExp("^(\\W){3,}$");
 
     if (userReg.test(user.username)) {
 
         $('#username').removeClass('error');
     } else {
 
-        notifications.showError('Username must more than 2 characters long and contains only lower and/or uppercase english letters!');
+        notifications.showError('Username must more than 2 characters long and contains only lower!');
         $('#username').addClass('error');
         return false;
     }

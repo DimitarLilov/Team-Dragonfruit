@@ -104,9 +104,12 @@ handlers.userEditInfo = function (ctx) {
 
     if (isValid) {
 
-        usersService.editUserInfo(user).then(function () {
-            notifications.showInfo(`User updated.`);
-            ctx.redirect("#/home");
+        usersService.getEditUserInfo(id).then(function (userData) {
+            user._socialIdentity = userData._socialIdentity;
+            usersService.editUserInfo(user).then(function () {
+                notifications.showInfo(`User updated.`);
+                ctx.redirect("#/users");
+            });
         }).catch(notifications.handleError);
     }
 };
