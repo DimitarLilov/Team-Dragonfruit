@@ -38,7 +38,8 @@ handlers.registerUser = function (ctx) {
         role: 'user'
     };
 
-    let isValid = validateRegisterUser(user);
+    let repeatPassword = ctx.params.repeatPassword;
+    let isValid = validateRegisterUser(user,repeatPassword);
 
     if (isValid) {
 
@@ -148,7 +149,7 @@ handlers.getUserEditInfo = function (ctx) {
 };
 
 
-function validateRegisterUser(user) {
+function validateRegisterUser(user,repeatPassword) {
 
     let userReg = new RegExp("^([a-zA-Z]){3,}$");
     let passReg = new RegExp("^([a-zA-Z0-9]){6,}$");
@@ -193,7 +194,7 @@ function validateRegisterUser(user) {
         return false;
     }
 
-    if (user.password !== user.repeatPassword) {
+    if (user.password !== repeatPassword) {
 
         notifications.showError("The Passwords and Repeat Password do not match.");
         $('#password').addClass('error');
