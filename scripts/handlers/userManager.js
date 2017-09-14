@@ -32,7 +32,6 @@ handlers.registerUser = function (ctx) {
     let user = {
         username: ctx.params.username,
         password: ctx.params.password,
-        repeatPassword: ctx.params.repeatPassword,
         firstName: ctx.params.firstName,
         lastName: ctx.params.lastName,
         email: ctx.params.email,

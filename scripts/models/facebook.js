@@ -23,70 +23,58 @@ let facebookService = (() => {
     function fbLogin(ctx) {
 
         FB.login(function (response) {
+            FB.api('/me', {locale: 'en_US', fields: 'name, email'},
+                function (facebookInfo) {
+                    if (response.status === "connected") {
+                        let [firstName, lastName] = facebookInfo.name.split(' ');
 
-            // FB.api('/me', { locale: 'en_US', fields: 'name, email' },
-            //     function(response) {
-            //         console.log(response.email);
-            //     }
-            // );
-            if (response.status === "connected") {
-
-
-                let loginTokens = {
-                    _socialIdentity:
-                        {
-                            facebook:
+                        let loginTokens = {
+                            username: facebookInfo.name,
+                            firstName: firstName,
+                            lastName: lastName,
+                            email: facebookInfo.email,
+                            role: 'user',
+                            _socialIdentity:
                                 {
-                                    access_token: response.authResponse.accessToken,
-                                    expires: 999999999
+                                    facebook:
+                                        {
+                                            access_token: response.authResponse.accessToken,
+                                            expires: 999999999
+                                        }
                                 }
-                        }
-                };
-                let data = {
-                    "_socialIdentity.facebook.id": response.authResponse.userID
-                };
+                        };
+                        let data = {
+                            "_socialIdentity.facebook.id": response.authResponse.userID
+                        };
 
-                usersService.getFacebookUsers(data).then(function (user) {
-                    if (user.length === 0) {
-                        auth.registerFB(loginTokens).then(function (userInfo) {
-                            auth.login(userInfo.username, userInfo.password)
-                                .then(function (userInfo) {
-                                    let displayUsername = userInfo._socialIdentity.facebook.name;
-                                    sessionStorage.setItem('userFBId', userInfo._id);
-                                    let [firstName,lastName] = displayUsername.split(' ');
-                                    userInfo.firstName = firstName;
-                                    userInfo.lastName = lastName;
-                                    userInfo.role = 'user';
-                                    userInfo.username = displayUsername;
-                                    auth.saveSession(userInfo);
 
-                                    notifications.showInfo("Facebook login successful.");
-                                    ctx.redirect("#/home")
+                        usersService.getFacebookUsers(data).then(function (user) {
+                            if (user.length === 0) {
+                                auth.register(loginTokens).then(function (userInfo) {
+                                    auth.login(userInfo.username, userInfo.password)
+                                        .then(function (userInfo) {
+                                            auth.saveSession(userInfo);
+                                            notifications.showInfo("Facebook login successful.");
+                                            ctx.redirect("#/home")
+                                        }).catch(notifications.handleError);
                                 }).catch(notifications.handleError);
-                        }).catch(notifications.handleError);
+                            }
+                            else {
+                                auth.loginFB(loginTokens)
+                                    .then(function (userInfo) {
+                                        auth.saveSession(userInfo);
+                                        notifications.showInfo("Facebook login successful.");
+                                        ctx.redirect("#/home")
+                                    }).catch(notifications.handleError);
+                            }
+                        });
+                    } else if (response.status === "not_authorized") {
+                        notifications.showError('Not logged in.');
+                    } else {
+                        notifications.showError('Not log into facebook.');
                     }
-                    else{
-                        auth.loginFB(loginTokens)
-                            .then(function (userInfo) {
-                                let displayUsername = userInfo._socialIdentity.facebook.name;
-                                sessionStorage.setItem('userFBId', userInfo._id);
-                                let [firstName,lastName] = displayUsername.split(' ');
-                                userInfo.firstName = firstName;
-                                userInfo.lastName = lastName;
-                                userInfo.role = 'user';
-                                userInfo.username = displayUsername;
-                                auth.saveSession(userInfo);
-
-                                notifications.showInfo("Facebook login successful.");
-                                ctx.redirect("#/home")
-                            }).catch(notifications.handleError);
-                    }
-                });
-            } else if (response.status === "not_authorized") {
-                notifications.showError('Not logged in.');
-            } else {
-                notifications.showError('Not log into facebook.');
-            }
+                }
+            );
 
         }, {scope: 'public_profile,email'});
     }

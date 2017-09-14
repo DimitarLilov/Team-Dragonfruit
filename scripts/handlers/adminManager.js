@@ -173,6 +173,18 @@ handlers.deleteUser = function (ctx) {
 
 function renderCommonTemplates(ctx, usersData) {
 
+    for(let user of usersData){
+
+        if (user._socialIdentity !== undefined) {
+            user.icon = "facebook-square";
+            user.color = "blue"
+        }
+        else{
+            user.icon = "user";
+            user.color = "black"
+        }
+    }
+
     ctx.users = usersData;
 
     ctx.loadPartials({
