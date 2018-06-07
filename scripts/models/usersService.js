@@ -13,7 +13,7 @@ let usersService = (() => {
     }
 
     function getSearchedUser(username) {
-        return requester.get('user', `?query={"username":"${username}"}`);
+        return requester.get('user', `?query={"username":{"$regex":"^${username}"}}`);
     }
 
     function getEditUserInfo(userId) {
